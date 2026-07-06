@@ -1,0 +1,231 @@
+@property --grid-cell-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: calc(100dvw + 50px);
+}
+
+@property --grid-cell-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: calc(100dvh + 50px);
+}
+
+@property --grid-shift-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --image-w {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: calc(100dvw + 50px);
+}
+
+@property --image-h {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: calc(100dvh + 50px);
+}
+
+.gridBackground {
+  position: absolute;
+  inset: 0;
+  z-index: var(--preload-z, 0);
+  background: var(--preload-bg, transparent);
+  transform: translateY(var(--preload-y, 0%));
+  transition: transform var(--preload-slide-duration, 0ms) cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.imageLayer {
+  position: absolute;
+  left: calc(50% - (var(--image-w) / 2) + var(--grid-frame-inset, 1px));
+  top: calc(50% + var(--grid-shift-y, 0px) - (var(--image-h) / 2) + var(--grid-frame-inset, 1px));
+  width: calc(var(--image-w) - (var(--grid-frame-inset, 1px) * 2));
+  height: calc(var(--image-h) - (var(--grid-frame-inset, 1px) * 2));
+  overflow: hidden;
+  background: #59534c;
+  isolation: isolate;
+  z-index: 0;
+  transition:
+    left var(--grid-transition-duration) var(--grid-transition-easing),
+    top var(--grid-transition-duration) var(--grid-transition-easing),
+    width var(--grid-transition-duration) var(--grid-transition-easing),
+    height var(--grid-transition-duration) var(--grid-transition-easing);
+}
+
+.gridCell {
+  position: absolute;
+  left: calc(50% + var(--grid-shift-x, 0px) + var(--cell-col) * var(--grid-cell-x));
+  top: calc(50% + var(--grid-shift-y, 0px) - var(--grid-cell-y) / 2);
+  width: var(--grid-cell-x);
+  height: var(--grid-cell-y);
+  background: #f7f6f5;
+  transition:
+    left var(--grid-transition-duration) var(--grid-transition-easing),
+    top var(--grid-transition-duration) var(--grid-transition-easing),
+    width var(--grid-transition-duration) var(--grid-transition-easing),
+    height var(--grid-transition-duration) var(--grid-transition-easing);
+}
+
+.homePanel {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 50dvw;
+  height: 100dvh;
+  background: #f7f6f5;
+  z-index: 1;
+  transform: translateX(var(--home-panel-x, 100%));
+  transition: transform 2000ms var(--grid-transition-easing);
+}
+
+.gridImageTint {
+  position: absolute;
+  inset: 0;
+  background: #59534c;
+  z-index: 0;
+  opacity: var(--phase3-opacity, 1);
+  transition: opacity var(--phase3-duration, 400ms) ease;
+}
+
+.gridImage {
+  object-fit: cover;
+  object-position: var(--grid-image-x) var(--grid-image-y);
+  mix-blend-mode: var(--phase3-blend-mode, luminosity);
+  opacity: var(--phase3-image-opacity, 0.4);
+  z-index: 1;
+  transition: opacity var(--phase3-duration, 400ms) ease;
+}
+
+.gridImage2 {
+  object-fit: cover;
+  object-position: var(--grid-image-x) var(--grid-image-y);
+  z-index: 2;
+  transition:
+    clip-path 600ms cubic-bezier(0.37, 0, 0.63, 1),
+    scale 600ms cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.introVeil {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: #9a948d;
+  pointer-events: none;
+  animation: intro-veil var(--veil-duration, 500ms) ease-out forwards;
+}
+
+.heroText {
+  --hero-reveal-distance: 1em;
+  --hero-intro-delay: 500ms;
+  --hero-line-delay: 105ms;
+  --hero-reveal-duration: 540ms;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: min(46rem, 78%);
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  opacity: var(--phase3-opacity, 1);
+  transition: opacity var(--phase3-duration, 400ms) ease;
+}
+
+.heroLine {
+  display: block;
+  height: 1lh;
+  overflow: hidden;
+  line-height: 1.1;
+}
+
+.heroLine span {
+  display: block;
+  line-height: inherit;
+  will-change: transform;
+  transform: translateY(var(--hero-reveal-distance));
+  animation: hero-line-reveal var(--hero-reveal-duration) cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.heroLine:nth-child(1) span {
+  animation-delay: var(--hero-intro-delay);
+}
+
+.heroLine:nth-child(2) span {
+  animation-delay: calc(var(--hero-intro-delay) + var(--hero-line-delay));
+}
+
+.heroLine:nth-child(3) span {
+  animation-delay: calc(var(--hero-intro-delay) + (var(--hero-line-delay) * 2));
+}
+
+.gridVertical,
+.gridHorizontal,
+.gridNode {
+  position: absolute;
+  display: block;
+  opacity: var(--grid-lines-opacity, 1);
+}
+
+.gridVertical {
+  top: 0;
+  bottom: 0;
+  left: calc(50% + var(--grid-shift-x) + (var(--grid-column) * var(--grid-cell-x)));
+  width: var(--grid-line-width);
+  background: var(--grid-line);
+  transform: translateX(-0.5px);
+  transition: left var(--grid-transition-duration) var(--grid-transition-easing);
+}
+
+.gridHorizontal {
+  left: 0;
+  right: 0;
+  top: calc(50% + var(--grid-shift-y) + (var(--grid-row) * var(--grid-cell-y)));
+  height: var(--grid-line-width);
+  background: var(--grid-line);
+  transform: translateY(-0.5px);
+  transition: top var(--grid-transition-duration) var(--grid-transition-easing);
+}
+
+.gridNode {
+  left: calc(50% + var(--grid-shift-x) + (var(--grid-column) * var(--grid-cell-x)));
+  top: calc(50% + var(--grid-shift-y) + (var(--grid-row) * var(--grid-cell-y)));
+  width: 18px;
+  aspect-ratio: 1;
+  background: var(--grid-node);
+  border: var(--grid-node-line-width) solid var(--grid-line);
+  box-sizing: border-box;
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition:
+    left var(--grid-transition-duration) var(--grid-transition-easing),
+    top var(--grid-transition-duration) var(--grid-transition-easing);
+}
+
+@keyframes hero-line-reveal {
+  from {
+    transform: translateY(var(--hero-reveal-distance));
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes intro-veil {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

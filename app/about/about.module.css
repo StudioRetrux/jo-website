@@ -1,0 +1,813 @@
+.page {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 100dvh;
+  background: #f7f6f5;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 94dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.heroImage {
+  position: absolute;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  background-image: url('/homeresortbatu2.png');
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  /* transition: background-position 1800ms cubic-bezier(0.1, 1, 0.2, 1); */
+  /* will-change: background-position; */
+}
+
+.fullname {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 0 86px;
+}
+
+.wordmark {
+  width: 100%;
+  color: var(--wordmark-color, #f7f6f5);
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 100px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.wordmarkLetter {
+  display: inline-block;
+  will-change: transform;
+}
+
+.wordmarkRevealTrack {
+  display: block;
+  will-change: transform;
+}
+
+.heroDescriptionRow {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 1;
+  padding: 0 86px 86px;
+  margin-top: 24px;
+}
+
+.heroDescription {
+  margin: 0;
+  color: var(--Text-Light-Title, #f7f6f5);
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.infoSection {
+  display: flex;
+  width: 100%;
+  height: 94dvh;
+  padding: 0 86px;
+  background-color: #f7f6f5;
+  background-image: url('/megamenu.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.infoColumn {
+  width: 50%;
+  height: 100%;
+}
+
+.infoColumn:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infoColumn:last-child {
+  padding: 124px 0 124px 86px;
+}
+
+.infoTextBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.infoHeading {
+  margin: 0;
+  color: var(--Text-Dark-Title, #59534c);
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.infoHeadingLineClip {
+  display: block;
+  overflow: hidden;
+}
+
+.infoHeadingLineTrack {
+  display: block;
+  will-change: transform;
+}
+
+.infoBody {
+  margin: 0;
+  color: var(--Text-Dark-Body-Copy, #756f69);
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.infoBody span {
+  display: block;
+}
+
+.infoImageFrame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #9a948d;
+}
+
+.infoImageLayer {
+  position: absolute;
+  inset: -8% 0;
+  will-change: clip-path, opacity, transform;
+  transform: translate3d(0, 0, 0) scale(1.08);
+}
+
+.infoImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.imagesSection {
+  display: flex;
+  width: 100%;
+  height: 94dvh;
+  box-sizing: border-box;
+  padding: 6dvh 0 0;
+  background: #f7f6f5 url('/megamenu.png') center / cover no-repeat;
+}
+
+.imagesPanel {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.imagesPanelLayer {
+  position: absolute;
+  inset: -12% 0;
+  will-change: transform;
+}
+
+.imagesPanelImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.profileSection {
+  display: flex;
+  width: 100%;
+  height: 94dvh;
+  background: #f7f6f5 url('/megamenu.png') center / cover no-repeat;
+  overflow: hidden;
+}
+
+.profileLeft {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  height: 100%;
+  padding: 104px 86px 124px;
+  flex-shrink: 0;
+}
+
+.profileTag {
+  flex-shrink: 0;
+  width: fit-content;
+  margin-right: 48px;
+  padding-top: 8px;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: #59534c;
+}
+
+.profileContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.profileName {
+  margin: 0;
+  padding-bottom: 24px;
+  color: #59534c;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 88px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.profileNameLine {
+  display: block;
+}
+
+.profileBioWrap {
+  width: 312px;
+  align-self: center;
+}
+
+.profileBio {
+  margin: 0;
+  color: #756f69;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.profileServicesBlock {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  margin-bottom: 48px;
+  margin-left: calc((100% - 312px) / 2);
+}
+
+.profileServicesLabel {
+  color: #000;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  opacity: 0.4;
+}
+
+.profileServices {
+  margin: 0;
+  color: #756f69;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+.profileRight {
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  width: 50%;
+  height: 100%;
+  flex-shrink: 0;
+  padding: 104px 86px 124px;
+}
+
+.profileRightInner {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.profileRightLayer {
+  position: absolute;
+  inset: -12% 0;
+  will-change: transform;
+}
+
+.profileRightImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.logosSection {
+  width: 100%;
+  height: 136px;
+  margin-top: 124px;
+  margin-bottom: 124px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 0 86px;
+}
+
+.logosTrustedBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.logosTrustedHeading {
+  margin: 0;
+  color: #59534c;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.logosTrustedBody {
+  margin: 0;
+  color: #756f69;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.logoItem {
+  height: 100%;
+  width: auto;
+  align-self: center;
+}
+
+.darkSection {
+  width: 100%;
+  height: 94dvh;
+  background: #2b2115;
+  padding: 86px;
+}
+
+.darkSectionInner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+
+.darkSectionA {
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.darkSectionImage {
+  height: 100%;
+  width: auto;
+}
+
+.darkSectionB {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.aboutCatList {
+  border-top: 1px solid rgba(89, 83, 76, 0.2);
+}
+
+.aboutCatItem {
+  position: relative;
+  height: 92px;
+  border-bottom: 1px solid rgba(89, 83, 76, 0.2);
+  display: flex;
+  align-items: center;
+  padding-left: 54px;
+  padding-right: 54px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.aboutCatItemBg {
+  position: absolute;
+  inset: 0;
+  background: rgba(92, 62, 16, 0.08);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 700ms ease-in-out 75ms;
+  pointer-events: none;
+}
+
+.aboutCatItem:hover .aboutCatItemBg {
+  clip-path: inset(0 0 0 0);
+}
+
+.aboutCatTextClip {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 40px;
+  overflow: hidden;
+}
+
+.aboutCatTextTrack {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1px;
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.aboutCatItem:hover .aboutCatTextTrack {
+  transform: translateY(-38px);
+}
+
+.aboutCatText {
+  display: block;
+  height: 38px;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #59534c;
+}
+
+.aboutCatTextHover {
+  margin-top: 1px;
+  font-style: italic;
+}
+
+.darkSectionBody {
+  margin: 54px 54px 0;
+  color: #756f69;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.bgSection {
+  position: relative;
+  width: 100%;
+  height: 94dvh;
+  background: url('/BG.png') center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bgSectionImage {
+  width: 400px;
+  height: auto;
+  display: block;
+}
+
+.bgSectionImageWrap {
+  position: relative;
+  width: 400px;
+  flex-shrink: 0;
+  transform: translateY(-88px);
+}
+
+.bgSectionOverlay {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.bgSectionText {
+  margin: 0;
+  color: var(--Text-Light-Title, #F7F6F5);
+  text-align: center;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.bgSectionText em {
+  font-style: italic;
+}
+
+.testimonialsSection {
+  width: 100%;
+  height: 94dvh;
+  padding: 120px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f7f6f5 url('/megamenu.png') center / cover no-repeat;
+}
+
+.testimonialsHeading {
+  margin: 0 0 40px;
+  color: #4D4D4D;
+  text-align: center;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.ctaSection {
+  position: relative;
+  width: 100%;
+  height: 94dvh;
+  background: #f7f6f5 url('/megamenu.png') center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctaSectionInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  pointer-events: none;
+}
+
+.ctaSectionIcon {
+  width: 64px;
+  height: 64px;
+}
+
+.ctaSectionText {
+  margin: 0;
+  color: #59534c;
+  text-align: center;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.ctaSectionCta {
+  color: #361e00;
+  text-align: center;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  text-transform: uppercase;
+}
+
+.testimonialsCarouselWrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+.testimonialsCarouselTrack {
+  --card-slot: 460px;
+  display: flex;
+  gap: 40px;
+  width: max-content;
+  animation: testimonialsScroll 18s linear infinite;
+}
+
+.testimonialsCard {
+  width: 420px;
+  height: 380px;
+  flex-shrink: 0;
+  background: rgba(238, 234, 228, 0.7);
+  padding: 56px 56px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.testimonialsCardQuote {
+  margin: 0;
+  color: var(--Text-Dark-Title, #59534C);
+  text-align: center;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.testimonialsCardAuthor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.testimonialsCardName {
+  margin: 0;
+  color: var(--Text-Dark-Title, #59534C);
+  text-align: center;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.testimonialsCardMeta {
+  margin: 0;
+  color: var(--Text-Dark-Title, #59534C);
+  text-align: center;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+}
+
+@keyframes testimonialsScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(var(--card-slot) * -4)); }
+}
+
+@media (min-width: 1920px) {
+  .testimonialsHeading {
+    font-size: 75px;
+  }
+
+  .testimonialsCard {
+    width: 560px;
+    height: 507px;
+    padding: 75px 75px 43px;
+  }
+
+  .testimonialsCarouselTrack {
+    gap: 53px;
+    --card-slot: 613px;
+  }
+
+  .testimonialsCardQuote {
+    font-size: 37px;
+  }
+
+  .ctaSectionIcon {
+    width: 85px;
+    height: 85px;
+  }
+
+  .ctaSectionText {
+    font-size: 75px;
+  }
+
+  .ctaSectionInner {
+    gap: 43px;
+  }
+}
+
+.bgSectionCta {
+  display: block;
+  margin-top: 32px;
+  color: var(--Text-Light-Title, #F7F6F5);
+  text-align: center;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1920px) {
+  .bgSectionImageWrap {
+    width: 533px;
+    transform: translateY(-117px);
+  }
+
+  .bgSectionImage {
+    width: 533px;
+  }
+
+  .bgSectionText {
+    font-size: 75px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .heroDescription {
+    font-size: 18px;
+  }
+
+  .infoHeading {
+    font-size: 64px;
+  }
+
+  .infoBody {
+    font-size: 18px;
+  }
+
+  .profileName {
+    font-size: 112px;
+  }
+
+  .profileBio {
+    font-size: 18px;
+  }
+
+  .profileBioWrap {
+    width: 416px;
+  }
+
+  .profileServicesLabel {
+    font-size: 15px;
+  }
+
+  .profileServicesBlock {
+    margin-left: calc((100% - 416px) / 2);
+  }
+
+  .logosTrustedHeading {
+    font-size: 64px;
+  }
+
+  .logosTrustedBody {
+    font-size: 18px;
+  }
+
+  .darkSectionBody {
+    font-size: 18px;
+  }
+
+  .profileServices {
+    font-size: 16px;
+  }
+
+  .aboutCatTextClip {
+    height: 49px;
+  }
+
+  .aboutCatItem:hover .aboutCatTextTrack {
+    transform: translateY(-48px);
+  }
+
+  .aboutCatText {
+    height: 48px;
+    font-size: 40px;
+  }
+}

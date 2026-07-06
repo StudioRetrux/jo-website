@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Project {
+  id         String   @id @default(cuid())
+  title      String
+  slug       String   @unique
+  subtitle   String
+  thumbnail  Json
+  hoverImage Json?
+  cardLayout Json?
+  published  Boolean  @default(false)
+  year       String
+  category   String
+  sections   Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// Single-row table: home carousel slide selection (id always 1).
+model HomeConfig {
+  id     Int  @id @default(1)
+  slides Json @default("[]")
+}

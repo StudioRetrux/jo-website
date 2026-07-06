@@ -1,0 +1,131 @@
+.page {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 100dvh;
+  background-color: #f7f6f5;
+  background-image: url('/megamenu.png');
+  background-repeat: repeat;
+  background-size: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+.hero {
+  padding-block: 240px;
+  overflow: hidden;
+}
+
+.title {
+  margin: 0 0 64px;
+  color: #000;
+  font-family: var(--font-instrument-serif), "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-size: 88px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.carousel {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.carousel:active {
+  cursor: grabbing;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carouselTrack {
+  --carousel-gap: 40px;
+  display: flex;
+  gap: var(--carousel-gap);
+  width: max-content;
+  align-items: flex-start;
+}
+
+.carouselCard {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+}
+
+.carouselImage {
+  display: block;
+  width: auto;
+  height: auto;
+}
+
+.carouselCaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.carouselTitle {
+  margin: 0;
+  color: #000;
+  font-family: var(--font-instrument-serif), "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 110%;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.carouselMeta {
+  margin: 0;
+  color: #000;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+@media (min-width: 1920px) {
+  .title {
+    font-size: 112px;
+  }
+
+  .carouselTrack {
+    --carousel-gap: 53px;
+  }
+
+  .carouselImage {
+    width: var(--image-width-2k);
+    height: auto;
+  }
+
+  .carouselTitle {
+    font-size: 40px;
+  }
+
+  .carouselMeta {
+    font-size: 18px;
+    letter-spacing: 1.8px;
+  }
+}

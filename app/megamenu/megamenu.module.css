@@ -1,0 +1,180 @@
+.megaMenu {
+  position: absolute;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #35312c url('/megamenu.png') center / cover no-repeat;
+  z-index: 11;
+}
+
+.megaMenuHeader {
+  display: flex;
+  height: 92px;
+  flex-shrink: 0;
+}
+
+.megaMenuBody {
+  display: flex;
+  flex: 1;
+}
+
+.megaMenuLeft,
+.megaMenuRight {
+  width: 50dvw;
+  padding: 48px;
+}
+
+.megaMenuRight {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (min-width: 1920px) {
+  .megaMenuLeft,
+  .megaMenuRight {
+    padding: 86px;
+  }
+}
+
+.megaMenuThumb {
+  position: relative;
+  height: 94%;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.megaMenuThumbImage,
+.megaMenuThumbImageReveal {
+  object-fit: cover;
+  object-position: var(--grid-image-x) var(--grid-image-y);
+}
+
+.megaMenuThumbImage {
+  z-index: 1;
+}
+
+.megaMenuThumbImageReveal {
+  z-index: 2;
+  transition:
+    clip-path 600ms cubic-bezier(0.37, 0, 0.63, 1),
+    scale 600ms cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.megaMenuNav {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.megaMenuNavItemWrap {
+  overflow: hidden;
+}
+
+.megaMenuTextClip {
+  display: block;
+  height: var(--mega-menu-text-clip-height, 53px);
+  overflow: hidden;
+  padding-right: 0.16em;
+  width: fit-content;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: var(--mega-menu-text-font-size, 56px);
+  font-weight: 400;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.megaMenuTextTrack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: var(--mega-menu-text-track-offset, -7px);
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.megaMenuTextClip:hover .megaMenuTextTrack,
+.megaMenuTextTrackActive {
+  transform: translateY(var(--mega-menu-text-hover-y, -60px));
+}
+
+.megaMenuNavItem {
+  display: block;
+  height: var(--mega-menu-text-item-height, 67px);
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: var(--mega-menu-text-font-size, 56px);
+  font-weight: 400;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--mega-menu-text-color, #f7f6f5);
+}
+
+.megaMenuNavItemUnderline {
+  margin-top: var(--mega-menu-text-track-offset, -7px);
+  font-style: italic;
+  color: var(--mega-menu-text-hover-color, var(--mega-menu-text-color, #f7f6f5));
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.05em;
+  text-underline-offset: var(--mega-menu-text-underline-offset, 6px);
+}
+
+@media (min-width: 1920px) {
+  .megaMenuTextClip {
+    --mega-menu-text-clip-height: 64px;
+    --mega-menu-text-font-size: 72px;
+    --mega-menu-text-item-height: 86px;
+    --mega-menu-text-track-offset: -18px;
+  }
+
+  .megaMenuTextClip:hover .megaMenuTextTrack,
+  .megaMenuTextTrackActive {
+    transform: translateY(var(--mega-menu-text-hover-y, -68px));
+  }
+}
+
+@media (min-width: 2560px) {
+  .megaMenuTextClip {
+    --mega-menu-text-track-offset: -7px;
+    --mega-menu-text-clip-height: 82px;
+  }
+
+  .megaMenuTextClip:hover .megaMenuTextTrack,
+  .megaMenuTextTrackActive {
+    transform: translateY(var(--mega-menu-text-hover-y, -72px));
+  }
+}
+
+.megaMenuFooter {
+  display: flex;
+  height: 92px;
+  flex-shrink: 0;
+}
+
+.megaMenuFooterPolicies {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.megaMenuLink {
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #f7f6f5;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1920px) {
+  .megaMenuLink {
+    font-size: 16px;
+  }
+}

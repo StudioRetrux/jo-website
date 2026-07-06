@@ -1,0 +1,45 @@
+.page {
+  min-height: 100vh;
+  background: #f8f6f1;
+  color: #2e2925;
+}
+
+.header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px max(24px, 5vw);
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand {
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.header nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 700px) {
+  .header {
+    align-items: flex-start;
+    padding: 22px 20px;
+  }
+
+  .header nav {
+    max-width: 180px;
+  }
+}

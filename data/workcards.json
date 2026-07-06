@@ -1,0 +1,86 @@
+[
+  {
+    "id": "home-resort-batu",
+    "width": 646,
+    "height": 440,
+    "title": "Home Resort Batu",
+    "category": "Hospitality",
+    "year": 2026,
+    "image": "/homeresortbatu1.jpg",
+    "hoverImage": "/homeresortbatu2.png",
+    "imageRevealDelayMs": 500,
+    "row": true
+  },
+  {
+    "id": "resort-room",
+    "width": 352,
+    "height": 241,
+    "title": "Resort Room",
+    "category": "Hospitality",
+    "year": 2026,
+    "image": "/Resort Room 1.jpg",
+    "hoverImage": "/Resort Room 2.jpg",
+    "imageRevealDelayMs": 500,
+    "row": true
+  },
+  {
+    "id": "untitled-01",
+    "width": 410,
+    "height": 280,
+    "title": "Gamer Room",
+    "category": "Residential",
+    "year": 2026,
+    "image": "/Gamer Room 1.jpg",
+    "hoverImage": "/Gamer Room 2.jpg",
+    "marginLeft": "36%",
+    "marginTop": "256px"
+  },
+  {
+    "id": "klinik-evre-manado",
+    "width": 624,
+    "height": 426,
+    "title": "Klinik Evre Manado",
+    "category": "Healthcare",
+    "year": 2026,
+    "image": "/preload3.png",
+    "hoverImage": "/preload4.png",
+    "marginLeft": "4%",
+    "marginTop": "256px"
+  },
+  {
+    "id": "klinik-graha-interna-solo",
+    "width": 352,
+    "height": 241,
+    "title": "Graha Family",
+    "category": "Healthcare",
+    "year": 2026,
+    "image": "/Graha Famili.jpeg",
+    "hoverImage": "/Graha Famili 2.jpeg",
+    "marginLeft": "auto",
+    "marginTop": "72px"
+  },
+  {
+    "id": "savart-denpasar",
+    "width": 410,
+    "height": 280,
+    "title": "Savart Denpasar",
+    "category": "Residential",
+    "year": 2026,
+    "image": "/Savart Denpasar 1.jpg",
+    "hoverImage": "/Savart Denpasar 2.jpg",
+    "marginLeft": "8%",
+    "marginTop": "120px"
+  },
+  {
+    "id": "playing-room-citraland",
+    "width": 626,
+    "height": 427,
+    "title": "Playing Room Citraland",
+    "category": "Residential",
+    "year": 2026,
+    "image": "/preload4.png",
+    "hoverImage": "/preload3.png",
+    "marginLeft": "auto",
+    "marginTop": "240px"
+  }
+]

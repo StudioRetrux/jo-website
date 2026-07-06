@@ -1,0 +1,19 @@
+.page {
+  --grid-cell-x: calc(100dvw + 50px);
+  --grid-cell-y: calc(100dvh + 50px);
+  --grid-transition-duration: 0ms;
+  --grid-transition-easing: ease;
+  --grid-shift-y: 0px;
+  --grid-line: #d0cfce;
+  --grid-line-width: 1px;
+  --grid-node-line-width: 1px;
+  --grid-node: #f7f6f5;
+  --grid-image-x: 44%;
+  --grid-image-y: 50%;
+
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #f7f6f5;
+}

@@ -1,0 +1,15 @@
+.container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #59534c;
+  z-index: 0;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+}
