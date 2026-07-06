@@ -19,7 +19,6 @@ model Project {
   subtitle   String
   thumbnail  Json
   hoverImage Json?
-  cardLayout Json?
   published  Boolean  @default(false)
   year       String
   category   String

@@ -1,45 +1,36 @@
-import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/lib/generated/prisma/client";
-import type { Project } from "./types";
+import { getPublishedProjects } from "./data";
+import {
+  resolveHomeSlide,
+  type HomeConfig,
+  type HomeSlide,
+  type ResolvedHomeSlide,
+} from "./home-shared";
 
-// Home carousel = ordered selection of works. Every field optional —
-// falls back to the referenced project's own data.
-export const homeSlideSchema = z.object({
-  projectId: z.string().min(1),
-  image: z.string().optional(), // left fullscreen bg; default project.thumbnail.url
-  thumbnail: z.string().optional(), // right-panel small img; default project.hoverImage ?? thumbnail
-  tag: z.string().optional(), // default "CATEGORY • YEAR"
-  heading: z.string().optional(), // default project.title uppercased
-  description: z.string().optional(), // default project.subtitle; "\n" = line break
-});
+export * from "./home-shared";
 
-export const homeConfigSchema = z.object({
-  slides: z.array(homeSlideSchema),
-});
+// Slides for the home carousel; never empty while published projects exist —
+// falls back to the 5 most recent published works when no config is saved.
+export async function getResolvedHomeSlides(): Promise<ResolvedHomeSlide[]> {
+  const [config, projects] = await Promise.all([
+    getHomeConfig(),
+    getPublishedProjects(),
+  ]);
+  const byId = new Map(projects.map((project) => [project.id, project]));
 
-export type HomeSlide = z.infer<typeof homeSlideSchema>;
-export type HomeConfig = z.infer<typeof homeConfigSchema>;
+  const slides = config.slides.flatMap((slide) => {
+    const project = byId.get(slide.projectId);
+    return project ? [resolveHomeSlide(slide, project)] : [];
+  });
 
-export type ResolvedHomeSlide = {
-  projectId: string;
-  tag: string;
-  heading: string;
-  descLines: string[];
-  background: string;
-  thumbnail: string;
-};
+  if (slides.length > 0) {
+    return slides;
+  }
 
-export function resolveHomeSlide(slide: HomeSlide, project: Project): ResolvedHomeSlide {
-  const background = slide.image ?? project.thumbnail.url;
-  return {
-    projectId: slide.projectId,
-    tag: slide.tag ?? `${project.category} • ${project.year}`.toUpperCase(),
-    heading: slide.heading ?? project.title.toUpperCase(),
-    descLines: (slide.description ?? project.subtitle).split("\n"),
-    background,
-    thumbnail: slide.thumbnail ?? project.hoverImage?.url ?? background,
-  };
+  return projects
+    .slice(0, 5)
+    .map((project) => resolveHomeSlide({ projectId: project.id }, project));
 }
 
 export async function getHomeConfig(): Promise<HomeConfig> {

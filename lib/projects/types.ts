@@ -73,15 +73,6 @@ export type ProjectSection =
       props: Record<string, never>;
     };
 
-export type WorkCardLayout = {
-  width: number;
-  height: number;
-  row?: boolean;
-  marginLeft?: string;
-  marginTop?: string;
-  imageRevealDelayMs?: number;
-};
-
 export type Project = {
   id: string;
   title: string;
@@ -89,11 +80,21 @@ export type Project = {
   subtitle: string;
   thumbnail: ImageAsset;
   hoverImage?: ImageAsset;
-  cardLayout?: WorkCardLayout;
   published: boolean;
   year: string;
   category: string;
   sections: ProjectSection[];
   createdAt: string;
   updatedAt: string;
+};
+
+// Flat view of a published project for the works grid/list.
+// Layout is NOT part of the data — the grid assigns a template slot by position.
+export type WorkItem = {
+  id: string;
+  title: string;
+  category: string;
+  year: string;
+  image: string;
+  hoverImage: string;
 };

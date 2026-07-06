@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma, Project as ProjectRow } from "@/lib/generated/prisma/client";
 import { createStarterProject, slugifyProjectTitle } from "./defaults";
 import type { CreateProjectInput, ProjectUpdateInput } from "./schema";
-import type { ImageAsset, Project, ProjectSection, WorkCardLayout } from "./types";
+import type { ImageAsset, Project, ProjectSection, WorkItem } from "./types";
 
 function serializeProject(row: ProjectRow): Project {
   return {
@@ -12,7 +12,6 @@ function serializeProject(row: ProjectRow): Project {
     subtitle: row.subtitle,
     thumbnail: row.thumbnail as ImageAsset,
     hoverImage: (row.hoverImage as ImageAsset | null) ?? undefined,
-    cardLayout: (row.cardLayout as WorkCardLayout | null) ?? undefined,
     published: row.published,
     year: row.year,
     category: row.category,
@@ -82,6 +81,47 @@ export async function createProject(input: CreateProjectInput): Promise<Project>
   return serializeProject(row);
 }
 
+// Works grid/list order: oldest created first — stable, editing never reshuffles.
+export async function getWorkItems(): Promise<WorkItem[]> {
+  const rows = await prisma.project.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  return rows.map((row) => {
+    const thumbnail = row.thumbnail as ImageAsset;
+    const hoverImage = row.hoverImage as ImageAsset | null;
+    return {
+      id: row.id,
+      title: row.title,
+      category: row.category,
+      year: row.year,
+      image: thumbnail.url,
+      hoverImage: hoverImage?.url ?? thumbnail.url,
+    };
+  });
+}
+
+export async function deleteProject(id: string): Promise<boolean> {
+  try {
+    await prisma.project.delete({ where: { id } });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function setProjectPublished(
+  id: string,
+  published: boolean,
+): Promise<Project | null> {
+  const row = await prisma.project
+    .update({ where: { id }, data: { published } })
+    .catch(() => null);
+
+  return row ? serializeProject(row) : null;
+}
+
 export async function updateProject(
   id: string,
   input: ProjectUpdateInput,
@@ -100,7 +140,6 @@ export async function updateProject(
       slug,
       thumbnail: input.thumbnail as Prisma.InputJsonValue,
       hoverImage: input.hoverImage as Prisma.InputJsonValue | undefined,
-      cardLayout: input.cardLayout as Prisma.InputJsonValue | undefined,
       sections: input.sections as unknown as Prisma.InputJsonValue,
     },
   });

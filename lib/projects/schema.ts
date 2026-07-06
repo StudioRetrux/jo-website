@@ -93,22 +93,12 @@ export const createProjectSchema = z.object({
   slug: z.string().trim().optional().default(""),
 });
 
-export const workCardLayoutSchema = z.object({
-  width: z.number().positive(),
-  height: z.number().positive(),
-  row: z.boolean().optional(),
-  marginLeft: z.string().optional(),
-  marginTop: z.string().optional(),
-  imageRevealDelayMs: z.number().nonnegative().optional(),
-});
-
 export const projectUpdateSchema = z.object({
   title: z.string().min(1),
   slug: z.string().min(1),
   subtitle: z.string().min(1),
   thumbnail: imageAssetSchema,
   hoverImage: imageAssetSchema.optional(),
-  cardLayout: workCardLayoutSchema.optional(),
   published: z.boolean(),
   year: z.string().min(1),
   category: z.string().min(1),
