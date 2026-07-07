@@ -84,10 +84,11 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       if (item === "Home") { window.location.assign("/"); return; }
       if (item === "About") { window.location.assign("/about"); return; }
       if (item === "Curated Spaces") { window.location.assign("/curratedspaces"); return; }
+      if (item === "Contact") { window.location.assign("/contact"); return; }
       setMenuOpen(false);
       return;
     }
-    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces" };
+    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
     const page = pageMap[item];
     if (page) {
       navigateTo(page);

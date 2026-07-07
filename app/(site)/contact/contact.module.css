@@ -1,0 +1,199 @@
+.page {
+  --header-fg: #59534c;
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 100dvh;
+  background-color: #f7f6f5;
+  background-image: url('/megamenu.png');
+  background-repeat: repeat;
+  background-size: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+.layout {
+  display: flex;
+  height: 100dvh;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.col {
+  flex: 1;
+  min-width: 0;
+}
+
+.colMid {
+  border-left: 1px solid #9a948c;
+  border-right: 1px solid #9a948c;
+}
+
+.colSplit {
+  display: flex;
+  flex-direction: column;
+}
+
+.curtain {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translateY(-100%);
+  transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.layout[data-hover="left"] .curtainLeft,
+.layout[data-hover="wa"] .curtainWa,
+.layout[data-hover="wa"] .ctaWa,
+.layout[data-hover="email"] .curtainEmail,
+.layout[data-hover="email"] .ctaEmail {
+  transform: translateY(0);
+}
+
+.curtainImage {
+  object-fit: cover;
+}
+
+/* CONTACT NOW layer: rides down in sync with the curtain, above content for clicks */
+.cta {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 20dvh;
+  transform: translateY(-100%);
+  transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.ctaWa {
+  left: 33.3333%;
+  right: 33.3333%;
+}
+
+.ctaEmail {
+  left: 66.6667%;
+}
+
+.ctaButton {
+  pointer-events: auto;
+  color: #f7f6f8;
+  font-family: var(--font-albert-sans), "Albert Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  text-decoration-line: underline;
+  text-underline-position: from-font;
+}
+
+/* hover: header + all section text goes light */
+.page:has([data-hover]) {
+  --header-fg: #f7f6f8;
+}
+
+.layout[data-hover] .waTitle,
+.layout[data-hover] .waNumber,
+.layout[data-hover] .waIcon,
+.layout[data-hover] .leftInfo :is(span, p, a) {
+  color: #f7f6f8;
+}
+
+/* hover: non-hovered sections' images, icons and text fade */
+.layout[data-hover]:not([data-hover="left"]) .colLeft :is(.leftImage, .leftInfo),
+.layout[data-hover]:not([data-hover="wa"]) .colMid :is(.waImage, .waIcon, .waTitle, .waNumber),
+.layout[data-hover]:not([data-hover="email"]) .colRight :is(.waImage, .waIcon, .waTitle, .waNumber) {
+  opacity: 0.3;
+}
+
+.leftInfo :is(span, p, a) {
+  transition: color 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.waIcon,
+.leftInfo {
+  transition: color 700ms cubic-bezier(0.4, 0, 0.2, 1), opacity 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.colLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.leftImage {
+  width: 100%;
+  height: auto;
+}
+
+.leftInfo {
+  padding: 48px 24px;
+}
+
+.half {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.waIcon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 55px;
+  color: #9a948c;
+}
+
+.waTitle {
+  margin: 0;
+  transition: color 700ms cubic-bezier(0.4, 0, 0.2, 1), opacity 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  color: #59534c;
+  text-align: center;
+  font-family: var(--font-instrument-serif), "Instrument Serif", Georgia, "Times New Roman", serif;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+  text-transform: uppercase;
+}
+
+.waNumber {
+  margin-top: 40px;
+  transition: color 700ms cubic-bezier(0.4, 0, 0.2, 1), opacity 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  color: #361e00;
+  text-align: center;
+  font-family: var(--font-albert-sans), "Albert Sans", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  text-decoration-line: underline;
+  text-underline-position: from-font;
+}
+
+.waImage {
+  width: 233px;
+  height: 233px;
+  object-fit: cover;
+}
+
+/* section images sit under the curtain (curtain is z:-1) */
+.waImage,
+.leftImage {
+  position: relative;
+  z-index: -2;
+  transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}

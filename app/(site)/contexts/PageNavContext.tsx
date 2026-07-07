@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useRef, useState } from "react";
 import { useSection } from "./SectionContext";
 
-export type Page = "home" | "work" | "about" | "curratedspaces";
+export type Page = "home" | "work" | "about" | "curratedspaces" | "contact";
 
 export const SLIDE_DURATION = 700;
 export const SLIDE_EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
@@ -13,6 +13,7 @@ const PAGE_PATHS: Record<Page, string> = {
   work: "/works",
   about: "/about",
   curratedspaces: "/curratedspaces",
+  contact: "/contact",
 };
 
 type PageNavContextType = {

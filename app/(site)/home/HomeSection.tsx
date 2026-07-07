@@ -10,6 +10,7 @@ import type { WorkItem } from "@/lib/projects/types";
 import AboutSection from "../about/AboutSection";
 import WorkSection from "../work/WorkSection";
 import CurratedSpacesSection from "../curratedspaces/CurratedSpacesSection";
+import ContactSection from "../contact/ContactSection";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 
 const REVEAL_MS = 700;
@@ -65,7 +66,7 @@ export default function HomeSection({ slides, works, carouselReady, preloading =
   }, [carouselCurrent, slides.length]);
 
   function handleNavigate(item: string) {
-    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces" };
+    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
     const page = pageMap[item];
     if (page) {
       navigateTo(page);
@@ -95,6 +96,11 @@ export default function HomeSection({ slides, works, carouselReady, preloading =
         open={activePage === "curratedspaces" || incomingPage === "curratedspaces"}
         slidePage={incomingPage === "curratedspaces"}
         zIndex={incomingPage === "curratedspaces" ? 13 : undefined}
+      />
+      <ContactSection
+        open={activePage === "contact" || incomingPage === "contact"}
+        slidePage={incomingPage === "contact"}
+        zIndex={incomingPage === "contact" ? 13 : undefined}
       />
       <div
         style={{

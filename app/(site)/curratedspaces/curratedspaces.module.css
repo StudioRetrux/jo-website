@@ -37,12 +37,12 @@
 
 .carousel {
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
+  /* leading inset lives on the viewport, not the first slide:
+     a slide margin gets cancelled by embla's snap alignment */
+  padding-left: 40px;
   cursor: grab;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
   user-select: none;
 }
 
@@ -50,15 +50,12 @@
   cursor: grabbing;
 }
 
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-
 .carouselTrack {
   --carousel-gap: 40px;
   display: flex;
-  gap: var(--carousel-gap);
-  width: max-content;
+  /* no explicit width: embla uses track width as viewport size —
+     max-content made it as wide as content, so embla saw "everything fits",
+     collapsed to 1 snap and disabled loop/autoscroll */
   align-items: flex-start;
 }
 
@@ -66,6 +63,9 @@
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
+  /* spacing as slide padding, not flex gap: gap belongs to no slide,
+     so embla's loop drops it at the last→first wrap seam */
+  padding-right: var(--carousel-gap);
 }
 
 .carouselImage {

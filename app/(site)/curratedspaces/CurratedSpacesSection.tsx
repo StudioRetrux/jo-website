@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Lenis from "@studio-freight/lenis";
+import useEmblaCarousel from "embla-carousel-react";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import Image from "next/image";
 import Header from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
@@ -40,8 +42,11 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const footerWordmarkRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const carouselDragRef = useRef({ active: false, pointerId: 0, startX: 0, scrollLeft: 0 });
+  const [emblaRef] = useEmblaCarousel(
+    // align start: default "center" translates the track on init (mount blink)
+    { loop: true, dragFree: true, align: "start" },
+    [WheelGesturesPlugin()],
+  );
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -71,76 +76,16 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
     return () => { cancelAnimationFrame(raf); lenis.destroy(); };
   }, []);
 
-  useEffect(() => {
-    const node = carouselRef.current;
-    if (!node) return;
-
-    const handleWheel = (event: WheelEvent) => {
-      const maxScroll = node.scrollWidth - node.clientWidth;
-      if (maxScroll <= 0) return;
-
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-      if (delta === 0) return;
-
-      event.preventDefault();
-      event.stopPropagation();
-      node.scrollLeft += delta;
-    };
-
-    const handlePointerDown = (event: PointerEvent) => {
-      if (event.button !== 0) return;
-
-      carouselDragRef.current = {
-        active: true,
-        pointerId: event.pointerId,
-        startX: event.clientX,
-        scrollLeft: node.scrollLeft,
-      };
-      node.setPointerCapture(event.pointerId);
-    };
-
-    const handlePointerMove = (event: PointerEvent) => {
-      const drag = carouselDragRef.current;
-      if (!drag.active || drag.pointerId !== event.pointerId) return;
-
-      event.preventDefault();
-      node.scrollLeft = drag.scrollLeft - (event.clientX - drag.startX);
-    };
-
-    const endDrag = (event: PointerEvent) => {
-      const drag = carouselDragRef.current;
-      if (!drag.active || drag.pointerId !== event.pointerId) return;
-
-      carouselDragRef.current.active = false;
-      if (node.hasPointerCapture(event.pointerId)) {
-        node.releasePointerCapture(event.pointerId);
-      }
-    };
-
-    node.addEventListener("wheel", handleWheel, { passive: false });
-    node.addEventListener("pointerdown", handlePointerDown);
-    node.addEventListener("pointermove", handlePointerMove);
-    node.addEventListener("pointerup", endDrag);
-    node.addEventListener("pointercancel", endDrag);
-
-    return () => {
-      node.removeEventListener("wheel", handleWheel);
-      node.removeEventListener("pointerdown", handlePointerDown);
-      node.removeEventListener("pointermove", handlePointerMove);
-      node.removeEventListener("pointerup", endDrag);
-      node.removeEventListener("pointercancel", endDrag);
-    };
-  }, []);
-
   function handleNavigate(item: string) {
     if (homeNavigation === "route") {
       if (item === "Home") { window.location.assign("/"); return; }
       if (item === "Work") { window.location.assign("/works"); return; }
       if (item === "About") { window.location.assign("/about"); return; }
+      if (item === "Contact") { window.location.assign("/contact"); return; }
       setMenuOpen(false);
       return;
     }
-    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces" };
+    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
     const page = pageMap[item];
     if (page) {
       navigateTo(page);
@@ -173,15 +118,17 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
         <section className={styles.hero} aria-label="Curated spaces">
           <h1 className={styles.title}>Curated Spaces</h1>
           <div
-            ref={carouselRef}
+            ref={emblaRef}
             className={styles.carousel}
             aria-label="Curated spaces projects"
+            data-lenis-prevent
           >
             <div className={styles.carouselTrack}>
-              {CURATED_SPACES_ITEMS.map((item) => (
+              {/* ponytail: items doubled so embla loop always has content wider than viewport */}
+              {[...CURATED_SPACES_ITEMS, ...CURATED_SPACES_ITEMS].map((item, i) => (
                 <article
                   className={styles.carouselCard}
-                  key={item.src}
+                  key={`${item.src}-${i}`}
                   style={{
                     "--image-width": `${item.width}px`,
                     "--image-width-2k": `${item.width * 1.2}px`,
