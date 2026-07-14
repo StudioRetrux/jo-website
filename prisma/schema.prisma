@@ -32,3 +32,9 @@ model HomeConfig {
   id     Int  @id @default(1)
   slides Json @default("[]")
 }
+
+// Single-row table: curated spaces carousel items (id always 1).
+model CuratedSpacesConfig {
+  id    Int  @id @default(1)
+  items Json @default("[]")
+}

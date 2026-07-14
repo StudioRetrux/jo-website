@@ -127,10 +127,13 @@
   left: 50%;
   top: 50%;
   z-index: 2;
-  width: min(46rem, 78%);
+  /* sized off the image cell (--image-w), anchored to the smallest state:
+     at the 45dvh cell (1080p ≈ 486px) this equals the original 48px / 46rem,
+     and min() caps it there so the fullscreen phase looks unchanged */
+  width: min(calc(var(--image-w, 100dvw) * 1.5), 46rem);
   color: rgba(255, 255, 255, 0.7);
   font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
-  font-size: 48px;
+  font-size: min(calc(var(--image-w, 100dvw) * 0.099), 48px);
   font-style: normal;
   font-weight: 400;
   line-height: 1.1;
@@ -138,7 +141,10 @@
   text-align: center;
   transform: translate(-50%, -50%);
   opacity: var(--phase3-opacity, 1);
-  transition: opacity var(--phase3-duration, 400ms) ease;
+  transition:
+    opacity var(--phase3-duration, 400ms) ease,
+    font-size var(--grid-transition-duration, 0ms) var(--grid-transition-easing, ease),
+    width var(--grid-transition-duration, 0ms) var(--grid-transition-easing, ease);
 }
 
 .heroLine {

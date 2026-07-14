@@ -5,6 +5,7 @@ import HomeCarousel from "./HomeCarousel";
 import Header from "./Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import RightPanel, { CarouselPhase, UNLOCK_MS, MAX_EXIT_MS } from "./RightPanel";
+import type { CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
 import type { WorkItem } from "@/lib/projects/types";
 import AboutSection from "../about/AboutSection";
@@ -20,11 +21,12 @@ const REVEAL_TRANSITION = `clip-path ${REVEAL_MS}ms ${REVEAL_EASE}, scale ${REVE
 type Props = {
   slides: ResolvedHomeSlide[];
   works: WorkItem[];
+  curatedItems?: CuratedSpaceItem[];
   carouselReady: boolean;
   preloading?: boolean;
 };
 
-export default function HomeSection({ slides, works, carouselReady, preloading = false }: Props) {
+export default function HomeSection({ slides, works, curatedItems, carouselReady, preloading = false }: Props) {
   const { activePage, incomingPage, navigateTo } = usePageNav();
   const [visible, setVisible] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -93,6 +95,7 @@ export default function HomeSection({ slides, works, carouselReady, preloading =
         zIndex={incomingPage === "about" ? 13 : undefined}
       />
       <CurratedSpacesSection
+        items={curatedItems}
         open={activePage === "curratedspaces" || incomingPage === "curratedspaces"}
         slidePage={incomingPage === "curratedspaces"}
         zIndex={incomingPage === "curratedspaces" ? 13 : undefined}

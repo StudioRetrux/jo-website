@@ -64,6 +64,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
   const [switchSnapshot, setSwitchSnapshot] = useState<ImageSnapshot | null>(null);
   const [switchTarget, setSwitchTarget] = useState<{ x: number; y: number } | null>(null);
   const [gridExiting, setGridExiting] = useState(false);
+  const [listExiting, setListExiting] = useState(false);
   const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
   const cardImageEls = useRef(new Map<string, HTMLDivElement>());
   const handleCardImageEl = useCallback((id: string, el: HTMLDivElement | null) => {
@@ -121,8 +122,17 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       setTimeout(() => { setViewMode("list"); setGridExiting(false); }, 500);
     }
     if (mode === "grid" && viewMode === "list") {
-      setTimeout(() => setSwitchSnapshot(null), 1000);
-      setViewMode("grid");
+      if (listExiting) return;
+      setListExiting(true);
+      setTimeout(() => {
+        setViewMode("grid");
+        setListExiting(false);
+      }, 500);
+      // let SwitchMode's 700ms cover wipe finish before unmounting it
+      setTimeout(() => {
+        setSwitchSnapshot(null);
+        setSwitchTarget(null);
+      }, 750);
     }
   }
   const [fullnameEnteredView, setFullnameEnteredView] = useState(false);
@@ -251,7 +261,14 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       />
       <div ref={contentRef}>
         <TitleArea phase={phase} categories={[...new Set(works.map((w) => w.category))].sort()} activeFilter={activeFilter} onFilterChange={handleFilterChange} viewMode={viewMode} onViewModeChange={handleViewModeChange} />
-        <div className={styles.workContent} ref={workContentRef}>
+        <div
+          className={styles.workContent}
+          ref={workContentRef}
+          style={{
+            opacity: listExiting ? 0 : 1,
+            transition: "opacity 500ms cubic-bezier(0.37, 0, 0.63, 1)",
+          }}
+        >
           {viewMode === "list" && (
             <div
               className={styles.workListTopBorder}
@@ -451,6 +468,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       <SwitchMode
         snapshot={switchSnapshot}
         target={switchTarget}
+        exiting={listExiting}
         followImage={works.find(c => c.id === hoveredItemId)?.image}
         followActive={hoveredItemId !== null}
         parkedImage={viewMode === "list" && hoveredItemId === null ? firstVisibleCard()?.image : null}

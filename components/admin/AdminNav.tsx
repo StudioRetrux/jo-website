@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ExternalLink, House, LayoutGrid } from "lucide-react";
+import { ExternalLink, House, Images, LayoutGrid } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/admin/projects", label: "Projects", icon: LayoutGrid },
   { href: "/admin/home", label: "Home Page", icon: House },
+  { href: "/admin/curatedspaces", label: "Curated Spaces", icon: Images },
 ];
 
 export function AdminNav() {

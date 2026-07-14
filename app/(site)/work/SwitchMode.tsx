@@ -44,6 +44,7 @@ type Props = {
   followActive?: boolean;
   parkedImage?: string | null;
   followBoundsRef?: { current: HTMLDivElement | null };
+  exiting?: boolean;
 };
 
 function clamp(value: number, min: number, max: number) {
@@ -61,7 +62,7 @@ export function captureSnapshot(
   return { x: rect.left, y: rect.top, width: rect.width, height: rect.height, src: imageSrc, title, info };
 }
 
-export default function SwitchMode({ snapshot, target, followImage, followActive, parkedImage, followBoundsRef }: Props) {
+export default function SwitchMode({ snapshot, target, followImage, followActive, parkedImage, followBoundsRef, exiting = false }: Props) {
   const { posRef } = useCursor();
   const elRef = useRef<HTMLDivElement>(null);
   const lerpPos = useRef({ x: 0, y: 0 });
@@ -172,6 +173,7 @@ export default function SwitchMode({ snapshot, target, followImage, followActive
     if (mode !== "follow") return;
 
     if (followActive) {
+      if (exiting) return;
       if (!followArmed) setFollowArmed(true);
       if (!coverActive.current) return;
       coverActive.current = false;
@@ -190,7 +192,15 @@ export default function SwitchMode({ snapshot, target, followImage, followActive
     coverActive.current = true;
     setContentClipTransition(true);
     setContentClipPath("inset(0 100% 0 0)");
-  }, [followActive, followArmed, mode]);
+  }, [followActive, followArmed, mode, exiting]);
+
+  // list -> grid exit: cover the image with the same wipe used when the cursor leaves the rows
+  useEffect(() => {
+    if (!exiting || mode !== "follow" || coverActive.current) return;
+    coverActive.current = true;
+    setContentClipTransition(true);
+    setContentClipPath("inset(0 100% 0 0)");
+  }, [exiting, mode]);
 
   useEffect(() => {
     if (mode !== "follow" || followArmed || !parkedImage || parkedImage === baseFollowImage) return;
@@ -205,7 +215,7 @@ export default function SwitchMode({ snapshot, target, followImage, followActive
 
   // follow mode RAF, clamped to the list rows plus a 60px border and elastic edge.
   useEffect(() => {
-    if (mode !== "follow" || !followArmed) return;
+    if (mode !== "follow" || !followArmed || exiting) return;
     let frame: number;
     function tick() {
       const { x, y } = posRef.current;
@@ -258,7 +268,7 @@ export default function SwitchMode({ snapshot, target, followImage, followActive
     }
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [mode, followArmed, posRef, followBoundsRef]);
+  }, [mode, followArmed, posRef, followBoundsRef, exiting]);
 
   if (mode === "idle") return null;
 

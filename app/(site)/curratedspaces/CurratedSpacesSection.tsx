@@ -10,16 +10,11 @@ import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "../about/FullnameBlock";
 import FooterMenuText from "../work/FooterMenuText";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import { DEFAULT_CURATED_SPACE_ITEMS, type CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import workStyles from "../work/work.module.css";
 import styles from "./curratedspaces.module.css";
 
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
-const CURATED_SPACES_ITEMS = [
-  { src: "/cs1.png", width: 352, height: 235, title: "Cafe In Laws", category: "Hospitality", year: "2025" },
-  { src: "/cs2.png", width: 626, height: 417, title: "Cafe In Laws", category: "Hospitality", year: "2025" },
-  { src: "/cs4.png", width: 496, height: 331, title: "Audi Dental Denpasar", category: "Healthcare", year: "2025" },
-  { src: "/cs3.png", width: 626, height: 417, title: "Audi Dental Denpasar", category: "Healthcare", year: "2025" },
-];
 const SOCIAL_ITEMS = [
   { label: "Instagram", href: "https://instagram.com" },
   { label: "LinkedIn", href: "https://linkedin.com" },
@@ -32,9 +27,10 @@ type Props = {
   slidePage?: boolean;
   homeNavigation?: "state" | "route";
   zIndex?: number;
+  items?: CuratedSpaceItem[];
 };
 
-export default function CurratedSpacesSection({ open, slidePage = true, homeNavigation = "state", zIndex }: Props) {
+export default function CurratedSpacesSection({ open, slidePage = true, homeNavigation = "state", zIndex, items = DEFAULT_CURATED_SPACE_ITEMS }: Props) {
   const { navigateTo } = usePageNav();
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -125,7 +121,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
           >
             <div className={styles.carouselTrack}>
               {/* ponytail: items doubled so embla loop always has content wider than viewport */}
-              {[...CURATED_SPACES_ITEMS, ...CURATED_SPACES_ITEMS].map((item, i) => (
+              {[...items, ...items].map((item, i) => (
                 <article
                   className={styles.carouselCard}
                   key={`${item.src}-${i}`}

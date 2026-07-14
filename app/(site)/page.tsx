@@ -1,5 +1,6 @@
 import PreloadGrid from "./preload/PreloadGrid";
 import { getWorkItems } from "@/lib/projects/data";
+import { getCuratedSpaceItems } from "@/lib/projects/curated";
 import { getResolvedHomeSlides } from "@/lib/projects/home";
 import { FALLBACK_HOME_SLIDES } from "@/lib/projects/home-shared";
 import styles from "./page.module.css";
@@ -8,15 +9,16 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [resolved, works] = await Promise.all([
+  const [resolved, works, curatedItems] = await Promise.all([
     getResolvedHomeSlides(),
     getWorkItems(),
+    getCuratedSpaceItems(),
   ]);
   const slides = resolved.length > 0 ? resolved : FALLBACK_HOME_SLIDES;
 
   return (
     <main className={styles.page} aria-label="Home">
-      <PreloadGrid slides={slides} works={works} />
+      <PreloadGrid slides={slides} works={works} curatedItems={curatedItems} />
     </main>
   );
 }

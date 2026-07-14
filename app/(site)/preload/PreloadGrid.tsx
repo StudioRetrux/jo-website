@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import styles from "./preload.module.css";
 import HomeSection from "../home/HomeSection";
+import type { CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
 import type { WorkItem } from "@/lib/projects/types";
 
@@ -40,9 +41,11 @@ function easingValue([x1, y1, x2, y2]: Bezier) {
 export default function PreloadGrid({
   slides,
   works,
+  curatedItems,
 }: {
   slides: ResolvedHomeSlide[];
   works: WorkItem[];
+  curatedItems?: CuratedSpaceItem[];
 }) {
   const [phase, setPhase] = useState<Phase>("start");
   const [revealIndex, setRevealIndex] = useState(-1);
@@ -253,6 +256,7 @@ export default function PreloadGrid({
         <HomeSection
           slides={slides}
           works={works}
+          curatedItems={curatedItems}
           carouselReady={homeReady}
           preloading={!sliderRemoved}
         />

@@ -1,7 +1,11 @@
-"use client";
-
 import CurratedSpacesSection from "./CurratedSpacesSection";
+import { getCuratedSpaceItems } from "@/lib/projects/curated";
 
-export default function CurratedSpacesPage() {
-  return <CurratedSpacesSection open={true} homeNavigation="route" />;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+export default async function CurratedSpacesPage() {
+  const items = await getCuratedSpaceItems();
+
+  return <CurratedSpacesSection open={true} homeNavigation="route" items={items} />;
 }
