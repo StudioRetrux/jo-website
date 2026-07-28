@@ -290,6 +290,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                   dimmed={hoveredItemId !== null && hoveredItemId !== card.id}
 
                   enterDelay={index * 40}
+                  href={`/projects/${card.slug}`}
                   onHoverIn={() => setHoveredItemId(card.id)}
                   onHoverOut={() => setHoveredItemId(null)}
                 />
@@ -339,6 +340,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                             image={card.image}
                             hoverImage={card.hoverImage}
                             imageRevealDelayMs={slot.imageRevealDelayMs}
+                            href={`/projects/${card.slug}`}
                             phase={phase}
                             filtered={isFiltered(card)}
                             resetKey={scrollResetKey}
@@ -365,6 +367,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                             image={card.image}
                             hoverImage={card.hoverImage}
                             style={{ marginLeft: slot.marginLeft }}
+                            href={`/projects/${card.slug}`}
                             phase={phase}
                             filtered={cardFiltered}
                             resetKey={scrollResetKey}

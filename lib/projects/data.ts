@@ -93,6 +93,7 @@ export async function getWorkItems(): Promise<WorkItem[]> {
     const hoverImage = row.hoverImage as ImageAsset | null;
     return {
       id: row.id,
+      slug: row.slug,
       title: row.title,
       category: row.category,
       year: row.year,

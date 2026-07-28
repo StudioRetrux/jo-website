@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import MegaMenuText from "./MegaMenuText";
 import styles from "./megamenu.module.css";
 import headerStyles from "../home/home.module.css";
@@ -27,6 +28,9 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
   const pendingIndexRef = useRef<number | null>(null);
   const thumbCloseTimer = useRef<number | null>(null);
   const thumbOpenFrame = useRef(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     if (open) {
@@ -130,12 +134,18 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
       : "none",
   });
 
-  return (
+  if (!mounted) return null;
+
+  // ponytail: portalled to body so it sits outside the transformed, Lenis-scrolled
+  // page wrapper — kills the fractional-scroll seam and blocks wheel from reaching it
+  return createPortal(
     <div
       className={styles.megaMenu}
       style={{
         clipPath: open ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
         transition: "clip-path 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+        // closed panel still overlays the viewport — don't let it eat clicks/wheel
+        pointerEvents: open ? "auto" : "none",
       }}
     >
       <div className={styles.megaMenuHeader}>
@@ -216,6 +226,7 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
           <span className={headerStyles.headerLocation}>© 2026. Yohanes Alexander</span>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

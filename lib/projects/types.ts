@@ -92,6 +92,7 @@ export type Project = {
 // Layout is NOT part of the data — the grid assigns a template slot by position.
 export type WorkItem = {
   id: string;
+  slug: string;
   title: string;
   category: string;
   year: string;

@@ -109,6 +109,17 @@
   transition: transform var(--work-list-filter-duration, 600ms) var(--work-list-filter-ease, cubic-bezier(0.65, 0, 0.35, 1));
 }
 
+/* fills the row so the whole line is the click target */
+.workListItemLink {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: inherit;
+  text-decoration: none;
+}
+
 .workListTopBorder {
   position: relative;
   width: calc(100% + 172px);

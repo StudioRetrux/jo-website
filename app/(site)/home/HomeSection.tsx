@@ -126,6 +126,7 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
             revealTransition={REVEAL_TRANSITION}
             direction={carouselDirection}
             onAdvance={carouselAdvance}
+            paused={menuOpen}
           />
         )}
         <RightPanel

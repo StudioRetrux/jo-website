@@ -2,7 +2,7 @@
 
 import type { CSSProperties } from "react";
 import styles from "./home.module.css";
-import { useSection } from "../contexts/SectionContext";
+import { usePageNav, type Page } from "../contexts/PageNavContext";
 
 type Props = {
   isHome: boolean;
@@ -14,35 +14,47 @@ type Props = {
 
 const EASE = "1000ms cubic-bezier(0.9, 0, 0.5, 1)";
 
-export default function Header({ isHome, onMenuToggle, style, navLabel, homeNavigation = "state" }: Props) {
-  const { navigate } = useSection();
+const NAV_TARGETS: Record<string, { page: Page; path: string }> = {
+  home: { page: "home", path: "/" },
+  work: { page: "work", path: "/works" },
+  works: { page: "work", path: "/works" },
+  about: { page: "about", path: "/about" },
+  "curated spaces": { page: "curratedspaces", path: "/curratedspaces" },
+  contact: { page: "contact", path: "/contact" },
+};
 
-  function goHome() {
+export default function Header({ isHome, onMenuToggle, style, navLabel, homeNavigation = "state" }: Props) {
+  const { navigateTo } = usePageNav();
+
+  function go(target: { page: Page; path: string }) {
     if (homeNavigation === "route") {
-      window.location.assign("/");
+      window.location.assign(target.path);
       return;
     }
+    navigateTo(target.page);
+  }
 
-    navigate("/");
+  function goHome() {
+    go(NAV_TARGETS.home);
   }
 
   function renderNavLabel(label: string) {
     const parts = label.split(" / ");
-    return parts.map((part, i) => (
-      <span key={i}>
-        {i > 0 && <span> / </span>}
-        {part.toLowerCase() === "home" ? (
-          <span
-            className={styles.headerNavLink}
-            onClick={goHome}
-          >
-            {part}
-          </span>
-        ) : (
-          <span>{part}</span>
-        )}
-      </span>
-    ));
+    return parts.map((part, i) => {
+      const target = NAV_TARGETS[part.toLowerCase()];
+      return (
+        <span key={i}>
+          {i > 0 && <span> / </span>}
+          {target ? (
+            <span className={styles.headerNavLink} onClick={() => go(target)}>
+              {part}
+            </span>
+          ) : (
+            <span>{part}</span>
+          )}
+        </span>
+      );
+    });
   }
 
   return (

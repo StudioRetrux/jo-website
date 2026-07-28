@@ -68,6 +68,13 @@
   padding-right: var(--carousel-gap);
 }
 
+.carouselLink {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
 .carouselImage {
   display: block;
   width: auto;

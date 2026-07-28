@@ -1,9 +1,11 @@
 .header {
-  position: absolute;
+  /* ponytail: sticky, not fixed — page wrappers are transformed, which breaks
+     fixed. Negative margin keeps it out of flow so existing 92px top paddings
+     still line up. */
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   height: 92px;
+  margin-bottom: -92px;
   display: flex;
   z-index: 10;
 }

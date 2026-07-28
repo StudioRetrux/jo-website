@@ -4,7 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 import Lenis from "@studio-freight/lenis";
 import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
+import AutoScroll from "embla-carousel-auto-scroll";
 import Image from "next/image";
+import Link from "next/link";
 import Header from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "../about/FullnameBlock";
@@ -15,6 +17,8 @@ import workStyles from "../work/work.module.css";
 import styles from "./curratedspaces.module.css";
 
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
+// ponytail: curated items carry no slug yet — derive from title, 404 until they do
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const SOCIAL_ITEMS = [
   { label: "Instagram", href: "https://instagram.com" },
   { label: "LinkedIn", href: "https://linkedin.com" },
@@ -41,7 +45,11 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
   const [emblaRef] = useEmblaCarousel(
     // align start: default "center" translates the track on init (mount blink)
     { loop: true, dragFree: true, align: "start" },
-    [WheelGesturesPlugin()],
+    [
+      WheelGesturesPlugin(),
+      // stopOnInteraction false = resume after drag/wheel too, not just mouse leave
+      AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true }),
+    ],
   );
 
   useEffect(() => { setMounted(true); }, []);
@@ -131,22 +139,24 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
                     "--image-height": `${item.height}px`,
                   } as React.CSSProperties}
                 >
-                  <Image
-                    src={item.src}
-                    alt={item.title}
-                    width={item.width}
-                    height={item.height}
-                    className={styles.carouselImage}
-                    draggable={false}
-                  />
-                  <div className={styles.carouselCaption}>
-                    <h2 className={styles.carouselTitle}>{item.title}</h2>
-                    <p className={styles.carouselMeta}>
-                      {item.category}
-                      <span aria-hidden="true">{" \u2022 "}</span>
-                      {item.year}
-                    </p>
-                  </div>
+                  <Link href={`/projects/${slugify(item.title)}`} className={styles.carouselLink}>
+                    <Image
+                      src={item.src}
+                      alt={item.title}
+                      width={item.width}
+                      height={item.height}
+                      className={styles.carouselImage}
+                      draggable={false}
+                    />
+                    <div className={styles.carouselCaption}>
+                      <h2 className={styles.carouselTitle}>{item.title}</h2>
+                      <p className={styles.carouselMeta}>
+                        {item.category}
+                        <span aria-hidden="true">{" \u2022 "}</span>
+                        {item.year}
+                      </p>
+                    </div>
+                  </Link>
                 </article>
               ))}
             </div>

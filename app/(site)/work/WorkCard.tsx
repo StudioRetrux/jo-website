@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./work.module.css";
 import { useCursor } from "../contexts/CursorContext";
 
@@ -22,6 +23,7 @@ type Props = {
   resetKey?: number;
   onImageEl?: (el: HTMLDivElement | null) => void;
   exitPhase?: "hide" | "fade" | "slide-right";
+  href?: string;
 };
 
 function revealStyle(phase: Phase | undefined): CSSProperties {
@@ -55,6 +57,7 @@ export default function WorkCard({
   resetKey = 0,
   onImageEl,
   exitPhase,
+  href,
 }: Props) {
   const { setMode } = useCursor();
   const resolvedInfo = info ?? ([category, year].filter(Boolean).join(" • ") || "Category • Year");
@@ -193,10 +196,9 @@ export default function WorkCard({
     ? { transform: "translate(120vw, 20dvh) scale(0.6)", opacity: 0, transition: `transform 1000ms ${EASE} 50ms, opacity 1000ms ${EASE} 50ms` }
     : {};
 
-  return (
-    <div ref={outerRef} style={{ ...style, ...exitStyle }}>
-      <div style={{ overflow: "hidden", ...revealStyle(phase) }}>
-        <div
+  // ponytail: display:contents keeps the existing layout/animation boxes intact
+  const card = (
+    <div
             ref={cardRef}
             className={styles.workCard}
             onMouseEnter={() => {
@@ -243,6 +245,12 @@ export default function WorkCard({
           <span className={styles.workCardTitle}>{title}</span>
           <span className={styles.workCardInfo}>{resolvedInfo}</span>
         </div>
+  );
+
+  return (
+    <div ref={outerRef} style={{ ...style, ...exitStyle }}>
+      <div style={{ overflow: "hidden", ...revealStyle(phase) }}>
+        {href ? <Link href={href} style={{ display: "contents" }}>{card}</Link> : card}
       </div>
     </div>
   );

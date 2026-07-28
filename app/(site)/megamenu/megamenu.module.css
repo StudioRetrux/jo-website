@@ -1,12 +1,12 @@
 .megaMenu {
-  position: absolute;
+  /* portalled to <body>, so plain fixed works — no transformed ancestor */
+  position: fixed;
   inset: 0;
-  width: 100dvw;
-  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: #35312c url('/megamenu.png') center / cover no-repeat;
-  z-index: 11;
+  /* body-level now: must clear the .page wrappers (12/13) and preload (21) */
+  z-index: 40;
 }
 
 .megaMenuHeader {
