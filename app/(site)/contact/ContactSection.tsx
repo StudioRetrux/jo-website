@@ -46,7 +46,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
   const { navigateTo } = usePageNav();
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hovered, setHovered] = useState<"" | "left" | "wa" | "email">("");
+  const [hovered, setHovered] = useState<"" | "wa" | "email">("");
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -95,9 +95,6 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         data-hover={hovered || undefined}
         onMouseLeave={() => setHovered("")}
       >
-        <div className={`${styles.curtain} ${styles.curtainLeft}`}>
-          <Image src="/Savart Denpasar 1.jpg" alt="" fill sizes="100vw" className={styles.curtainImage} />
-        </div>
         <div className={`${styles.curtain} ${styles.curtainWa}`}>
           <Image src="/wabg.png" alt="" fill sizes="100vw" className={styles.curtainImage} />
         </div>
@@ -110,7 +107,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         <div className={`${styles.cta} ${styles.ctaEmail}`}>
           <a href="mailto:hello@yohanes.alexander" className={styles.ctaButton}>Contact Now</a>
         </div>
-        <div className={`${styles.col} ${styles.colLeft}`} onMouseEnter={() => setHovered("left")}>
+        <div className={`${styles.col} ${styles.colLeft}`}>
           <Image src="/left.png" alt="" width={960} height={960} className={styles.leftImage} />
           <div className={styles.leftInfo}>
             <div className={workStyles.footerInfoTitleRow}>
@@ -131,26 +128,34 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
             </div>
           </div>
         </div>
-        <div className={`${styles.col} ${styles.colMid} ${styles.colSplit}`} onMouseEnter={() => setHovered("wa")}>
+        <a
+          href="https://wa.me/6281234567890"
+          className={`${styles.col} ${styles.colMid} ${styles.colSplit}`}
+          onMouseEnter={() => setHovered("wa")}
+        >
           <div className={styles.half}>
             <WaIcon className={styles.waIcon} />
             <h2 className={styles.waTitle}>Whatsapp</h2>
-            <a href="https://wa.me/6281234567890" className={styles.waNumber}>(62) 81234 567890</a>
+            <span className={styles.waNumber}>(62) 81234 567890</span>
           </div>
           <div className={styles.half}>
             <Image src="/whatsapp.png" alt="WhatsApp" width={233} height={233} className={styles.waImage} />
           </div>
-        </div>
-        <div className={`${styles.col} ${styles.colRight} ${styles.colSplit}`} onMouseEnter={() => setHovered("email")}>
+        </a>
+        <a
+          href="mailto:hello@yohanes.alexander"
+          className={`${styles.col} ${styles.colRight} ${styles.colSplit}`}
+          onMouseEnter={() => setHovered("email")}
+        >
           <div className={styles.half}>
             <EmailIcon className={styles.waIcon} />
             <h2 className={styles.waTitle}>Email</h2>
-            <a href="mailto:hello@yohanes.alexander" className={styles.waNumber}>hello@yohanes.alexander</a>
+            <span className={styles.waNumber}>hello@yohanes.alexander</span>
           </div>
           <div className={styles.half}>
             <Image src="/email.png" alt="Email" width={233} height={233} className={styles.waImage} />
           </div>
-        </div>
+        </a>
       </section>
     </div>
   );
