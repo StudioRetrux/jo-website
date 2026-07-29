@@ -8,6 +8,8 @@ import AutoScroll from "embla-carousel-auto-scroll";
 import Image from "next/image";
 import Header from "../home/Header";
 import ProjectLink from "../projects/ProjectLink";
+import { useLoadBar } from "../LoadBar";
+import { curatedAssets } from "../assets";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "../about/FullnameBlock";
 import FooterMenuText from "../work/FooterMenuText";
@@ -53,6 +55,16 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
   );
 
   useEffect(() => { setMounted(true); }, []);
+
+  // carousel imagery is the heavy part of this page — warm it the first time the
+  // section opens, with the bar reporting progress
+  const { preload } = useLoadBar();
+  const preloaded = useRef(false);
+  useEffect(() => {
+    if (!open || preloaded.current) return;
+    preloaded.current = true;
+    preload(curatedAssets(items));
+  }, [open, items, preload]);
 
   useEffect(() => {
     if (!open) {

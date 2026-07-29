@@ -12,6 +12,8 @@ import WorkListItem from "./WorkListItem";
 import WorkSpacer from "./WorkSpacer";
 import SwitchMode, { captureSnapshot, type ImageSnapshot } from "./SwitchMode";
 import styles from "./work.module.css";
+import { useLoadBar } from "../LoadBar";
+import { workAssets } from "../assets";
 import type { WorkItem } from "@/lib/projects/types";
 
 // Repeating 7-slot collage template. Work N uses slot N % 7; every full group
@@ -144,6 +146,15 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
   const hasScrolledAwayFromTop = useRef(false);
 
   useEffect(() => { setMounted(true); }, []);
+
+  // grid/list thumbnails plus their hover pairs — warm on first open
+  const { preload } = useLoadBar();
+  const preloaded = useRef(false);
+  useEffect(() => {
+    if (!open || preloaded.current) return;
+    preloaded.current = true;
+    preload(workAssets(works));
+  }, [open, works, preload]);
 
 
   useEffect(() => {

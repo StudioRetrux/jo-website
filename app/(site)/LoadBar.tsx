@@ -12,12 +12,16 @@ const FILL_MS = 300;
 /**
  * Preloading only helps if we request the byte-identical URL the page will request.
  *
- * - via next/image: pass the `sizes` the real <Image> uses so the browser resolves the
- *   same srcSet candidate. Works for CMS URLs and local paths alike — Next optimizes
- *   both (remote hosts must be in next.config remotePatterns, or it isn't optimized).
- * - via CSS background-image or a plain <img>: pass raw, the URL is used verbatim.
+ * - <Image fill>: pass the `sizes` it uses so the browser resolves the same srcSet
+ *   candidate. Works for CMS URLs and local paths alike — Next optimizes both (remote
+ *   hosts must be in next.config remotePatterns, or it isn't optimized).
+ * - <Image width height>: pass the same width/height — fixed-size images get a
+ *   different srcSet (1x/2x) than fill ones, so `sizes` alone would warm the wrong one.
+ * - CSS background-image or a plain <img>: pass raw, the URL is used verbatim.
  */
-export type Asset = string | { src: string; sizes?: string; raw?: boolean };
+export type Asset =
+  | string
+  | { src: string; sizes?: string; raw?: boolean; width?: number; height?: number };
 
 type Ctx = {
   /** Unmeasurable wait (a fetch): bar creeps until finish() is called. */
@@ -39,8 +43,8 @@ export const useLoadBar = () => useContext(LoadBarContext);
  * next/image would emit and let the browser pick the candidate it will actually use.
  */
 function loadAsset(asset: Asset) {
-  const { src, sizes, raw } = typeof asset === "string"
-    ? { src: asset, sizes: "100vw", raw: false }
+  const { src, sizes, raw, width, height } = typeof asset === "string"
+    ? { src: asset, sizes: "100vw", raw: false, width: undefined, height: undefined }
     : asset;
 
   let resolved: { src: string; srcSet?: string; sizes?: string };
@@ -48,7 +52,9 @@ function loadAsset(asset: Asset) {
     resolved = { src };
   } else {
     try {
-      const { props } = getImageProps({ src, alt: "", fill: true, sizes: sizes ?? "100vw" });
+      const { props } = width && height
+        ? getImageProps({ src, alt: "", width, height })
+        : getImageProps({ src, alt: "", fill: true, sizes: sizes ?? "100vw" });
       resolved = { src: props.src, srcSet: props.srcSet, sizes: props.sizes };
     } catch {
       // unconfigured remote host — next/image can't optimize it either, so it ends up

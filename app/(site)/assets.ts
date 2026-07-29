@@ -1,4 +1,6 @@
+import type { CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
+import type { WorkItem } from "@/lib/projects/types";
 import type { Asset } from "./LoadBar";
 
 /**
@@ -35,4 +37,18 @@ export function homeAssets(slides: ResolvedHomeSlide[]): Asset[] {
     { src: INTRO_BASE_IMAGE, sizes: SIZES.full },
     ...CSS_BACKGROUNDS,
   ];
+}
+
+/** Work grid/list: WorkCard renders <Image fill> with no sizes, i.e. 100vw. */
+export function workAssets(works: WorkItem[]): Asset[] {
+  const srcs = [...new Set(works.flatMap((work) => [work.image, work.hoverImage]).filter(Boolean))];
+  return srcs.map((src) => ({ src, sizes: SIZES.full }));
+}
+
+/** Curated carousel renders <Image width height> — fixed size, not fill. */
+export function curatedAssets(items: CuratedSpaceItem[]): Asset[] {
+  const seen = new Set<string>();
+  return items
+    .filter((item) => !seen.has(item.src) && seen.add(item.src))
+    .map((item) => ({ src: item.src, width: item.width, height: item.height }));
 }
