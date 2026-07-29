@@ -6,6 +6,7 @@ import Image from "next/image";
 import styles from "./preload.module.css";
 import HomeSection from "../home/HomeSection";
 import { useLoadBar } from "../LoadBar";
+import { INTRO_BASE_IMAGE, INTRO_REVEAL_IMAGES, SIZES, homeAssets } from "../assets";
 import type { CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
 import type { WorkItem } from "@/lib/projects/types";
@@ -30,10 +31,10 @@ const defaultControls = {
 const veilMs = 800;
 const textMs = 800;
 const homeEase: Bezier = [0.9, 0, 0.5, 1];
-const homeBaseImage = "/preload1.webp";
+const homeBaseImage = INTRO_BASE_IMAGE;
 // First reveals are fixed; the LAST reveal is slide 1's background so the
 // grid morph hands off seamlessly into the home carousel.
-const fixedRevealImages = ["/preload2.png", "/preload3.png"];
+const fixedRevealImages = INTRO_REVEAL_IMAGES;
 
 function easingValue([x1, y1, x2, y2]: Bezier) {
   return `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
@@ -65,20 +66,6 @@ export default function PreloadGrid({
   const { phase1Ms, phase2Ms, phase1Width, phase1Height, finalSize, phase1Ease, phase2Ease } =
     defaultControls;
 
-  // Warm the assets the intro is about to reveal first, then everything home needs
-  // once it hands off. The bar reports real progress across both groups.
-  useEffect(() => {
-    if (!isIntroVisit()) return;
-    preload(
-      [...fixedRevealImages, slides[0].background],
-      [
-        ...new Set(slides.flatMap((slide) => [slide.background, slide.thumbnail])),
-        homeBaseImage,
-        "/rightbg.png",
-      ],
-    );
-  }, [preload, slides]);
-
   useEffect(() => {
     if (!isIntroVisit()) {
       setPhase("home");
@@ -88,15 +75,10 @@ export default function PreloadGrid({
       return;
     }
 
-    let phase1Timer: ReturnType<typeof setTimeout>;
-    let phase2Timer: ReturnType<typeof setTimeout>;
-    let phase3Timer: ReturnType<typeof setTimeout>;
-    let homeTimer: ReturnType<typeof setTimeout>;
-    let gridLinesTimer: ReturnType<typeof setTimeout>;
-    let homeReadyTimer: ReturnType<typeof setTimeout>;
-    let sliderRemovedTimer: ReturnType<typeof setTimeout>;
-    let frame1 = 0;
-    let frame2 = 0;
+    let cancelled = false;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const frames: number[] = [];
+    const after = (ms: number, fn: () => void) => { timers.push(setTimeout(fn, ms)); };
 
     const slideDuration = 600;
     const slideGap = 300;
@@ -108,37 +90,44 @@ export default function PreloadGrid({
     setHomeReady(false);
     setSliderRemoved(false);
 
-    frame1 = requestAnimationFrame(() => {
-      frame2 = requestAnimationFrame(() => {
-        setPhase("phase1");
-        phase1Timer = setTimeout(() => setPhase("end"), phase1Ms);
-        phase2Timer = setTimeout(() => setPhase("phase3"), phase1Ms + phase2Ms);
-        phase3Timer = setTimeout(() => {
-          setPhase("phase4");
-          setRevealIndex(0);
-          setTimeout(() => setRevealIndex(1), slideDuration + slideGap);
-          setTimeout(() => setRevealIndex(2), (slideDuration + slideGap) * 2);
-        }, phase4Start);
-        const homeStart = phase4Start + (slideDuration + slideGap) * 2 + slideDuration + 1000;
-        homeTimer = setTimeout(() => setPhase("home"), homeStart);
-        gridLinesTimer = setTimeout(() => setGridLinesHidden(true), homeStart + 800);
-        homeReadyTimer = setTimeout(() => setHomeReady(true), homeStart + 1100);
-        sliderRemovedTimer = setTimeout(() => setSliderRemoved(true), homeStart + 1250);
-      });
-    });
+    function runIntro() {
+      frames.push(requestAnimationFrame(() => {
+        frames.push(requestAnimationFrame(() => {
+          setPhase("phase1");
+          after(phase1Ms, () => setPhase("end"));
+          after(phase1Ms + phase2Ms, () => setPhase("phase3"));
+          after(phase4Start, () => {
+            setPhase("phase4");
+            setRevealIndex(0);
+            after(slideDuration + slideGap, () => setRevealIndex(1));
+            after((slideDuration + slideGap) * 2, () => setRevealIndex(2));
+          });
+          const homeStart = phase4Start + (slideDuration + slideGap) * 2 + slideDuration + 1000;
+          after(homeStart, () => setPhase("home"));
+          after(homeStart + 800, () => setGridLinesHidden(true));
+          after(homeStart + 1100, () => setHomeReady(true));
+          after(homeStart + 1250, () => setSliderRemoved(true));
+        }));
+      }));
+    }
+
+    // The intro reveals these three by hand at fixed times, so it can't start until
+    // they're decoded — otherwise it animates empty frames and pops them in late.
+    // Home's own assets load in the background once the intro is under way.
+    (async () => {
+      const reveals = [...fixedRevealImages, slides[0].background];
+      await preload(reveals.map((src) => ({ src, sizes: SIZES.full })));
+      if (cancelled) return;
+      runIntro();
+      preload(homeAssets(slides));
+    })();
 
     return () => {
-      cancelAnimationFrame(frame1);
-      cancelAnimationFrame(frame2);
-      clearTimeout(phase1Timer);
-      clearTimeout(phase2Timer);
-      clearTimeout(phase3Timer);
-      clearTimeout(homeTimer);
-      clearTimeout(gridLinesTimer);
-      clearTimeout(homeReadyTimer);
-      clearTimeout(sliderRemovedTimer);
+      cancelled = true;
+      frames.forEach(cancelAnimationFrame);
+      timers.forEach(clearTimeout);
     };
-  }, [phase1Ms, phase2Ms, phase1Width, phase1Height, finalSize, phase1Ease, phase2Ease]);
+  }, [preload, slides, phase1Ms, phase2Ms, phase1Width, phase1Height, finalSize, phase1Ease, phase2Ease]);
 
   const gridStyle = useMemo(() => {
     const isPhase1 = phase === "phase1";
@@ -218,7 +207,7 @@ export default function PreloadGrid({
             alt=""
             fill
             priority
-            sizes="100vw"
+            sizes={SIZES.full}
           />
           {slideImages.map((src, i) => (
             <Image
@@ -227,7 +216,7 @@ export default function PreloadGrid({
               src={src}
               alt=""
               fill
-              sizes="100vw"
+              sizes={SIZES.full}
               style={{
                 clipPath: `inset(0 ${revealIndex >= i ? "0%" : "100%"} 0 0)`,
                 scale: revealIndex >= i ? "1" : "1.08",

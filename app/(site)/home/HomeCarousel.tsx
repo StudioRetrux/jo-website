@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import styles from "./HomeCarousel.module.css";
+import { SIZES } from "../assets";
 
 // Input must go quiet this long before a new gesture counts.
 const GESTURE_QUIET_MS = 400;
@@ -73,7 +74,7 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
         src={slides[current]}
         alt=""
         fill
-        sizes="100vw"
+        sizes={SIZES.full}
         style={{ objectFit: "cover", objectPosition: "44% 50%" }}
       />
 
@@ -83,7 +84,7 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
           src={slides[incoming]}
           alt=""
           fill
-          sizes="100vw"
+          sizes={SIZES.full}
           style={{
             objectFit: "cover",
             objectPosition: "44% 50%",

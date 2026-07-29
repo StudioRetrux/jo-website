@@ -3,6 +3,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import styles from "./home.module.css";
+import { SIZES } from "../assets";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
 
 export type CarouselPhase = "idle" | "exiting" | "entering";
@@ -149,7 +150,7 @@ export default function RightPanel({
             src={slides[carouselCurrent].thumbnail}
             alt=""
             fill
-            sizes="16dvw"
+            sizes={SIZES.homeThumbnail}
             style={{ objectFit: "cover" }}
           />
           {carouselIncoming !== null && (
@@ -158,7 +159,7 @@ export default function RightPanel({
               src={slides[carouselIncoming].thumbnail}
               alt=""
               fill
-              sizes="16dvw"
+              sizes={SIZES.homeThumbnail}
               style={{
                 objectFit: "cover",
                 clipPath: carouselRevealing
