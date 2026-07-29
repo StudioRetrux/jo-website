@@ -110,10 +110,10 @@ export default function RightPanel({
   return (
     <div
       className={styles.rightPanel}
-      style={{
-        transform: isHome ? "translateX(0)" : "translateX(100%)",
-        pointerEvents: isHome ? "auto" : "none",
-      }}
+      // transform lives in CSS so the axis can change with the layout: it slides in
+      // from the right beside the image, from below once the two stack
+      data-open={isHome || undefined}
+      style={{ pointerEvents: isHome ? "auto" : "none" }}
     >
       <div className={styles.rightIndicator}>
         <span className={styles.rightIndicatorText}>{pad(activeIndex + 1)}</span>
@@ -127,7 +127,10 @@ export default function RightPanel({
         <span className={styles.rightIndicatorText}>{pad(slides.length)}</span>
       </div>
 
-      <span className={styles.rightScroll}>SCROLL</span>
+      <span className={styles.rightScroll}>
+        <span className={styles.hintScroll}>SCROLL</span>
+        <span className={styles.hintSwipe}>SWIPE</span>
+      </span>
       <div className={styles.rightContent}>
         <TextSlide
           current={slides[carouselCurrent].tag}

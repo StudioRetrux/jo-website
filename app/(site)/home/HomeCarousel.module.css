@@ -13,3 +13,10 @@
   position: absolute;
   inset: 0;
 }
+
+/* mobile: the layout stacks — image on top, panel below (see .rightPanel) */
+@media (max-width: 480px) {
+  .container {
+    height: 50dvh;
+  }
+}

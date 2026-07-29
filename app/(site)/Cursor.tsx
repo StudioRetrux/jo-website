@@ -13,6 +13,17 @@ export default function Cursor() {
   const { mode, posRef } = useCursor();
   const modeRef = useRef(mode);
   const [overlayMounted, setOverlayMounted] = useState(false);
+  // A follower needs something to follow. Touch input has no hover position, so it
+  // would sit wherever the last tap landed. Starts false so SSR and hydration agree.
+  const [pointerFine, setPointerFine] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => setPointerFine(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
   // held past the exit so the glyph doesn't swap mid fade-out
   const [overlayKind, setOverlayKind] = useState<"view" | "arrow">("view");
 
@@ -76,6 +87,8 @@ export default function Cursor() {
   }, []);
 
   const { x, y } = currentPos.current;
+
+  if (!pointerFine) return null;
 
   return (
     <>

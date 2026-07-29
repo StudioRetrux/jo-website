@@ -171,6 +171,10 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
           <a href="mailto:hello@yohanes.alexander" className={headerStyles.headerEmail}>
             hello@yohanes.alexander
           </a>
+          {/* mobile stand-in for the two above — CSS swaps them */}
+          <a href="mailto:hello@yohanes.alexander" className={headerStyles.headerEmailIcon} aria-label="Email">
+            <Image src="/Envelope 2.svg" alt="" width={24} height={24} />
+          </a>
         </div>
       </div>
       <div className={styles.megaMenuBody}>
@@ -233,7 +237,8 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
             <a href="/terms" className={styles.megaMenuLink}>Terms of Use</a>
             <a href="/privacy" className={styles.megaMenuLink}>Privacy Policy</a>
           </div>
-          <span className={headerStyles.headerLocation}>© 2026. Yohanes Alexander</span>
+          {/* its own class, not headerLocation — that one is hidden on mobile */}
+          <span className={styles.megaMenuCopyright}>© 2026. Yohanes Alexander</span>
         </div>
       </div>
     </div>,

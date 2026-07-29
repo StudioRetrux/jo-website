@@ -38,6 +38,25 @@
   pointer-events: none;
 }
 
+/**
+ * Mobile hand-off. Desktop opens the image into the LEFT half and slides the panel in
+ * from the right; stacked, that reads as a horizontal squish. Same move on the other
+ * axis instead: the image settles into the top half and the panel rises from below.
+ *
+ * !important because these land as inline custom properties from PreloadGrid, and a
+ * layout switch is not something min()/clamp can express.
+ */
+@media (max-width: 480px) {
+  .gridBackground[data-home] {
+    --grid-cell-x: 100dvw !important;
+    --grid-cell-y: 50dvh !important;
+    --image-w: 100dvw !important;
+    --image-h: 50dvh !important;
+    --grid-shift-x: 0px !important;
+    --grid-shift-y: -25dvh !important;
+  }
+}
+
 .imageLayer {
   position: absolute;
   left: calc(50% - (var(--image-w) / 2) + var(--grid-frame-inset, 1px));
@@ -145,6 +164,15 @@
     opacity var(--phase3-duration, 400ms) ease,
     font-size var(--grid-transition-duration, 0ms) var(--grid-transition-easing, ease),
     width var(--grid-transition-duration, 0ms) var(--grid-transition-easing, ease);
+}
+
+/* Mobile: the copy sits INSIDE the cell, inset 15px a side (242 - 30 = 212 in the
+   figma frame), instead of spilling past it as it does on desktop. Font size needs no
+   override — --image-w * 0.099 is already 24px at a 242 cell. */
+@media (max-width: 480px) {
+  .heroText {
+    width: calc(var(--image-w, 100dvw) - 30px);
+  }
 }
 
 .heroLine {

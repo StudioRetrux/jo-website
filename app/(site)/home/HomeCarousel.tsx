@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "./HomeCarousel.module.css";
 import { SIZES } from "../assets";
@@ -22,6 +22,18 @@ type Props = {
 };
 
 export default function HomeCarousel({ slides, current, incoming, revealing, revealTransition, direction, onAdvance, paused = false }: Props) {
+  // Stacked layout: the image is the top half and the page reads vertically, so a
+  // vertical drag is ambiguous. Swipe sideways instead, and reveal on that axis too.
+  const [horizontal, setHorizontal] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 480px)");
+    const sync = () => setHorizontal(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
   useEffect(() => {
     if (paused) return;
     // ponytail: one gesture = one slide. A trackpad flick or touch drag fires a long
@@ -43,17 +55,19 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
       if (first) onAdvance(e.deltaY > 0 ? "down" : "up");
     };
 
-    let startY: number | null = null;
-    const onTouchStart = (e: TouchEvent) => { startY = e.touches[0].clientY; };
+    // same gesture, whichever axis the layout runs on: swipe left / up = forward
+    const axis = (touch: Touch) => (horizontal ? touch.clientX : touch.clientY);
+    let start: number | null = null;
+    const onTouchStart = (e: TouchEvent) => { start = axis(e.touches[0]); };
     const onTouchMove = (e: TouchEvent) => {
       if (locked) { arm(); return; }
-      if (startY === null) return;
-      const dy = startY - e.touches[0].clientY;
-      if (Math.abs(dy) < SWIPE_PX) return;
+      if (start === null) return;
+      const delta = start - axis(e.touches[0]);
+      if (Math.abs(delta) < SWIPE_PX) return;
       arm();
-      onAdvance(dy > 0 ? "down" : "up");
+      onAdvance(delta > 0 ? "down" : "up");
     };
-    const onTouchEnd = () => { startY = null; };
+    const onTouchEnd = () => { start = null; };
 
     window.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
@@ -66,7 +80,7 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  }, [onAdvance, paused]);
+  }, [onAdvance, paused, horizontal]);
 
   return (
     <div className={styles.container}>
@@ -88,7 +102,11 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
           style={{
             objectFit: "cover",
             objectPosition: "44% 50%",
-            clipPath: revealing ? "inset(0% 0 0 0)" : (direction === "down" ? "inset(100% 0 0 0)" : "inset(0 0 100% 0)"),
+            clipPath: revealing
+              ? "inset(0)"
+              : horizontal
+                ? (direction === "down" ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)")
+                : (direction === "down" ? "inset(100% 0 0 0)" : "inset(0 0 100% 0)"),
             scale: revealing ? "1" : "1.08",
             transition: revealing ? revealTransition : "none",
           }}

@@ -28,6 +28,9 @@ const defaultControls = {
   phase2Ease: [0.19, 1, 0.22, 1] as Bezier,
 };
 
+/** Figma mobile: 242px cell in a 360px frame. */
+const MOBILE_CELL_DVW = ((242 / 360) * 100).toFixed(2);
+
 const veilMs = 800;
 const textMs = 800;
 const homeEase: Bezier = [0.9, 0, 0.5, 1];
@@ -136,33 +139,37 @@ export default function PreloadGrid({
     const isHome = phase === "home";
     const transitionMs = isHome ? 1000 : phase === "start" ? 0 : isPhase1 ? phase1Ms : phase2Ms;
     const easing = easingValue(isHome ? homeEase : isPhase1 ? phase1Ease : phase2Ease);
+    // The settled cell is 45dvh on desktop, but that's taller than a phone is wide.
+    // Figma's mobile frame puts it at 242 of 360, so cap by width and let whichever
+    // is smaller win — no breakpoint needed.
+    const endCell = `min(${finalSize}dvh, ${MOBILE_CELL_DVW}dvw)`;
 
     return {
       "--grid-cell-x": isHome
         ? "50dvw"
         : isEnd
-          ? `${finalSize}dvh`
+          ? endCell
           : isPhase1
             ? `${phase1Width}dvw`
             : "105dvw",
       "--grid-cell-y": isHome
         ? "100dvh"
         : isEnd
-          ? `${finalSize}dvh`
+          ? endCell
           : isPhase1
             ? `${phase1Height}dvh`
             : "105dvh",
       "--image-w": isHome
         ? "100dvw"
         : isEnd
-          ? `${finalSize}dvh`
+          ? endCell
           : isPhase1
             ? `${phase1Width}dvw`
             : "105dvw",
       "--image-h": isHome
         ? "100dvh"
         : isEnd
-          ? `${finalSize}dvh`
+          ? endCell
           : isPhase1
             ? `${phase1Height}dvh`
             : "105dvh",
@@ -198,7 +205,12 @@ export default function PreloadGrid({
 
   return (
     <>
-      {!sliderRemoved && <div className={styles.gridBackground} style={gridStyle}>
+      {!sliderRemoved && <div
+        className={styles.gridBackground}
+        style={gridStyle}
+        // marks the hand-off so CSS can retarget it per layout — see preload.module.css
+        data-home={phase === "home" || undefined}
+      >
         <div className={styles.imageLayer}>
           <div className={styles.gridImageTint} />
           <Image

@@ -158,6 +158,17 @@
   gap: 24px;
 }
 
+.megaMenuCopyright {
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: #f7f6f5;
+  white-space: nowrap;
+}
+
 .megaMenuLink {
   font-family: var(--font-albert-sans), system-ui, sans-serif;
   font-size: 14px;
@@ -176,5 +187,63 @@
 @media (min-width: 1920px) {
   .megaMenuLink {
     font-size: 16px;
+  }
+}
+
+/* Mobile: nav fills the width, the hover thumbnail has no room (and no hover), and
+   the footer stacks. Nav metrics all derive from the 40px type — the clip/track/hover
+   vars are the desktop 56px values scaled by 40/56. */
+@media (max-width: 480px) {
+  .megaMenuLeft {
+    width: 100dvw;
+    padding: 24px;
+    --mega-menu-text-font-size: 40px;
+    --mega-menu-text-clip-height: 38px;
+    --mega-menu-text-item-height: 48px;
+    --mega-menu-text-track-offset: -5px;
+    --mega-menu-text-hover-y: -43px;
+  }
+
+  .megaMenuRight {
+    display: none;
+  }
+
+  /* item box is 48px (40px × 1.2), figma spaces the baselines ~61px apart */
+  .megaMenuNav {
+    gap: 12px;
+  }
+
+  .megaMenuFooter {
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 0 24px 24px;
+  }
+
+  /* the four socials have to hold one line at 360 — 14px overflows, so scale the
+     footer type down rather than letting it wrap */
+  .megaMenuLink,
+  .megaMenuCopyright {
+    font-size: 11px;
+    letter-spacing: 0.3px;
+  }
+
+  .megaMenuFooter > * {
+    width: auto;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 0;
+  }
+
+  .megaMenuFooterPolicies {
+    gap: 14px;
+  }
+
+  .megaMenuFooter > *:last-child {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 16px;
+    border-top: 1px solid rgb(247 246 245 / 30%);
   }
 }

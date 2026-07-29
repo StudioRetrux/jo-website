@@ -34,6 +34,44 @@
   }
 }
 
+/* the header's own halves don't survive a 360px frame — left takes what it needs,
+   right shrinks to the icon */
+.headerEmailIcon {
+  display: none;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+@media (max-width: 480px) {
+  .headerLeft,
+  .headerRight {
+    width: auto;
+    gap: 12px;
+    padding: 0 24px;
+  }
+
+  .headerLeft {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .headerLogo {
+    font-size: 24px;
+    line-height: 1.2;
+    /* one line — the wordmark breaking after "YOHANES" is what makes it read cramped */
+    white-space: nowrap;
+  }
+
+  .headerLocation,
+  .headerEmail {
+    display: none;
+  }
+
+  .headerEmailIcon {
+    display: block;
+  }
+}
+
 .headerLocation {
   font-family: var(--font-albert-sans), system-ui, sans-serif;
   font-size: 14px;
@@ -146,7 +184,12 @@
   background: #f7f6f5;
   z-index: 4;
   overflow: hidden;
+  transform: translateX(100%);
   transition: transform 1000ms cubic-bezier(0.9, 0, 0.5, 1);
+}
+
+.rightPanel[data-open] {
+  transform: translateX(0);
 }
 
 .rightPanel::before {
@@ -317,6 +360,81 @@
   text-align: center;
   color: #000;
   opacity: 0.5;
+}
+
+/* the gesture differs by input, so the hint does too — CSS picks, no JS breakpoint */
+.hintSwipe {
+  display: none;
+}
+
+/* Mobile: the two halves stack instead of sitting side by side — image fills the top
+   half, this panel the bottom. Type is scaled to the 115px thumbnail, and the panel
+   enters from below rather than from the right. */
+@media (max-width: 480px) {
+  .rightPanel {
+    left: 0;
+    top: 50dvh;
+    width: 100dvw;
+    height: 50dvh;
+    padding: 0 24px;
+    /* stacked, so it enters from below rather than from the right */
+    transform: translateY(100%);
+  }
+
+  .rightPanel[data-open] {
+    transform: translateY(0);
+  }
+
+  .rightIndicator {
+    top: 24px;
+    left: 24px;
+    right: 24px;
+    gap: 10px;
+  }
+
+  .rightIndicatorText {
+    font-size: 11px;
+  }
+
+  .rightContent {
+    gap: 14px;
+  }
+
+  .rightThumbnail {
+    width: 115px;
+    height: 115px;
+  }
+
+  .rightTag {
+    font-size: 11px;
+    letter-spacing: 0.55px;
+  }
+
+  .rightHeading {
+    font-size: 24px;
+  }
+
+  .rightDescription {
+    font-size: 12px;
+  }
+
+  .rightCta {
+    font-size: 12px;
+  }
+
+  .rightScroll {
+    bottom: 24px;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .hintScroll {
+    display: none;
+  }
+
+  .hintSwipe {
+    display: inline;
+  }
 }
 
 @media (min-width: 1920px) {

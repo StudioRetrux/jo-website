@@ -12,8 +12,8 @@ import type { Asset } from "./LoadBar";
 export const SIZES = {
   /** full-bleed: intro grid, home carousel */
   full: "100vw",
-  /** RightPanel's slide thumbnail */
-  homeThumbnail: "16dvw",
+  /** RightPanel's slide thumbnail — fixed 115px once the layout stacks */
+  homeThumbnail: "(max-width: 480px) 115px, 16dvw",
 } as const;
 
 /** Rendered by <Image>, so preload resolves them through the optimizer. */
