@@ -88,19 +88,36 @@ export async function getWorkItems(): Promise<WorkItem[]> {
     orderBy: { createdAt: "asc" },
   });
 
-  return rows.map((row) => {
-    const thumbnail = row.thumbnail as ImageAsset;
-    const hoverImage = row.hoverImage as ImageAsset | null;
-    return {
-      id: row.id,
-      slug: row.slug,
-      title: row.title,
-      category: row.category,
-      year: row.year,
-      image: thumbnail.url,
-      hoverImage: hoverImage?.url ?? thumbnail.url,
-    };
+  return rows.map(toWorkItem);
+}
+
+function toWorkItem(row: ProjectRow): WorkItem {
+  const thumbnail = row.thumbnail as ImageAsset;
+  const hoverImage = row.hoverImage as ImageAsset | null;
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    category: row.category,
+    year: row.year,
+    image: thumbnail.url,
+    hoverImage: hoverImage?.url ?? thumbnail.url,
+  };
+}
+
+/** Up to `limit` other published projects in the same category. */
+export async function getRelatedWorkItems(
+  slug: string,
+  category: string,
+  limit = 3,
+): Promise<WorkItem[]> {
+  const rows = await prisma.project.findMany({
+    where: { published: true, category, slug: { not: slug } },
+    orderBy: { createdAt: "asc" },
+    take: limit,
   });
+
+  return rows.map(toWorkItem);
 }
 
 export async function deleteProject(id: string): Promise<boolean> {

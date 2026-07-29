@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import ProjectContent from "../ProjectContent";
-import { getPublishedProjectBySlug } from "@/lib/projects/data";
+import { getPublishedProjectBySlug, getRelatedWorkItems } from "@/lib/projects/data";
 import styles from "./projectDetail.module.css";
 
 export const runtime = "nodejs";
@@ -19,9 +19,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  const related = await getRelatedWorkItems(project.slug, project.category);
+
   return (
     <main className={styles.page}>
-      <ProjectContent project={project} />
+      <ProjectContent project={project} related={related} />
     </main>
   );
 }

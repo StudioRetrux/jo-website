@@ -25,12 +25,21 @@ export default function CtaImageTrail({ active }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const particles = useRef<Particle[]>([]);
   const lastPos = useRef<{ x: number; y: number } | null>(null);
+  const activeRef = useRef(active);
   const srcIdx = useRef(0);
   const rafHandle = useRef(0);
 
+  // `active` only gates spawning. It must NOT be an effect dep: tearing the effect
+  // down on mouse-leave would remove every card mid-flight. Once a card exists it
+  // lives out its lifetime regardless of where the pointer goes.
+  useEffect(() => {
+    activeRef.current = active;
+    if (!active) lastPos.current = null;
+  }, [active]);
+
   useEffect(() => {
     const wrap = wrapRef.current;
-    if (!wrap || !active) return;
+    if (!wrap) return;
 
     const spawn = (x: number, y: number) => {
       const rotation = (Math.random() - 0.5) * 40;
@@ -73,6 +82,7 @@ export default function CtaImageTrail({ active }: Props) {
     };
 
     const onMove = (e: MouseEvent) => {
+      if (!activeRef.current) return;
       const rect = wrap.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -85,6 +95,7 @@ export default function CtaImageTrail({ active }: Props) {
     wrap.addEventListener("mousemove", onMove);
     rafHandle.current = requestAnimationFrame(tick);
 
+    // unmount only — see the note above
     return () => {
       wrap.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(rafHandle.current);
@@ -92,7 +103,7 @@ export default function CtaImageTrail({ active }: Props) {
       particles.current = [];
       lastPos.current = null;
     };
-  }, [active]);
+  }, []);
 
   return (
     <div

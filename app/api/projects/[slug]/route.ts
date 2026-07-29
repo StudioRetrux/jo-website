@@ -1,4 +1,4 @@
-import { getPublishedProjectBySlug } from "@/lib/projects/data";
+import { getPublishedProjectBySlug, getRelatedWorkItems } from "@/lib/projects/data";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,5 +13,7 @@ export async function GET(_request: Request, ctx: RouteContext<"/api/projects/[s
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  return Response.json(project);
+  const related = await getRelatedWorkItems(project.slug, project.category);
+
+  return Response.json({ project, related });
 }

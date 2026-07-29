@@ -13,18 +13,24 @@ export default function Cursor() {
   const { mode, posRef } = useCursor();
   const modeRef = useRef(mode);
   const [overlayMounted, setOverlayMounted] = useState(false);
+  // held past the exit so the glyph doesn't swap mid fade-out
+  const [overlayKind, setOverlayKind] = useState<"view" | "arrow">("view");
+
+  // "view" and "arrow" share the follower — only the glyph inside it differs
+  const isOverlay = mode === "view" || mode === "arrow";
 
   useEffect(() => {
-    if (mode === "view") {
+    if (isOverlay) {
       setOverlayMounted(true);
+      setOverlayKind(mode === "arrow" ? "arrow" : "view");
       return;
     }
     const t = setTimeout(() => setOverlayMounted(false), 150);
     return () => clearTimeout(t);
-  }, [mode]);
+  }, [mode, isOverlay]);
 
   modeRef.current = mode;
-  const entering = overlayMounted && mode === "view";
+  const entering = overlayMounted && isOverlay;
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -112,10 +118,17 @@ export default function Cursor() {
                 letterSpacing: "0.7px",
                 userSelect: "none",
                 whiteSpace: "nowrap",
+                display: "flex",
                 animation: `${entering ? "cursor-fade-in" : "cursor-fade-out"} 150ms linear forwards`,
               }}
             >
-              VIEW
+              {overlayKind === "arrow" ? (
+                <svg width="40" height="16" viewBox="0 0 40 16" fill="none" aria-hidden="true">
+                  <path d="M0 8h37M30 1l7 7-7 7" stroke="currentColor" strokeWidth="1.5" />
+                </svg>
+              ) : (
+                "VIEW"
+              )}
             </span>
           </div>
         </div>

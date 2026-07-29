@@ -475,7 +475,12 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
               </a>
               <a href="/privacy" className={styles.workRibbonLink}>Privacy Policy</a>
             </div>
-            <span className={styles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
+            <div className={styles.workRibbonRight}>
+              <span className={styles.workRibbonDev}>
+                Developed by <span className={styles.workRibbonLink}>Retrux</span>
+              </span>
+              <span className={styles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
+            </div>
           </div>
         </div>
       </div>

@@ -4,42 +4,600 @@
   color: #2e2925;
 }
 
-.header {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 5;
+.hero {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 28px max(24px, 5vw);
-  color: #fff;
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100dvh;
+  overflow: hidden;
+  background: #15120f;
+}
+
+.heroImage {
+  object-fit: cover;
+}
+
+.heroShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 22%), transparent 34%, rgb(0 0 0 / 42%));
+}
+
+.heroContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  width: min(760px, 100% - 48px);
+  padding-bottom: 60px;
+  text-align: center;
+  color: var(--Text-Light-Title, #f7f6f5);
+}
+
+.heroEyebrow {
+  margin: 0;
+  font-family: var(--font-albert-sans), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 120%;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
 }
 
-.brand {
+.heroTitle {
+  margin: 0;
   font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
-  font-size: 15px;
-  letter-spacing: 0;
-  text-transform: none;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 110%;
+  text-transform: uppercase;
 }
 
-.header nav {
+.heroSubtitle {
+  margin: 0;
+  font-family: var(--font-albert-sans), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+/* About Project — figma: flex column, padding 120px 0, gap 120px, align-items start.
+   Gap only bites once the image block lands under the intro. */
+.about {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 120px;
+  align-self: stretch;
+  padding: 120px 0;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+  color: #35312c;
+}
+
+/* The heading is one text flow: only its FIRST line is indented, lines 2+ run back to
+   the container edge. That is text-indent, not a column — a grid would push every line.
+   (ABOUT) then sits in the hole the indent leaves, so it's taken out of flow. */
+.aboutIntro {
+  position: relative;
+  width: 100%;
+  padding: 0 64px;
+}
+
+/* (ABOUT) / (CONCLUSION) / (MEET THE TEAM) all share this */
+.label {
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: #756f69;
+}
+
+.aboutLabel {
+  composes: label;
+  position: absolute;
+  top: 18px;
+  left: 64px;
+}
+
+/* 984 wide so the 492 subtitle centres against the heading, not the viewport */
+.aboutText {
+  width: 984px;
+  max-width: 100%;
+}
+
+.aboutHeading {
+  margin: 0;
+  text-indent: 128px;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 110%;
+  color: #59534c;
+}
+
+.aboutBody {
+  width: 492px;
+  max-width: 100%;
+  margin: 24px auto 0;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #756f69;
+}
+
+/* Scattered, overlapping — no grid describes it, so: one box, absolute children.
+   Height is the lowest item's bottom (63.333 + 36.667dvw). */
+.aboutGallery {
+  position: relative;
+  width: 100%;
+  height: 100dvw;
+}
+
+.aboutGalleryItem {
+  position: absolute;
+  top: var(--top);
+  left: var(--left);
+  width: 36.667dvw;
+  aspect-ratio: 1;
+  overflow: hidden;
+  /* same silver the work grid reveals from — work.module.css .workCardImg */
+  background: #d0cfce;
+}
+
+.aboutGalleryImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.compare {
+  width: 100%;
+}
+
+.other {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+  padding: 0 64px 120px;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+}
+
+.otherHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+}
+
+.otherTitle {
+  margin: 0;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 110%;
+  color: #59534c;
+}
+
+.otherViewAll {
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 150%;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-position: from-font;
+  color: #361e00;
+}
+
+.otherGrid {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+/* always a third of the row, however many there are — one project fills the left
+   slot and leaves the rest empty rather than stretching across */
+.otherCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 0 0 calc((100% - 32px) / 3);
+  min-width: 0;
+}
+
+.otherImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #d0cfce;
+}
+
+.otherImage img {
+  object-fit: cover;
+}
+
+/* the work grid's own rules, not a copy of them */
+.otherCardTitle {
+  composes: workCardTitle from "../../work/work.module.css";
+}
+
+.otherCardInfo {
+  composes: workCardInfo from "../../work/work.module.css";
+}
+
+.credits {
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
+  width: 100%;
+  padding: 120px 120px 0;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+}
+
+.creditsLabel {
+  composes: label;
+  flex: 0 0 236px;
+}
+
+.creditsColumns {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.creditsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #756f69;
+}
+
+/* 1440x640 frame: the centred slide is 1440 - 2 peeks - 2 gaps ≈ 79.4% */
+.carousel {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carouselTrack {
+  display: flex;
+  gap: 16px;
+  height: 640px;
+}
+
+.carouselSlide {
+  position: relative;
+  flex: 0 0 79.4%;
+  height: 100%;
+  overflow: hidden;
+  background: #d0cfce;
+}
+
+.carouselImage {
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.compareFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #d0cfce;
+  cursor: ew-resize;
+  user-select: none;
+  /* claim horizontal drags, leave vertical ones to the page scroll */
+  touch-action: pan-y;
+}
+
+/* pointer-events off so a drag starting on the image can never become a native image
+   drag — the frame gets the event instead */
+.compareImage {
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.compareClip {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+}
+
+.compareLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4px;
+  margin-left: -2px;
+  background: #f7f6f5;
+  pointer-events: none;
+}
+
+/* the grab target — wider than the pill it draws, so it can actually be caught */
+.compareHandle {
+  position: absolute;
+  top: 50%;
+  left: var(--pos);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  cursor: ew-resize;
+}
+
+.compareGrab {
+  width: 10px;
+  height: 100px;
+  border-radius: 38px;
+  background: #f7f6f5;
+  pointer-events: none;
+}
+
+.compareLabel {
+  position: absolute;
+  top: 32px;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: #f7f6f5;
+  pointer-events: none;
+}
+
+.compareLabelBefore {
+  right: calc(100% - var(--pos) + 24px);
+}
+
+.compareLabelAfter {
+  left: calc(var(--pos) + 24px);
+}
+
+.progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  padding: 120px 0;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+}
+
+/* 304 content + 64 padding each side. Sticky so the steps stay put while the
+   right column scrolls past — that pairing is the whole interaction. */
+.progressAside {
+  position: sticky;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  flex: 0 1 432px;
+  min-width: 0;
+  padding: 0 64px;
+}
+
+.progressTitle {
+  margin: 0;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 110%;
+  color: #59534c;
+}
+
+.progressSubtitle {
+  margin: 0;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #756f69;
+}
+
+.progressRule {
+  width: 24px;
+  height: 1px;
+  background: #756f69;
+}
+
+.progressList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* full reset — an unstyled <button> ships a grey face and an outset border */
+.progressStep {
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #756f69;
+  transition: color 300ms ease;
+}
+
+.progressStepActive {
+  font-weight: 600;
+  color: #59534c;
+}
+
+.progressNum {
+  flex-shrink: 0;
+  width: 40px;
+}
+
+/* 864 content + 64 padding each side */
+.progressMain {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  flex: 1 1 992px;
+  min-width: 0;
+  max-width: 992px;
+  padding: 0 64px;
+}
+
+.progressBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.progressImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #d0cfce;
+}
+
+.progressImage img {
+  object-fit: cover;
+}
+
+.progressCaption {
+  margin: 0;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #756f69;
+}
+
+/* Full-bleed 1440x810 image, copy inset 64px from its top-left corner. */
+.statement {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #15120f;
+}
+
+.statementImage {
+  object-fit: cover;
+}
+
+.statementText {
+  position: absolute;
+  top: 64px;
+  left: 64px;
+  width: 416px;
+  max-width: calc(100% - 128px);
+  margin: 0;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 110%;
+  color: #f7f6f5;
+}
+
+@media (max-width: 1100px) {
+  .compare {
+    padding: 64px 20px;
+  }
+
+  .progress {
+    flex-direction: column;
+    gap: 48px;
+    padding: 64px 0;
+  }
+
+  .progressAside,
+  .progressMain {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 20px;
+  }
+
+  .progressMain {
+    gap: 40px;
+  }
 }
 
 @media (max-width: 700px) {
-  .header {
-    align-items: flex-start;
-    padding: 22px 20px;
+  .statementText {
+    top: 24px;
+    left: 20px;
+    max-width: calc(100% - 40px);
+    font-size: 26px;
   }
 
-  .header nav {
-    max-width: 180px;
+  .aboutGallery {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: auto;
+    padding: 0 20px;
+  }
+
+  .aboutGalleryItem {
+    position: static;
+    width: 100%;
+  }
+
+  .heroTitle {
+    font-size: 40px;
+  }
+
+  .heroContent {
+    padding-bottom: 44px;
+  }
+
+  .about {
+    gap: 64px;
+    padding: 64px 0;
+  }
+
+  .aboutIntro {
+    padding: 0 20px;
+  }
+
+  .aboutLabel {
+    left: 20px;
+    top: 6px;
+    font-size: 12px;
+  }
+
+  .aboutHeading {
+    text-indent: 72px;
+    font-size: 30px;
   }
 }

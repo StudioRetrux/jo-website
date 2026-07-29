@@ -1,37 +1,54 @@
-import Link from "next/link";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
-import type { Project } from "@/lib/projects/types";
-import styles from "./[slug]/projectDetail.module.css";
+import ProjectAbout from "./ProjectAbout";
+import ProjectCarousel from "./ProjectCarousel";
+import ProjectCompare from "./ProjectCompare";
+import ProjectConclusion from "./ProjectConclusion";
+import ProjectCredits from "./ProjectCredits";
+import ProjectCta from "./ProjectCta";
+import ProjectFooter from "./ProjectFooter";
+import ProjectHero from "./ProjectHero";
+import ProjectProgress from "./ProjectProgress";
+import ProjectStatement from "./ProjectStatement";
+import ProjectNav from "./ProjectNav";
+import ProjectOther from "./ProjectOther";
+import type { Project, WorkItem } from "@/lib/projects/types";
 
 // Shared by the real /projects/[slug] route and the client overlay, so the two can't
-// drift. onClose is set by the overlay; the route leaves its links as plain links.
-export default function ProjectContent({ project, onClose }: { project: Project; onClose?: () => void }) {
+// drift. The overlay passes onLeave so nav dismisses it instead of reloading.
+export default function ProjectContent({
+  project,
+  related = [],
+  homeNavigation = "route",
+  onLeave,
+}: {
+  project: Project;
+  related?: WorkItem[];
+  homeNavigation?: "state" | "route";
+  onLeave?: () => void;
+}) {
   return (
     <>
-      <header className={styles.header}>
-        {onClose ? (
-          <button type="button" className={styles.brand} onClick={onClose}>
-            Johannes Alexander
-          </button>
-        ) : (
-          <Link href="/" className={styles.brand}>
-            Johannes Alexander
-          </Link>
+      <ProjectNav title={project.title} homeNavigation={homeNavigation} onLeave={onLeave} />
+      <ProjectHero project={project} />
+      <ProjectAbout project={project} />
+      <ProjectStatement project={project} />
+      <ProjectProgress />
+      <ProjectCompare />
+      <ProjectConclusion project={project} />
+      <ProjectCarousel />
+      <ProjectCredits />
+      <ProjectCta />
+      <ProjectOther items={related} />
+      <ProjectFooter />
+      {/* the fixed layout above replaces the CMS equivalents — drop those, keep the rest */}
+      <SectionRenderer
+        sections={project.sections.filter(
+          (section) =>
+            section.type !== "hero" &&
+            section.type !== "introGallery" &&
+            section.type !== "imageStatement",
         )}
-        <nav aria-label="Project navigation">
-          {onClose ? (
-            <button type="button" onClick={onClose}>Back</button>
-          ) : (
-            <Link href="/works">Back</Link>
-          )}
-          <span>/</span>
-          <span>{project.category}</span>
-          <span>/</span>
-          <span>{project.title}</span>
-        </nav>
-      </header>
-
-      <SectionRenderer sections={project.sections} />
+      />
     </>
   );
 }

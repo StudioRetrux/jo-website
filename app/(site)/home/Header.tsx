@@ -10,6 +10,8 @@ type Props = {
   style?: CSSProperties;
   navLabel?: string;
   homeNavigation?: "state" | "route";
+  /** Fired before navigating — lets an overlay dismiss itself first. */
+  onNavigate?: () => void;
 };
 
 const EASE = "1000ms cubic-bezier(0.9, 0, 0.5, 1)";
@@ -23,10 +25,11 @@ const NAV_TARGETS: Record<string, { page: Page; path: string }> = {
   contact: { page: "contact", path: "/contact" },
 };
 
-export default function Header({ isHome, onMenuToggle, style, navLabel, homeNavigation = "state" }: Props) {
+export default function Header({ isHome, onMenuToggle, style, navLabel, homeNavigation = "state", onNavigate }: Props) {
   const { navigateTo } = usePageNav();
 
   function go(target: { page: Page; path: string }) {
+    onNavigate?.();
     if (homeNavigation === "route") {
       window.location.assign(target.path);
       return;

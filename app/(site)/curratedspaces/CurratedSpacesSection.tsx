@@ -225,7 +225,12 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
               <a href="/terms" className={`${workStyles.workRibbonLink} ${workStyles.workRibbonLinkPadded}`}>Terms of Use</a>
               <a href="/privacy" className={workStyles.workRibbonLink}>Privacy Policy</a>
             </div>
-            <span className={workStyles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
+            <div className={workStyles.workRibbonRight}>
+              <span className={workStyles.workRibbonDev}>
+                Developed by <span className={workStyles.workRibbonLink}>Retrux</span>
+              </span>
+              <span className={workStyles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
+            </div>
           </div>
         </div>
       </div>

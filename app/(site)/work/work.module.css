@@ -348,8 +348,24 @@
   line-height: 1.2;
 }
 
+.workRibbonRight {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.workRibbonDev {
+  color: #59534c;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: right;
+}
+
 @media (min-width: 1920px) {
   .workRibbonLink,
+  .workRibbonDev,
   .workRibbonCopyright {
     font-size: 16px;
   }
