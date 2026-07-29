@@ -1,5 +1,4 @@
 .page {
-  --header-fg: #59534c;
   position: absolute;
   inset: 0;
   z-index: 12;
@@ -98,11 +97,7 @@
   text-underline-position: from-font;
 }
 
-/* hover: header + all section text goes light */
-.page:has([data-hover]) {
-  --header-fg: #f7f6f8;
-}
-
+/* hover: section text goes light — header handles itself via mix-blend-mode */
 .layout[data-hover] .waTitle,
 .layout[data-hover] .waNumber,
 .layout[data-hover] .waIcon,

@@ -4,8 +4,10 @@ import { useEffect } from "react";
 import Image from "next/image";
 import styles from "./HomeCarousel.module.css";
 
-// Quiet time that separates one wheel gesture from the next (ms).
-const GESTURE_GAP_MS = 200;
+// Input must go quiet this long before a new gesture counts.
+const GESTURE_QUIET_MS = 400;
+// Finger travel that makes a touch drag a swipe.
+const SWIPE_PX = 40;
 
 type Props = {
   slides: string[];
@@ -21,18 +23,48 @@ type Props = {
 export default function HomeCarousel({ slides, current, incoming, revealing, revealTransition, direction, onAdvance, paused = false }: Props) {
   useEffect(() => {
     if (paused) return;
-    // ponytail: one gesture = one slide. Trackpad momentum fires a long tail of
-    // wheel events; only the first event after a quiet gap counts as a new gesture.
-    let lastAt = 0;
+    // ponytail: one gesture = one slide. A trackpad flick or touch drag fires a long
+    // stream of events; every one of them re-arms the lock, so the gesture only ends
+    // after the input actually goes quiet. Gap-since-last-event isn't enough — momentum
+    // decays into gaps wide enough to look like a fresh flick.
+    let locked = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const arm = () => {
+      locked = true;
+      clearTimeout(timer);
+      timer = setTimeout(() => { locked = false; }, GESTURE_QUIET_MS);
+    };
+
     const onWheel = (e: WheelEvent) => {
       if (e.deltaY === 0) return;
-      const gap = e.timeStamp - lastAt;
-      lastAt = e.timeStamp;
-      if (gap < GESTURE_GAP_MS) return;
-      onAdvance(e.deltaY > 0 ? "down" : "up");
+      const first = !locked;
+      arm();
+      if (first) onAdvance(e.deltaY > 0 ? "down" : "up");
     };
+
+    let startY: number | null = null;
+    const onTouchStart = (e: TouchEvent) => { startY = e.touches[0].clientY; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (locked) { arm(); return; }
+      if (startY === null) return;
+      const dy = startY - e.touches[0].clientY;
+      if (Math.abs(dy) < SWIPE_PX) return;
+      arm();
+      onAdvance(dy > 0 ? "down" : "up");
+    };
+    const onTouchEnd = () => { startY = null; };
+
     window.addEventListener("wheel", onWheel, { passive: true });
-    return () => window.removeEventListener("wheel", onWheel);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
   }, [onAdvance, paused]);
 
   return (

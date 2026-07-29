@@ -255,7 +255,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       <Header
         isHome={true}
         onMenuToggle={() => setMenuOpen((v) => !v)}
-        style={{ "--header-fg": "#59534c", transition: "none" } as React.CSSProperties}
+        style={{ transition: "none" }}
         navLabel="home / work"
         homeNavigation={homeNavigation}
       />
@@ -290,7 +290,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                   dimmed={hoveredItemId !== null && hoveredItemId !== card.id}
 
                   enterDelay={index * 40}
-                  href={`/projects/${card.slug}`}
+                  slug={card.slug}
                   onHoverIn={() => setHoveredItemId(card.id)}
                   onHoverOut={() => setHoveredItemId(null)}
                 />
@@ -340,7 +340,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                             image={card.image}
                             hoverImage={card.hoverImage}
                             imageRevealDelayMs={slot.imageRevealDelayMs}
-                            href={`/projects/${card.slug}`}
+                            slug={card.slug}
                             phase={phase}
                             filtered={isFiltered(card)}
                             resetKey={scrollResetKey}
@@ -367,7 +367,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                             image={card.image}
                             hoverImage={card.hoverImage}
                             style={{ marginLeft: slot.marginLeft }}
-                            href={`/projects/${card.slug}`}
+                            slug={card.slug}
                             phase={phase}
                             filtered={cardFiltered}
                             resetKey={scrollResetKey}

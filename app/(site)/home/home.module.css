@@ -8,6 +8,10 @@
   margin-bottom: -92px;
   display: flex;
   z-index: 10;
+  /* every nav/breadcrumb glyph is #f7f6f5; difference against the page behind it
+     makes that read dark on light pages and light on dark imagery */
+  --header-fg: #f7f6f5;
+  mix-blend-mode: difference;
 }
 
 .headerLeft,
@@ -62,6 +66,10 @@
   cursor: pointer;
 }
 
+.headerNavCurrent {
+  font-weight: 500;
+}
+
 @media (min-width: 1920px) {
   .headerLogo {
     font-size: 36px;
@@ -92,11 +100,11 @@
   font-family: var(--font-albert-sans), system-ui, sans-serif;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.2;
   letter-spacing: 0.7px;
   text-transform: uppercase;
-  color: var(--header-fg, #59534c);
+  color: var(--header-fg, #f7f6f5);
 }
 
 @media (min-width: 1920px) {

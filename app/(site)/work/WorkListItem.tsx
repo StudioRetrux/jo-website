@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { useState } from "react";
-import Link from "next/link";
 import ItemMenuText from "./ItemMenuText";
+import ProjectLink from "../projects/ProjectLink";
 import styles from "./work.module.css";
 
 type Props = {
@@ -14,13 +14,13 @@ type Props = {
   enterDelay?: number;
   onHoverIn?: () => void;
   onHoverOut?: () => void;
-  href?: string;
+  slug?: string;
 };
 
 const LIST_FILTER_MS = 600;
 const LIST_FILTER_EASE = "cubic-bezier(0.65, 0, 0.35, 1)";
 
-export default function WorkListItem({ title = "Project Title", category, year, filtered = false, dimmed = false, onEl, enterDelay = 0, onHoverIn, onHoverOut, href }: Props) {
+export default function WorkListItem({ title = "Project Title", category, year, filtered = false, dimmed = false, onEl, enterDelay = 0, onHoverIn, onHoverOut, slug }: Props) {
   const [bgClipPath, setBgClipPath] = useState("inset(0 100% 0 0)");
 
   const info = [category, year].filter(Boolean).join(" • ");
@@ -61,11 +61,11 @@ export default function WorkListItem({ title = "Project Title", category, year, 
             clipPath: bgClipPath,
           }}
         />
-        {href ? (
-          <Link href={href} className={styles.workListItemLink}>
+        {slug ? (
+          <ProjectLink slug={slug} className={styles.workListItemLink}>
             <ItemMenuText text={title} />
             <span className={styles.workListInfo}>{info}</span>
-          </Link>
+          </ProjectLink>
         ) : (
           <>
             <ItemMenuText text={title} />

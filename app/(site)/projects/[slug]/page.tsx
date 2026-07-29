@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SectionRenderer } from "@/components/sections/SectionRenderer";
+import ProjectContent from "../ProjectContent";
 import { getPublishedProjectBySlug } from "@/lib/projects/data";
 import styles from "./projectDetail.module.css";
 
@@ -10,6 +9,8 @@ type ProjectPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+// Direct hits, refreshes and no-JS. In-app clicks open the overlay instead, so the
+// page behind stays mounted and the slide is ours — see ProjectOverlay.
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const project = await getPublishedProjectBySlug(slug);
@@ -20,20 +21,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className={styles.page}>
-      <header className={styles.header}>
-        <Link href="/" className={styles.brand}>
-          Johannes Alexander
-        </Link>
-        <nav aria-label="Project navigation">
-          <Link href="/projects">Home</Link>
-          <span>/</span>
-          <Link href="/projects">{project.category}</Link>
-          <span>/</span>
-          <span>{project.title}</span>
-        </nav>
-      </header>
-
-      <SectionRenderer sections={project.sections} />
+      <ProjectContent project={project} />
     </main>
   );
 }

@@ -42,15 +42,17 @@ export default function Header({ isHome, onMenuToggle, style, navLabel, homeNavi
     const parts = label.split(" / ");
     return parts.map((part, i) => {
       const target = NAV_TARGETS[part.toLowerCase()];
+      // last crumb = the page you're on
+      const current = i === parts.length - 1 ? styles.headerNavCurrent : "";
       return (
         <span key={i}>
           {i > 0 && <span> / </span>}
           {target ? (
-            <span className={styles.headerNavLink} onClick={() => go(target)}>
+            <span className={`${styles.headerNavLink} ${current}`} onClick={() => go(target)}>
               {part}
             </span>
           ) : (
-            <span>{part}</span>
+            <span className={current}>{part}</span>
           )}
         </span>
       );

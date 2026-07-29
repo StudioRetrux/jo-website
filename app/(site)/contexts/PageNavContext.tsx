@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useSection } from "./SectionContext";
 
 export type Page = "home" | "work" | "about" | "curratedspaces" | "contact";
@@ -14,6 +14,14 @@ const PAGE_PATHS: Record<Page, string> = {
   about: "/about",
   curratedspaces: "/curratedspaces",
   contact: "/contact",
+};
+
+const PATH_PAGES: Record<string, Page> = {
+  "/": "home",
+  "/works": "work",
+  "/about": "about",
+  "/curratedspaces": "curratedspaces",
+  "/contact": "contact",
 };
 
 type PageNavContextType = {
@@ -35,6 +43,24 @@ export function PageNavProvider({ children }: { children: React.ReactNode }) {
   const activePageRef = useRef<Page>("home");
   const animatingRef = useRef(false);
   const timerRef = useRef<number | null>(null);
+
+  // On mount and on back/forward, the URL is the truth — section nav pushed those
+  // entries onto this document, so a restored /works must open work, not home.
+  useEffect(() => {
+    const sync = () => {
+      const page = PATH_PAGES[window.location.pathname] ?? "home";
+      if (page === activePageRef.current) return;
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = null;
+      animatingRef.current = false;
+      activePageRef.current = page;
+      setActivePage(page);
+      setIncomingPage(null);
+    };
+    sync();
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
 
   const navigateTo = useCallback(
     (page: Page) => {

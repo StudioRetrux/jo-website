@@ -3,13 +3,6 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 html {
   height: 100%;
 }
@@ -68,8 +61,16 @@ a {
   to   { opacity: 0; }
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+
+/* 6px load bar — creeps while a project loads, then fills to 100%. Width is driven
+   inline by ProjectOverlay so the fill continues from where the creep stopped. */
+.navProgress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 6px;
+  background: #361e00;
+  z-index: 9999;
 }
+

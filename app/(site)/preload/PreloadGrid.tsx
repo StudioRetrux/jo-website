@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import styles from "./preload.module.css";
 import HomeSection from "../home/HomeSection";
+import { useLoadBar } from "../LoadBar";
 import type { CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
 import type { WorkItem } from "@/lib/projects/types";
@@ -38,6 +39,14 @@ function easingValue([x1, y1, x2, y2]: Bezier) {
   return `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
 }
 
+// The intro belongs to a fresh arrival at "/". Section nav pushes /works, /about… onto
+// this same document, so a back from a project detail re-mounts us — without this it
+// would replay the whole orchestration and then snap to the section.
+function isIntroVisit() {
+  const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+  return window.location.pathname === "/" && nav?.type !== "back_forward";
+}
+
 export default function PreloadGrid({
   slides,
   works,
@@ -52,10 +61,33 @@ export default function PreloadGrid({
   const [gridLinesHidden, setGridLinesHidden] = useState(false);
   const [homeReady, setHomeReady] = useState(false);
   const [sliderRemoved, setSliderRemoved] = useState(false);
+  const { preload } = useLoadBar();
   const { phase1Ms, phase2Ms, phase1Width, phase1Height, finalSize, phase1Ease, phase2Ease } =
     defaultControls;
 
+  // Warm the assets the intro is about to reveal first, then everything home needs
+  // once it hands off. The bar reports real progress across both groups.
   useEffect(() => {
+    if (!isIntroVisit()) return;
+    preload(
+      [...fixedRevealImages, slides[0].background],
+      [
+        ...new Set(slides.flatMap((slide) => [slide.background, slide.thumbnail])),
+        homeBaseImage,
+        "/rightbg.png",
+      ],
+    );
+  }, [preload, slides]);
+
+  useEffect(() => {
+    if (!isIntroVisit()) {
+      setPhase("home");
+      setGridLinesHidden(true);
+      setHomeReady(true);
+      setSliderRemoved(true);
+      return;
+    }
+
     let phase1Timer: ReturnType<typeof setTimeout>;
     let phase2Timer: ReturnType<typeof setTimeout>;
     let phase3Timer: ReturnType<typeof setTimeout>;

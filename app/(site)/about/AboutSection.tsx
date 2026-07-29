@@ -248,7 +248,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
       <Header
         isHome={true}
         onMenuToggle={() => setMenuOpen((v) => !v)}
-        style={{ "--header-fg": "#f7f6f5", transition: "none" } as React.CSSProperties}
+        style={{ transition: "none" }}
         navLabel="home / about"
         homeNavigation={homeNavigation}
       />

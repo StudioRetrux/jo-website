@@ -1,0 +1,15 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #f8f6f1;
+  color: #2e2925;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.overlay::-webkit-scrollbar {
+  display: none;
+}

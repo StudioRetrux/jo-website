@@ -1,8 +1,8 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import styles from "./work.module.css";
+import ProjectLink from "../projects/ProjectLink";
 import { useCursor } from "../contexts/CursorContext";
 
 type Phase = "closed" | "pre-open" | "open";
@@ -23,7 +23,7 @@ type Props = {
   resetKey?: number;
   onImageEl?: (el: HTMLDivElement | null) => void;
   exitPhase?: "hide" | "fade" | "slide-right";
-  href?: string;
+  slug?: string;
 };
 
 function revealStyle(phase: Phase | undefined): CSSProperties {
@@ -57,7 +57,7 @@ export default function WorkCard({
   resetKey = 0,
   onImageEl,
   exitPhase,
-  href,
+  slug,
 }: Props) {
   const { setMode } = useCursor();
   const resolvedInfo = info ?? ([category, year].filter(Boolean).join(" • ") || "Category • Year");
@@ -250,7 +250,7 @@ export default function WorkCard({
   return (
     <div ref={outerRef} style={{ ...style, ...exitStyle }}>
       <div style={{ overflow: "hidden", ...revealStyle(phase) }}>
-        {href ? <Link href={href} style={{ display: "contents" }}>{card}</Link> : card}
+        {slug ? <ProjectLink slug={slug} style={{ display: "contents" }}>{card}</ProjectLink> : card}
       </div>
     </div>
   );

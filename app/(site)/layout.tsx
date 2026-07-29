@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Cursor from "./Cursor";
+import { LoadBarProvider } from "./LoadBar";
+import { ProjectOverlayProvider } from "./projects/ProjectOverlay";
 import { CursorProvider } from "./contexts/CursorContext";
 import { SectionProvider } from "./contexts/SectionContext";
 import { PageNavProvider } from "./contexts/PageNavContext";
@@ -42,8 +44,12 @@ export default function RootLayout({
         <CursorProvider>
           <SectionProvider>
             <PageNavProvider>
-              <Cursor />
-              {children}
+              <LoadBarProvider>
+                <ProjectOverlayProvider>
+                  <Cursor />
+                  {children}
+                </ProjectOverlayProvider>
+              </LoadBarProvider>
             </PageNavProvider>
           </SectionProvider>
         </CursorProvider>

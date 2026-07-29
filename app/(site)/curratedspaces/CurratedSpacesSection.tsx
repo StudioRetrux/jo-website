@@ -6,8 +6,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import AutoScroll from "embla-carousel-auto-scroll";
 import Image from "next/image";
-import Link from "next/link";
 import Header from "../home/Header";
+import ProjectLink from "../projects/ProjectLink";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "../about/FullnameBlock";
 import FooterMenuText from "../work/FooterMenuText";
@@ -114,7 +114,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
       <Header
         isHome={open}
         onMenuToggle={() => setMenuOpen((v) => !v)}
-        style={{ "--header-fg": "#59534c", transition: "none" } as React.CSSProperties}
+        style={{ transition: "none" }}
         navLabel="Home / Curated Spaces"
         homeNavigation={homeNavigation}
       />
@@ -139,7 +139,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
                     "--image-height": `${item.height}px`,
                   } as React.CSSProperties}
                 >
-                  <Link href={`/projects/${slugify(item.title)}`} className={styles.carouselLink}>
+                  <ProjectLink slug={slugify(item.title)} className={styles.carouselLink}>
                     <Image
                       src={item.src}
                       alt={item.title}
@@ -156,7 +156,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
                         {item.year}
                       </p>
                     </div>
-                  </Link>
+                  </ProjectLink>
                 </article>
               ))}
             </div>
