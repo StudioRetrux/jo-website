@@ -28,11 +28,14 @@ export function ProjectOverlayProvider({ children }: { children: React.ReactNode
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // which project the overlay is currently showing, so popstate can tell a reopen
+  // from a no-op without waiting on a state update
+  const slugRef = useRef<string | null>(null);
   const { begin, finish } = useLoadBar();
 
   useEffect(() => { setMounted(true); }, []);
 
-  const openProject = useCallback(async (slug: string) => {
+  const load = useCallback(async (slug: string, push: boolean) => {
     begin();
 
     let data: Payload;
@@ -50,27 +53,37 @@ export function ProjectOverlayProvider({ children }: { children: React.ReactNode
     finish(SLIDE_DURATION);
 
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    window.history.pushState({}, "", `/projects/${slug}`);
+    // history already moved when this came from popstate — pushing again would
+    // bury the entry we just returned to
+    if (push) window.history.pushState({}, "", `/projects/${slug}`);
+    slugRef.current = slug;
     setPayload(data);
     // two frames: mount closed, then animate, or the transition never runs
     requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
   }, [begin, finish]);
 
+  const openProject = useCallback((slug: string) => { load(slug, true); }, [load]);
+
   const close = useCallback(() => {
+    slugRef.current = null;
     setOpen(false);
     if (closeTimer.current) clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(() => setPayload(null), SLIDE_DURATION);
   }, []);
 
-  // Back (button, gesture or mouse side button) pops our pushed entry — slide out.
+  // Back/forward (button, gesture or mouse side button). The URL is the truth: land on
+  // a project and it shows, land anywhere else and it slides away. Anything narrower
+  // strands history entries — /projects/a -> /projects/b -> Back would change the URL
+  // and nothing else.
   useEffect(() => {
     const onPopState = () => {
-      if (window.location.pathname.startsWith("/projects/")) return;
-      close();
+      const slug = /^\/projects\/([^/]+)/.exec(window.location.pathname)?.[1];
+      if (!slug) { close(); return; }
+      if (slug !== slugRef.current) load(slug, false);
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, [close]);
+  }, [close, load]);
 
   useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
 
