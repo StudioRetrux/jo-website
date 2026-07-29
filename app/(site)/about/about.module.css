@@ -60,6 +60,21 @@
   overflow: hidden;
 }
 
+/* mobile: fixed 56px over two lines instead of one fitted line (FullnameBlock skips
+   its fit() there, so nothing inline competes with this) */
+@media (max-width: 480px) {
+  .fullname {
+    padding: 0 24px;
+  }
+
+  .wordmark {
+    font-size: 56px;
+    line-height: 1;
+    text-align: left;
+    white-space: normal;
+  }
+}
+
 .wordmarkLetter {
   display: inline-block;
   will-change: transform;

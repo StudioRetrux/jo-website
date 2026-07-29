@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import styles from "./work.module.css";
 
 const SLIDE_MS = 600;
 const SLIDE_START_MS = 500;
@@ -45,6 +46,6 @@ export default function WorkSpacer({
   }, [collapsed, height]);
 
   return (
-    <div ref={ref} style={{ width: "100%", height }} />
+    <div ref={ref} className={styles.workSpacer} style={{ width: "100%", height }} />
   );
 }

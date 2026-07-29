@@ -5,6 +5,7 @@ import Lenis from "@studio-freight/lenis";
 import Header from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import FullnameMobile from "../FullnameMobile";
 import FooterMenuText from "./FooterMenuText";
 import TitleArea from "./TitleArea";
 import WorkCard from "./WorkCard";
@@ -108,6 +109,20 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
   }
 
   function handleViewModeChange(mode: "grid" | "list") {
+    if (mode === viewMode) return;
+
+    // Mobile just cross-fades. The desktop switch flies a snapshot of the top card
+    // into its list row, which needs a two-column layout to read as anything; in a
+    // single column it's motion for its own sake.
+    if (window.matchMedia("(max-width: 480px)").matches) {
+      if (listExiting) return;
+      setListExiting(true);
+      // 500 = the opacity transition already on .workContent; swapping earlier would
+      // show the change mid-fade
+      setTimeout(() => { setViewMode(mode); setListExiting(false); }, 500);
+      return;
+    }
+
     if (mode === "list" && viewMode === "grid") {
       const topCard = firstVisibleCard();
       const title = topCard?.title ?? "";
@@ -222,11 +237,12 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
   useEffect(() => {
     if (!wrapperRef.current || !contentRef.current) return;
     const wrapper = wrapperRef.current;
-    const lenis = new Lenis({
-      wrapper,
-      content: contentRef.current,
-      smoothWheel: true,
-    });
+    // Mobile scrolls natively (see .page in the media query) — Lenis would only fight
+    // it, and smooth-scroll on touch is the platform's job anyway.
+    const smooth = !window.matchMedia("(max-width: 480px)").matches;
+    const lenis = smooth
+      ? new Lenis({ wrapper, content: contentRef.current, smoothWheel: true })
+      : null;
     function handleScroll() {
       if (wrapper.scrollTop <= 0) {
         if (hasScrolledAwayFromTop.current) {
@@ -239,17 +255,17 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       hasScrolledAwayFromTop.current = true;
     }
 
-    let raf: number;
+    let raf = 0;
     function loop(time: number) {
-      lenis.raf(time);
+      lenis?.raf(time);
       raf = requestAnimationFrame(loop);
     }
     wrapper.addEventListener("scroll", handleScroll, { passive: true });
-    raf = requestAnimationFrame(loop);
+    if (lenis) raf = requestAnimationFrame(loop);
     return () => {
       wrapper.removeEventListener("scroll", handleScroll);
       cancelAnimationFrame(raf);
-      lenis.destroy();
+      lenis?.destroy();
     };
   }, []);
 
@@ -399,6 +415,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
             })()
           )}
         </div>
+        <FullnameMobile open={fullnameEnteredView} />
         <div ref={fullnameRef} className={styles.fullname}>
           <div ref={wordmarkRef} className={styles.workWordmark} aria-label={FULL_NAME}>
             {FULL_NAME.split("").map((letter, index) => (

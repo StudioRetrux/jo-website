@@ -70,6 +70,16 @@
   .headerEmailIcon {
     display: block;
   }
+
+  /* the breadcrumb has no room beside a 24px wordmark — drop it onto its own line
+     under the bar. The header is out of flow already (margin-bottom: -92px), so this
+     overlays the page; sections add top padding to clear it. */
+  .headerNav {
+    position: absolute;
+    top: 70px;
+    left: 24px;
+    font-size: 10px;
+  }
 }
 
 .headerLocation {

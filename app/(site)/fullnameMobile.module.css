@@ -1,0 +1,28 @@
+.wordmark {
+  display: none;
+  width: 100%;
+  padding: 0 24px;
+  color: var(--wordmark-color, #59534c);
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* each line clips its own letters, so the reveal slides them up out of nothing */
+.line {
+  display: block;
+  overflow: hidden;
+}
+
+.letter {
+  display: inline-block;
+  will-change: transform;
+}
+
+@media (max-width: 480px) {
+  .wordmark {
+    display: block;
+  }
+}

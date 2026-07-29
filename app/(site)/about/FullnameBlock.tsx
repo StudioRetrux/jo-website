@@ -37,6 +37,10 @@ export default function FullnameBlock({
     const wordmark = wordmarkRef.current;
     const container = fullnameRef.current;
     if (!wordmark || !container) return;
+    // Mobile takes a flat 56px from CSS and wraps to two lines. Fitting one line to
+    // the width of a phone would land somewhere near 30px — far too small, and it's
+    // the inline font-size this writes that would block the override.
+    if (window.matchMedia("(max-width: 480px)").matches) return;
 
     const fit = () => {
       const available = wordmark.clientWidth;

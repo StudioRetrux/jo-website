@@ -621,3 +621,206 @@
     font-size: 24px;
   }
 }
+
+/**
+ * Mobile work page. The title row keeps caption+heading on the left and the view
+ * toggles on the right, but the filters drop to their own full-width line and scroll
+ * sideways. `display: contents` on the two wrappers is what allows that — it promotes
+ * .titleBoxes and .titleFilters to flex items of .titleArea, so wrap can split them.
+ */
+@media (max-width: 480px) {
+  /* Desktop leaves this hidden and lets Lenis drive scrollTop from wheel events —
+     which gives touch nothing to do. Native scrolling instead (Lenis is skipped on
+     mobile in WorkSection). */
+  .page {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+
+  .page::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* the 256px breathing room between hand-placed desktop chunks */
+  .workSpacer {
+    height: 0 !important;
+  }
+
+  .titleArea {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    /* clears the header and the breadcrumb line beneath it */
+    padding-top: 124px;
+  }
+
+  .titleAreaRight,
+  .titleControls {
+    display: contents;
+  }
+
+  .titleAreaLeft {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    padding: 0 0 0 24px;
+  }
+
+  .titleCaption {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .titleHeading {
+    font-size: 40px;
+  }
+
+  .titleBoxes {
+    padding-right: 24px;
+  }
+
+  .titleFilters {
+    flex-basis: 100%;
+    gap: 16px;
+    margin-top: 16px;
+    padding: 0 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .titleFilters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .titleFilter,
+  .titleFilterActive {
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .workContent {
+    gap: 40px;
+    padding: 16px 24px 96px;
+  }
+
+  .workRow {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 40px;
+  }
+
+  /**
+   * Desktop places every card by hand — GRID_SLOTS supplies marginLeft/marginTop and a
+   * per-slot width, all as inline styles. None of that survives one column, so it's
+   * neutralised here. Aspect ratio is deliberately NOT overridden: keeping each card's
+   * own ratio at full width is what gives it auto height.
+   */
+  .workCardOuter {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .workCardImg {
+    width: 100% !important;
+  }
+
+  .workCard {
+    gap: 8px;
+  }
+
+  .workCardTitle {
+    font-size: 24px;
+  }
+
+  .workCardInfo {
+    font-size: 12px;
+    margin-top: -2px;
+  }
+
+  .workListItem {
+    width: 100%;
+  }
+
+  /* List rows: desktop bleeds them past the content padding (width + 172, -86 margin)
+     and lays title/meta side by side in a fixed 92px row. On a phone that overflows
+     and squeezes the title, so: full width, auto height, meta under the title. */
+  .workListItem,
+  .workListTopBorder {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .workListItem {
+    height: auto;
+  }
+
+  .workListItemInner {
+    height: auto;
+    padding: 16px 0;
+  }
+
+  .workListItemLink {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    width: 100%;
+  }
+
+  .itemMenuTextClip {
+    height: 34px;
+    font-size: 28px;
+  }
+
+  .itemMenuText {
+    height: 34px;
+    font-size: 28px;
+  }
+
+  .workListItem:hover .itemMenuTextTrack {
+    transform: translateY(-34px);
+  }
+
+  .workListInfo {
+    font-size: 12px;
+  }
+
+  /* FullnameMobile takes over — see FullnameMobile.tsx */
+  .fullname {
+    display: none;
+  }
+
+  /* footer: one column, with rules separating the three blocks */
+  .workFooter {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 24px;
+  }
+
+  .workFooterLeft {
+    gap: 40px;
+  }
+
+  .workFooterRight {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-top: 32px;
+    border-top: 1px solid rgb(89 83 76 / 25%);
+  }
+
+  .workRibbon {
+    padding: 0 24px;
+  }
+
+  .workRibbonInner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .workRibbonRight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

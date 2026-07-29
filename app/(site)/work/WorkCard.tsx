@@ -248,7 +248,7 @@ export default function WorkCard({
   );
 
   return (
-    <div ref={outerRef} style={{ ...style, ...exitStyle }}>
+    <div ref={outerRef} className={styles.workCardOuter} style={{ ...style, ...exitStyle }}>
       <div style={{ overflow: "hidden", ...revealStyle(phase) }}>
         {slug ? <ProjectLink slug={slug} style={{ display: "contents" }}>{card}</ProjectLink> : card}
       </div>
