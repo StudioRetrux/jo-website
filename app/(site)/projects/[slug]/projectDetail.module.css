@@ -109,6 +109,25 @@
   max-width: 100%;
 }
 
+/* curated variant: body sits to the right of the heading, baselines bottom-aligned */
+.aboutIntroBeside .aboutText {
+  display: flex;
+  align-items: flex-end;
+  gap: 64px;
+  width: 100%;
+}
+
+.aboutIntroBeside .aboutHeading {
+  flex: 1;
+  min-width: 0;
+}
+
+.aboutIntroBeside .aboutBody {
+  flex: 0 0 340px;
+  width: 340px;
+  margin: 0;
+}
+
 .aboutHeading {
   margin: 0;
   text-indent: 128px;

@@ -75,9 +75,11 @@
   text-decoration: none;
 }
 
+/* figma width ÷ its 1440 frame, so every screen shows the same proportion instead of
+   one absolute size below 1920 and another above it */
 .carouselImage {
   display: block;
-  width: auto;
+  width: calc(var(--image-width) / 1440 * 100dvw);
   height: auto;
 }
 
@@ -120,11 +122,6 @@
 
   .carouselTrack {
     --carousel-gap: 53px;
-  }
-
-  .carouselImage {
-    width: var(--image-width-2k);
-    height: auto;
   }
 
   .carouselTitle {

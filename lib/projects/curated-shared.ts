@@ -16,6 +16,10 @@ export const curatedSpacesConfigSchema = z.object({
 });
 
 export type CuratedSpaceItem = z.infer<typeof curatedSpaceItemSchema>;
+
+// Curated items carry no slug of their own — the title is the identity.
+export const curatedSlug = (title: string) =>
+  title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 export type CuratedSpacesConfig = z.infer<typeof curatedSpacesConfigSchema>;
 
 // Seed/fallback: the original hardcoded carousel — used when no config is

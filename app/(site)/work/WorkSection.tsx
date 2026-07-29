@@ -94,6 +94,8 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
     const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
     const page = pageMap[item];
     if (page) {
+      // menu stays put and gets covered by the page sliding up over it (INCOMING_Z),
+      // then drops with no animation of its own once it's hidden
       navigateTo(page);
       setTimeout(() => setMenuOpen(false), SLIDE_DURATION);
     } else {

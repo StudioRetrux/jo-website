@@ -10,8 +10,8 @@ import ProjectHero from "./ProjectHero";
 import ProjectProgress from "./ProjectProgress";
 import ProjectStatement from "./ProjectStatement";
 import ProjectNav from "./ProjectNav";
-import ProjectOther from "./ProjectOther";
-import type { Project, WorkItem } from "@/lib/projects/types";
+import ProjectOther, { type OtherItem } from "./ProjectOther";
+import type { Project } from "@/lib/projects/types";
 
 // Shared by the real /projects/[slug] route and the client overlay, so the two can't
 // drift. The overlay passes onLeave so nav dismisses it instead of reloading.
@@ -22,14 +22,21 @@ export default function ProjectContent({
   onLeave,
 }: {
   project: Project;
-  related?: WorkItem[];
+  related?: OtherItem[];
   homeNavigation?: "state" | "route";
   onLeave?: () => void;
 }) {
   return (
     <>
       <ProjectNav title={project.title} homeNavigation={homeNavigation} onLeave={onLeave} />
-      <ProjectHero project={project} />
+      <ProjectHero
+        image={project.thumbnail.url}
+        alt={project.thumbnail.alt}
+        category={project.category}
+        year={project.year}
+        title={project.title}
+        subtitle={project.subtitle}
+      />
       <ProjectAbout project={project} />
       <ProjectStatement project={project} />
       <ProjectProgress />

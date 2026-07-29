@@ -8,13 +8,16 @@ export default function ProjectIntro({
   label,
   heading,
   body,
+  /** "stacked" centres the body under the heading; "beside" sits it to the right. */
+  layout = "stacked",
 }: {
   label: string;
   heading: string;
   body: string;
+  layout?: "stacked" | "beside";
 }) {
   return (
-    <div className={styles.aboutIntro}>
+    <div className={`${styles.aboutIntro} ${layout === "beside" ? styles.aboutIntroBeside : ""}`}>
       <span className={styles.aboutLabel}>{label}</span>
       <div className={styles.aboutText}>
         <h2 className={styles.aboutHeading}>{heading}</h2>

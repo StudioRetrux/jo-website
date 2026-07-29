@@ -1,12 +1,19 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useSection } from "./SectionContext";
 
 export type Page = "home" | "work" | "about" | "curratedspaces" | "contact";
 
 export const SLIDE_DURATION = 700;
 export const SLIDE_EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
+/**
+ * Stacking order for the page sliding in — above the megamenu (z-index 40) on purpose.
+ * A nav leaves the menu sitting still and slides the target page up over it, so the
+ * page slide is the only movement on screen.
+ */
+export const INCOMING_Z = 50;
 
 const PAGE_PATHS: Record<Page, string> = {
   home: "/",
@@ -38,9 +45,12 @@ const PageNavContext = createContext<PageNavContextType>({
 
 export function PageNavProvider({ children }: { children: React.ReactNode }) {
   const { navigate } = useSection();
-  const [activePage, setActivePage] = useState<Page>("home");
+  // usePathname resolves on the server too, so /works renders the work section in the
+  // first paint instead of showing home and snapping once an effect runs
+  const initialPage = PATH_PAGES[usePathname()] ?? "home";
+  const [activePage, setActivePage] = useState<Page>(initialPage);
   const [incomingPage, setIncomingPage] = useState<Page | null>(null);
-  const activePageRef = useRef<Page>("home");
+  const activePageRef = useRef<Page>(initialPage);
   const animatingRef = useRef(false);
   const timerRef = useRef<number | null>(null);
 

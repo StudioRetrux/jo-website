@@ -1,7 +1,8 @@
-"use client";
+import SiteShell from "../SiteShell";
 
-import AboutSection from "../about/AboutSection";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-export default function AboutPage() {
-  return <AboutSection open={true} homeNavigation="route" />;
+export default function Page() {
+  return <SiteShell />;
 }

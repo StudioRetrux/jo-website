@@ -9,6 +9,8 @@ import headerStyles from "../home/home.module.css";
 type Props = { open: boolean; onClose: () => void; onNavigate?: (item: string) => void };
 
 const EASE = "700ms cubic-bezier(0.9, 0, 0.5, 1)";
+/** How long the panel takes to clip away. */
+export const MEGAMENU_CLOSE_MS = 700;
 const FADE_UP_OPEN = "opacity 900ms cubic-bezier(0.4, 0, 0.2, 1) 450ms, transform 900ms cubic-bezier(0.4, 0, 0.2, 1) 450ms";
 const MENU_ITEMS = ["Home", "Work", "About", "Curated Spaces", "Contact"];
 const DEFAULT_MENU_IMAGE = "/preload4ld.png";
@@ -29,11 +31,15 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
   const thumbCloseTimer = useRef<number | null>(null);
   const thumbOpenFrame = useRef(0);
   const [mounted, setMounted] = useState(false);
+  // A nav dismisses the panel with no animation: the target page slides up and is the
+  // only thing moving. Clipping it away would be a second, competing transition.
+  const [instant, setInstant] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     if (open) {
+      setInstant(false);
       setPhase("pre-open");
       if (thumbCloseTimer.current) window.clearTimeout(thumbCloseTimer.current);
       cancelAnimationFrame(thumbOpenFrame.current);
@@ -143,7 +149,11 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
       className={styles.megaMenu}
       style={{
         clipPath: open ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
-        transition: "clip-path 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+        // `instant` suppresses the CLOSE only — gating the open on it too would race
+        // the effect that resets it, and the panel would blink open
+        transition: instant && !open
+          ? "none"
+          : `clip-path ${MEGAMENU_CLOSE_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
         // closed panel still overlays the viewport — don't let it eat clicks/wheel
         pointerEvents: open ? "auto" : "none",
       }}
@@ -180,7 +190,7 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
                   style={navReveal(i)}
                   onMouseEnter={() => { showThumb(i); setHoveredIndex(i); }}
                   onMouseLeave={() => { hideThumb(); setHoveredIndex(-1); }}
-                  onClick={() => onNavigate?.(item)}
+                  onClick={() => { setInstant(true); onNavigate?.(item); }}
                   active={false}
                 />
               </div>

@@ -13,14 +13,13 @@ import { curatedAssets } from "../assets";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "../about/FullnameBlock";
 import FooterMenuText from "../work/FooterMenuText";
+import { useCursor } from "../contexts/CursorContext";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
-import { DEFAULT_CURATED_SPACE_ITEMS, type CuratedSpaceItem } from "@/lib/projects/curated-shared";
+import { DEFAULT_CURATED_SPACE_ITEMS, curatedSlug, type CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import workStyles from "../work/work.module.css";
 import styles from "./curratedspaces.module.css";
 
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
-// ponytail: curated items carry no slug yet — derive from title, 404 until they do
-const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const SOCIAL_ITEMS = [
   { label: "Instagram", href: "https://instagram.com" },
   { label: "LinkedIn", href: "https://linkedin.com" },
@@ -38,6 +37,7 @@ type Props = {
 
 export default function CurratedSpacesSection({ open, slidePage = true, homeNavigation = "state", zIndex, items = DEFAULT_CURATED_SPACE_ITEMS }: Props) {
   const { navigateTo } = usePageNav();
+  const { setMode } = useCursor();
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerWordmarkInView, setFooterWordmarkInView] = useState(false);
@@ -104,6 +104,8 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
     const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
     const page = pageMap[item];
     if (page) {
+      // menu stays put and gets covered by the page sliding up over it (INCOMING_Z),
+      // then drops with no animation of its own once it's hidden
       navigateTo(page);
       setTimeout(() => setMenuOpen(false), SLIDE_DURATION);
     } else {
@@ -138,6 +140,8 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
             className={styles.carousel}
             aria-label="Curated spaces projects"
             data-lenis-prevent
+            onMouseEnter={() => setMode("arrow")}
+            onMouseLeave={() => setMode("default")}
           >
             <div className={styles.carouselTrack}>
               {/* ponytail: items doubled so embla loop always has content wider than viewport */}
@@ -145,13 +149,10 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
                 <article
                   className={styles.carouselCard}
                   key={`${item.src}-${i}`}
-                  style={{
-                    "--image-width": `${item.width}px`,
-                    "--image-width-2k": `${item.width * 1.2}px`,
-                    "--image-height": `${item.height}px`,
-                  } as React.CSSProperties}
+                  // unitless: the CSS divides it by the 1440 frame before applying a unit
+                  style={{ "--image-width": item.width } as React.CSSProperties}
                 >
-                  <ProjectLink slug={slugify(item.title)} className={styles.carouselLink}>
+                  <ProjectLink kind="curated" slug={curatedSlug(item.title)} className={styles.carouselLink}>
                     <Image
                       src={item.src}
                       alt={item.title}

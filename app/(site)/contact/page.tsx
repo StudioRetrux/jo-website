@@ -1,7 +1,8 @@
-"use client";
+import SiteShell from "../SiteShell";
 
-import ContactSection from "./ContactSection";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-export default function ContactPage() {
-  return <ContactSection open={true} homeNavigation="route" />;
+export default function Page() {
+  return <SiteShell />;
 }

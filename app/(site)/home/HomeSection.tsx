@@ -12,7 +12,7 @@ import AboutSection from "../about/AboutSection";
 import WorkSection from "../work/WorkSection";
 import CurratedSpacesSection from "../curratedspaces/CurratedSpacesSection";
 import ContactSection from "../contact/ContactSection";
-import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import { usePageNav, INCOMING_Z, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 
 const REVEAL_MS = 700;
 const REVEAL_EASE = "cubic-bezier(0.4, 0, 0.5, 1)";
@@ -71,6 +71,8 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
     const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
     const page = pageMap[item];
     if (page) {
+      // menu stays put and gets covered by the page sliding up over it (INCOMING_Z),
+      // then drops with no animation of its own once it's hidden
       navigateTo(page);
       setTimeout(() => setMenuOpen(false), SLIDE_DURATION);
     } else {
@@ -87,30 +89,30 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
         works={works}
         open={activePage === "work" || incomingPage === "work"}
         slidePage={incomingPage === "work"}
-        zIndex={incomingPage === "work" ? 13 : undefined}
+        zIndex={incomingPage === "work" ? INCOMING_Z : undefined}
       />
       <AboutSection
         open={activePage === "about" || incomingPage === "about"}
         slidePage={incomingPage === "about"}
-        zIndex={incomingPage === "about" ? 13 : undefined}
+        zIndex={incomingPage === "about" ? INCOMING_Z : undefined}
       />
       <CurratedSpacesSection
         items={curatedItems}
         open={activePage === "curratedspaces" || incomingPage === "curratedspaces"}
         slidePage={incomingPage === "curratedspaces"}
-        zIndex={incomingPage === "curratedspaces" ? 13 : undefined}
+        zIndex={incomingPage === "curratedspaces" ? INCOMING_Z : undefined}
       />
       <ContactSection
         open={activePage === "contact" || incomingPage === "contact"}
         slidePage={incomingPage === "contact"}
-        zIndex={incomingPage === "contact" ? 13 : undefined}
+        zIndex={incomingPage === "contact" ? INCOMING_Z : undefined}
       />
       <div
         style={{
           position: "absolute",
           inset: 0,
           background: preloading ? "transparent" : "#f7f6f5",
-          zIndex: preloading ? 21 : (homeIncoming ? 13 : 12),
+          zIndex: preloading ? 21 : (homeIncoming ? INCOMING_Z : 12),
           transform: homeOpen ? "translateY(0)" : "translateY(100%)",
           transition: visible && homeIncoming ? `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}` : "none",
         }}

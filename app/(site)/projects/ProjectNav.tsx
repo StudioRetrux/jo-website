@@ -28,10 +28,13 @@ const PATH_BY_ITEM: Record<string, string> = {
  */
 export default function ProjectNav({
   title,
+  /** middle breadcrumb — must match a Header NAV_TARGETS key to stay clickable */
+  parent = "Work",
   homeNavigation = "route",
   onLeave,
 }: {
   title: string;
+  parent?: string;
   homeNavigation?: "state" | "route";
   onLeave?: () => void;
 }) {
@@ -47,6 +50,8 @@ export default function ProjectNav({
     }
     const page = PAGE_BY_ITEM[item];
     if (page) {
+      // menu stays put and gets covered by the page sliding up over it, then drops
+      // with no animation of its own once it's hidden
       onLeave?.();
       navigateTo(page);
       setTimeout(() => setMenuOpen(false), SLIDE_DURATION);
@@ -62,7 +67,7 @@ export default function ProjectNav({
         isHome
         onMenuToggle={() => setMenuOpen((v) => !v)}
         style={{ transition: "none" }}
-        navLabel={`Home / Work / ${title}`}
+        navLabel={`Home / ${parent} / ${title}`}
         homeNavigation={homeNavigation}
         onNavigate={onLeave}
       />
