@@ -159,6 +159,9 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const fullnameRef = useRef<HTMLDivElement>(null);
+  // observed for the reveal trigger: .fullname itself is display:none on mobile,
+  // so it never intersects and the mobile wordmark would stay hidden forever
+  const fullnameViewRef = useRef<HTMLDivElement>(null);
   const wordmarkRef = useRef<HTMLDivElement>(null);
   const hasScrolledAwayFromTop = useRef(false);
 
@@ -217,7 +220,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       return;
     }
 
-    const node = fullnameRef.current;
+    const node = fullnameViewRef.current;
     const root = wrapperRef.current;
     if (!node || !root) return;
 
@@ -415,6 +418,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
             })()
           )}
         </div>
+        <div ref={fullnameViewRef} className={styles.fullnameReveal}>
         <FullnameMobile open={fullnameEnteredView} />
         <div ref={fullnameRef} className={styles.fullname}>
           <div ref={wordmarkRef} className={styles.workWordmark} aria-label={FULL_NAME}>
@@ -434,6 +438,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
               </span>
             ))}
           </div>
+        </div>
         </div>
         <footer className={styles.workFooter}>
           <div className={`${styles.workFooterColumn} ${styles.workFooterLeft}`}>

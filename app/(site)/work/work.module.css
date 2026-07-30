@@ -89,7 +89,7 @@
   width: calc(100% + 172px);
   margin-left: -86px;
   height: 92px;
-  border-bottom: 1px solid #59534c;
+  border-bottom: 1px solid rgb(89 83 76 / 20%);
   cursor: pointer;
   overflow: hidden;
   transition:
@@ -134,7 +134,7 @@
   position: absolute;
   inset: 0 0 auto;
   height: 1px;
-  background: #59534c;
+  background: rgb(89 83 76 / 20%);
 }
 
 .workListItemBg {
@@ -282,6 +282,11 @@
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
+}
+
+/* wraps both wordmark variants so the reveal observer always has a laid-out target */
+.fullnameReveal {
+  width: 100%;
 }
 
 .fullname {
@@ -643,8 +648,11 @@
   }
 
   /* the 256px breathing room between hand-placed desktop chunks */
+  /* display:none, not height:0 — a zero-height spacer is still a flex child of
+     .workContent and so still collects its own `gap`, doubling every row gap
+     except the first (which has no spacer before it). */
   .workSpacer {
-    height: 0 !important;
+    display: none !important;
   }
 
   .titleArea {
@@ -700,7 +708,13 @@
 
   .workContent {
     gap: 40px;
-    padding: 16px 24px 96px;
+    padding: 16px 24px 40px;
+  }
+
+  /* the 40px is for cards only — list rows butt up against each other, their
+     spacing comes from their own 12px padding and shared borders */
+  .workContent:has(.workListItem) {
+    gap: 0;
   }
 
   .workRow {
@@ -738,17 +752,15 @@
     margin-top: -2px;
   }
 
-  .workListItem {
-    width: 100%;
-  }
-
   /* List rows: desktop bleeds them past the content padding (width + 172, -86 margin)
      and lays title/meta side by side in a fixed 92px row. On a phone that overflows
-     and squeezes the title, so: full width, auto height, meta under the title. */
+     and squeezes the title. Here rows span the full screen width — cancelling
+     .workContent's 24px padding rather than sitting inside it — with the text inset
+     20px and a 12px vertical rhythm, so meta sits under the title. */
   .workListItem,
   .workListTopBorder {
-    width: 100%;
-    margin-left: 0;
+    width: calc(100% + 48px);
+    margin-left: -24px;
   }
 
   .workListItem {
@@ -757,37 +769,45 @@
 
   .workListItemInner {
     height: auto;
-    padding: 16px 0;
+    padding: 12px 20px;
   }
 
   .workListItemLink {
     flex-direction: column;
     align-items: flex-start;
-    gap: 2px;
+    gap: 4px;
     width: 100%;
   }
 
   .itemMenuTextClip {
-    height: 34px;
-    font-size: 28px;
+    height: 27px;
+    font-size: 24px;
+    line-height: 1.1;
   }
 
   .itemMenuText {
-    height: 34px;
-    font-size: 28px;
+    height: 27px;
+    font-size: 24px;
+    line-height: 1.1;
   }
 
   .workListItem:hover .itemMenuTextTrack {
-    transform: translateY(-34px);
+    transform: translateY(-27px);
   }
 
   .workListInfo {
-    font-size: 12px;
+    font-size: 10px;
+    line-height: 1.5;
+    opacity: calc(0.7 * var(--work-list-item-content-opacity, 1));
   }
 
   /* FullnameMobile takes over — see FullnameMobile.tsx */
   .fullname {
     display: none;
+  }
+
+  .fullnameReveal {
+    padding-bottom: 40px;
   }
 
   /* footer: one column, with rules separating the three blocks */
