@@ -66,9 +66,9 @@ export async function updateProjectAction(
 
   revalidatePath("/admin/projects");
   revalidatePath(`/admin/projects/${id}`);
-  revalidatePath("/projects");
-  revalidatePath(`/projects/${existing.slug}`);
-  revalidatePath(`/projects/${project.slug}`);
+  revalidatePath("/works");
+  revalidatePath(`/works/${existing.slug}`);
+  revalidatePath(`/works/${project.slug}`);
 
   return {
     status: "success",
@@ -100,8 +100,8 @@ export async function setPublishedAction(
   }
 
   revalidatePath("/admin/projects");
-  revalidatePath("/projects");
-  revalidatePath(`/projects/${project.slug}`);
+  revalidatePath("/works");
+  revalidatePath(`/works/${project.slug}`);
 
   return {
     status: "success",

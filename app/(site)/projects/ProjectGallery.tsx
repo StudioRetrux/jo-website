@@ -55,7 +55,7 @@ function GalleryItem({ src, alt, pos }: { src: string; alt: string; pos: { top: 
         src={src}
         alt={alt}
         fill
-        sizes="(max-width: 700px) 100vw, 37vw"
+        sizes="(max-width: 480px) 65vw, (max-width: 700px) 100vw, 37vw"
         className={styles.aboutGalleryImage}
         style={{
           clipPath: revealed ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",

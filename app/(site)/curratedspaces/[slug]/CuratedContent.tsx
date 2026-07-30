@@ -52,8 +52,10 @@ export default function CuratedContent({
         heading="View other curated spaces"
         viewAllHref="/curratedspaces"
         kind="curated"
+        homeNavigation={homeNavigation}
+        onLeave={onLeave}
       />
-      <ProjectFooter />
+      <ProjectFooter homeNavigation={homeNavigation} onLeave={onLeave} />
     </>
   );
 }

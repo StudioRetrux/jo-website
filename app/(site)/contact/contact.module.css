@@ -192,3 +192,92 @@
   z-index: -2;
   transition: opacity 700ms cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Mobile turns the three desktop columns into four stacked sections: the left column's
+   image becomes the hero, the mid and right columns become icon+text rows, and the left
+   column's office/socials block drops to the bottom. `display: contents` on .colLeft is
+   what lets its two halves land in different places without touching the markup. */
+@media (max-width: 480px) {
+  /* one screen, no scroll: the two contact rows and the office block keep their
+     designed heights, the hero image takes whatever is left over */
+  .layout {
+    flex-direction: column;
+    height: 100dvh;
+  }
+
+  /* hover curtains and their CONTACT NOW layer have no trigger on touch */
+  .curtain,
+  .cta {
+    display: none;
+  }
+
+  .colLeft {
+    display: contents;
+  }
+
+  /* full-bleed hero, no rule under it — the whatsapp row below owns the first line.
+     display:block kills the inline-image baseline gap that would fake a second one. */
+  .leftImage {
+    display: block;
+    flex: 1 1 0;
+    /* basis 0 so the img's 960px intrinsic height doesn't drive the flex maths;
+       the floor keeps it a photo rather than a strip on short viewports */
+    min-height: 180px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .leftInfo {
+    order: 1;
+    flex: none;
+    padding: 32px 20px;
+  }
+
+  .socialItems {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .colMid,
+  .colRight {
+    flex: none;
+    border: none;
+    border-bottom: 1px solid #9a948c;
+  }
+
+  .colSplit {
+    flex-direction: row;
+    padding: 40px 20px;
+  }
+
+  /* icon on the left spanning both text lines, instead of the desktop's stacked centre */
+  .half {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    align-items: center;
+    column-gap: 16px;
+  }
+
+  /* the paired photo half has no room on a phone */
+  .half:has(.waImage) {
+    display: none;
+  }
+
+  .waIcon {
+    grid-row: 1 / span 2;
+    margin-bottom: 0;
+  }
+
+  .waTitle {
+    font-size: 28px;
+    line-height: 1.1;
+    text-align: left;
+  }
+
+  .waNumber {
+    margin-top: 0;
+    font-size: 14px;
+    text-align: left;
+  }
+}

@@ -16,9 +16,9 @@ export type DetailKind = "project" | "curated";
 /** One place deciding the URL for a kind — the link, the pushState and the popstate
  *  matcher all read from it, so they can't disagree. */
 export const detailPath = (kind: DetailKind, slug: string) =>
-  kind === "curated" ? `/curratedspaces/${slug}` : `/projects/${slug}`;
+  kind === "curated" ? `/curratedspaces/${slug}` : `/works/${slug}`;
 
-const PATH_PATTERN = /^\/(projects|curratedspaces)\/([^/]+)/;
+const PATH_PATTERN = /^\/(works|curratedspaces)\/([^/]+)/;
 
 type Detail =
   | { kind: "project"; slug: string; project: Project; related: OtherItem[] }

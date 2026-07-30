@@ -3,11 +3,20 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import FullnameBlock from "../about/FullnameBlock";
+import FullnameMobile from "../FullnameMobile";
 import FooterMenuText from "../work/FooterMenuText";
 import { scrollParent } from "./scrollParent";
+import { usePageNav, type Page } from "../contexts/PageNavContext";
 import styles from "../work/work.module.css";
 
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
+const PAGE_BY_ITEM: Record<string, Page> = {
+  Home: "home",
+  Work: "work",
+  About: "about",
+  "Curated Spaces": "curratedspaces",
+  Contact: "contact",
+};
 const SOCIAL_ITEMS = [
   { label: "Instagram", href: "https://instagram.com" },
   { label: "LinkedIn", href: "https://linkedin.com" },
@@ -16,9 +25,28 @@ const SOCIAL_ITEMS = [
 ];
 
 // Same footer the work and curated pages use — their styles, not a copy of them.
-export default function ProjectFooter() {
+export default function ProjectFooter({
+  homeNavigation = "route",
+  onLeave,
+}: {
+  homeNavigation?: "state" | "route";
+  onLeave?: () => void;
+} = {}) {
+  const { navigateTo } = usePageNav();
   const wordmarkRef = useRef<HTMLDivElement>(null);
   const [wordmarkInView, setWordmarkInView] = useState(false);
+
+  // In the overlay the shell is still mounted underneath, so the menu slides sections;
+  // on a direct route hit there's nothing behind it and the anchor's href does the work.
+  const handleNavigate =
+    homeNavigation === "state"
+      ? (item: string) => {
+          const page = PAGE_BY_ITEM[item];
+          if (!page) return;
+          onLeave?.();
+          navigateTo(page);
+        }
+      : undefined;
 
   useEffect(() => {
     const node = wordmarkRef.current;
@@ -34,6 +62,7 @@ export default function ProjectFooter() {
   return (
     <>
       <div ref={wordmarkRef} style={{ "--wordmark-color": "#59534c" } as CSSProperties}>
+        <FullnameMobile open={wordmarkInView} />
         <FullnameBlock open={wordmarkInView} animation="letters" paddingBottom={64} />
       </div>
       <footer className={styles.workFooter}>
@@ -41,7 +70,7 @@ export default function ProjectFooter() {
           <span className={styles.workFooterMenuLabel}>(MENU)</span>
           <nav className={styles.workFooterMenu}>
             {FOOTER_MENU_ITEMS.map((item) => (
-              <FooterMenuText key={item} text={item} />
+              <FooterMenuText key={item} text={item} onNavigate={handleNavigate} />
             ))}
           </nav>
         </div>

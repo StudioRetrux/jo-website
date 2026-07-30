@@ -26,7 +26,7 @@ export default async function ProjectsPage() {
       <section className={styles.grid} aria-label="Projects">
         {projects.map((project) => (
           <Link
-            href={`/projects/${project.slug}`}
+            href={`/works/${project.slug}`}
             className={styles.card}
             key={project.id}
           >

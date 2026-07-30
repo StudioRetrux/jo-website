@@ -620,3 +620,220 @@
     font-size: 30px;
   }
 }
+
+@media (max-width: 480px) {
+  /* hero copy runs the full width of the phone, 20px in from each edge */
+  .heroContent {
+    width: 100%;
+    gap: 12px;
+    padding: 0 20px 40px;
+  }
+
+  .heroEyebrow {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .heroSubtitle {
+    font-size: 14px;
+  }
+
+  /* no 984px measure here — the heading spans the whole column, (ABOUT) still sits in
+     the hole the first line's indent leaves */
+  .aboutText {
+    width: 100%;
+  }
+
+  .aboutLabel {
+    top: 4px;
+  }
+
+  .aboutHeading {
+    text-indent: 80px;
+    font-size: 32px;
+  }
+
+  /* keeps its place under the heading: indented from the left, flush to the right */
+  .aboutBody {
+    width: 74%;
+    margin: 24px 0 0 auto;
+    font-size: 12px;
+  }
+
+  /* the curated detail puts the body beside the heading; on a phone it goes back under.
+     Needs the same two-class specificity as the desktop rule to win. */
+  .aboutIntroBeside .aboutText {
+    display: block;
+  }
+
+  .aboutIntroBeside .aboutBody {
+    flex: none;
+    width: 74%;
+    margin: 24px 0 0 auto;
+  }
+
+  /* the scatter survives on a phone, just with its own three positions — the ≤700px
+     stack above flattens it, so this puts the absolute layout back. Sizes are % of the
+     360 frame in dvw; top values are the previous item's bottom plus a 22dvw (80px) gap.
+     nth-child rather than the inline --top/--left, which a stylesheet can't override. */
+  .aboutGallery {
+    display: block;
+    height: 190dvw;
+    padding: 0;
+  }
+
+  .aboutGalleryItem {
+    position: absolute;
+  }
+
+  .aboutGalleryItem:nth-child(1) {
+    top: 0;
+    left: 48dvw;
+    width: 48dvw;
+    aspect-ratio: 1;
+  }
+
+  .aboutGalleryItem:nth-child(2) {
+    top: 70dvw;
+    left: 5.5dvw;
+    width: 65dvw;
+    aspect-ratio: 1.26;
+  }
+
+  .aboutGalleryItem:nth-child(3) {
+    top: 144dvw;
+    left: 39dvw;
+    width: 57dvw;
+    aspect-ratio: 1.26;
+  }
+
+  /* ProjectProgressMobile takes over — the sticky-list/scrolling-column pairing this
+     section is built around needs two columns */
+  .progress {
+    display: none;
+  }
+
+  /* before/after goes full-bleed and tall */
+  .compare {
+    padding: 0;
+  }
+
+  .compareFrame {
+    aspect-ratio: 5 / 6;
+  }
+
+  /* vertical-rl rather than a rotate(): the labels sit either side of the handle at
+     mid-height, and rotating would leave their box the wrong way round */
+  .compareLabel {
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    font-size: 12px;
+  }
+
+  .compareLabelBefore {
+    right: calc(100% - var(--pos) + 10px);
+  }
+
+  .compareLabelAfter {
+    left: calc(var(--pos) + 10px);
+  }
+
+  .compareLine {
+    width: 2px;
+    margin-left: -1px;
+  }
+
+  .compareHandle {
+    height: 80px;
+  }
+
+  .compareGrab {
+    width: 6px;
+    height: 32px;
+  }
+
+  /* the gallery carousel: one slide with its neighbours peeking, same as the
+     testimonials strip on About */
+  .carouselTrack {
+    gap: 12px;
+    height: 240px;
+  }
+
+  .carouselSlide {
+    flex: 0 0 78%;
+  }
+
+  /* (MEET THE TEAM) above the names, which pair up two to a row */
+  .credits {
+    flex-direction: column;
+    gap: 32px;
+    padding: 64px 20px 0;
+  }
+
+  .creditsLabel {
+    flex: none;
+    font-size: 12px;
+  }
+
+  .creditsColumns {
+    flex-wrap: wrap;
+    gap: 40px 16px;
+    width: 100%;
+  }
+
+  .creditsColumn {
+    flex: 0 0 calc((100% - 16px) / 2);
+    font-size: 12px;
+  }
+
+  /* other projects swipe like the testimonials strip. Native scroll-snap rather than
+     embla: this is a server component, and a carousel here would only be a drag handler
+     over three cards. Padding lives on the scroller so both end insets survive. */
+  .other {
+    gap: 24px;
+    padding: 0 0 64px;
+  }
+
+  .otherHead {
+    gap: 12px;
+    padding: 0 20px;
+  }
+
+  .otherTitle {
+    font-size: 32px;
+  }
+
+  .otherViewAll {
+    font-size: 12px;
+  }
+
+  .otherGrid {
+    gap: 16px;
+    padding: 0 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .otherGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .otherCard {
+    flex: 0 0 78%;
+    gap: 12px;
+    scroll-snap-align: start;
+  }
+
+  /* the 16:9 full-bleed statement turns portrait on a phone */
+  .statement {
+    aspect-ratio: 9 / 16;
+  }
+
+  .statementText {
+    top: 48px;
+    left: 20px;
+    font-size: 32px;
+  }
+}

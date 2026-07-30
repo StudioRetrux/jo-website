@@ -6,7 +6,8 @@ import { scrollParent } from "./scrollParent";
 import styles from "./[slug]/projectDetail.module.css";
 
 // ponytail: fixed content + stand-in imagery until the CMS carries steps.
-const STEPS = [
+// exported so the mobile accordion (ProjectProgressMobile) reads the same list
+export const STEPS = [
   {
     title: "Rethinking the Experience",
     image: "/homeresortbatu1.jpg",

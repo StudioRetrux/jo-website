@@ -488,9 +488,12 @@
   }
 }
 
+/* also the footer menu anchor — kill the link colour/underline it would inherit */
 .footerMenuTextClip {
   display: block;
   width: fit-content;
+  color: inherit;
+  text-decoration: none;
   height: clamp(34px, 2.43vw, 48px);
   overflow: hidden;
   padding-right: 0.16em;

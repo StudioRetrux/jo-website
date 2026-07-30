@@ -22,6 +22,8 @@ export type HomeConfig = z.infer<typeof homeConfigSchema>;
 
 export type ResolvedHomeSlide = {
   projectId: string;
+  /** the work this slide points at — VIEW WORK opens its detail */
+  slug: string;
   tag: string;
   heading: string;
   descLines: string[];
@@ -34,6 +36,8 @@ export type ResolvedHomeSlide = {
 export const FALLBACK_HOME_SLIDES: ResolvedHomeSlide[] = [
   {
     projectId: "fallback",
+    // nothing published to link to — RightPanel renders VIEW WORK inert on an empty slug
+    slug: "",
     tag: "HOSPITALITY • 2025",
     heading: "AMAINAIA HOTEL KUTA",
     descLines: ["A calm, well-crafted space designed", "for comfort and ease."],
@@ -46,6 +50,7 @@ export function resolveHomeSlide(slide: HomeSlide, project: Project): ResolvedHo
   const background = slide.image ?? project.thumbnail.url;
   return {
     projectId: slide.projectId,
+    slug: project.slug,
     tag: slide.tag ?? `${project.category} • ${project.year}`.toUpperCase(),
     heading: slide.heading ?? project.title.toUpperCase(),
     descLines: (slide.description ?? project.subtitle).split("\n"),

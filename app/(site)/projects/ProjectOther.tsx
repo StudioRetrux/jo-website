@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ProjectLink from "./ProjectLink";
+import SectionLink from "../SectionLink";
 import type { DetailKind } from "./ProjectOverlay";
 import styles from "./[slug]/projectDetail.module.css";
 
@@ -17,11 +18,15 @@ export default function ProjectOther({
   heading = "View other projects",
   viewAllHref = "/works",
   kind = "project",
+  homeNavigation = "route",
+  onLeave,
 }: {
   items: OtherItem[];
   heading?: string;
   viewAllHref?: string;
   kind?: DetailKind;
+  homeNavigation?: "state" | "route";
+  onLeave?: () => void;
 }) {
   if (items.length === 0) return null;
 
@@ -29,13 +34,20 @@ export default function ProjectOther({
     <section className={styles.other}>
       <div className={styles.otherHead}>
         <h2 className={styles.otherTitle}>{heading}</h2>
-        <a href={viewAllHref} className={styles.otherViewAll}>View all</a>
+        <SectionLink
+          href={viewAllHref}
+          mode={homeNavigation}
+          onLeave={onLeave}
+          className={styles.otherViewAll}
+        >
+          View all
+        </SectionLink>
       </div>
       <div className={styles.otherGrid}>
         {items.map((item) => (
           <ProjectLink key={item.id} kind={kind} slug={item.slug} className={styles.otherCard}>
             <div className={styles.otherImage}>
-              <Image src={item.image} alt={item.title} fill sizes="30vw" draggable={false} />
+              <Image src={item.image} alt={item.title} fill sizes="(max-width: 480px) 78vw, 30vw" draggable={false} />
             </div>
             <span className={styles.otherCardTitle}>{item.title}</span>
             <span className={styles.otherCardInfo}>

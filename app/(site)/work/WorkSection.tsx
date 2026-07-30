@@ -448,6 +448,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                 <FooterMenuText
                   key={item}
                   text={item}
+                  onNavigate={handleNavigate}
                 />
               ))}
             </nav>

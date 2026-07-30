@@ -8,6 +8,7 @@ import ProjectCta from "./ProjectCta";
 import ProjectFooter from "./ProjectFooter";
 import ProjectHero from "./ProjectHero";
 import ProjectProgress from "./ProjectProgress";
+import ProjectProgressMobile from "./ProjectProgressMobile";
 import ProjectStatement from "./ProjectStatement";
 import ProjectNav from "./ProjectNav";
 import ProjectOther, { type OtherItem } from "./ProjectOther";
@@ -40,13 +41,14 @@ export default function ProjectContent({
       <ProjectAbout project={project} />
       <ProjectStatement project={project} />
       <ProjectProgress />
+      <ProjectProgressMobile />
       <ProjectCompare />
       <ProjectConclusion project={project} />
       <ProjectCarousel />
       <ProjectCredits />
       <ProjectCta />
-      <ProjectOther items={related} />
-      <ProjectFooter />
+      <ProjectOther items={related} homeNavigation={homeNavigation} onLeave={onLeave} />
+      <ProjectFooter homeNavigation={homeNavigation} onLeave={onLeave} />
       {/* the fixed layout above replaces the CMS equivalents — drop those, keep the rest */}
       <SectionRenderer
         sections={project.sections.filter(

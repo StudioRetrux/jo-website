@@ -354,6 +354,10 @@
   background: none;
   border: none;
   cursor: pointer;
+  /* renders as an anchor now (ProjectLink): drop the button's default padding and keep
+     the underline on the words rather than the whole column */
+  width: fit-content;
+  padding: 0;
 }
 
 .rightScroll {

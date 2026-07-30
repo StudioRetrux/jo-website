@@ -120,7 +120,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
               <div className={workStyles.footerInfoTitleRow}>
                 <span className={workStyles.footerInfoTitle}>SOCIALS</span>
               </div>
-              <div className={workStyles.footerInfoItems}>
+              <div className={`${workStyles.footerInfoItems} ${styles.socialItems}`}>
                 {SOCIAL_ITEMS.map((item) => (
                   <a className={workStyles.footerInfoLink} href={item.href} key={item.label}>{item.label}</a>
                 ))}

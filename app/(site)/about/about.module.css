@@ -834,8 +834,12 @@
 /* Mobile lives at the end of the file on purpose: media queries don't add specificity,
    so anything declared later in the sheet beats them. */
 @media (max-width: 480px) {
-  /* footer wordmark: flat 56px over two lines instead of one fitted line
-     (FullnameBlock skips its fit() there, so nothing inline competes) */
+  /* footer wordmark: FullnameMobile takes over, same as the work page. Wrapping the
+     desktop one breaks mid-word — every letter is its own inline-block. */
+  .fullname[data-animation="letters"] {
+    display: none;
+  }
+
   .fullname {
     padding: 0 24px;
   }

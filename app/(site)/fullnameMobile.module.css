@@ -1,6 +1,7 @@
 .wordmark {
   display: none;
   width: 100%;
+  margin-bottom: 24px;
   padding: 0 24px;
   color: var(--wordmark-color, #59534c);
   font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;

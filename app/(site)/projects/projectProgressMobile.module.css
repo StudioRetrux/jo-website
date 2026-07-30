@@ -1,0 +1,145 @@
+/* the desktop two-column Progress hides itself at this width instead — see
+   projectDetail.module.css */
+.progress {
+  display: none;
+  width: 100%;
+  padding: 64px 20px;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+}
+
+@media (max-width: 480px) {
+  .progress {
+    display: block;
+  }
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 110%;
+  color: #59534c;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #756f69;
+}
+
+.rule {
+  display: block;
+  width: 24px;
+  height: 1px;
+  margin: 24px 0 32px;
+  background: #756f69;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* full-bleed rule, like the row background — the section's 20px padding stops at the text */
+.step {
+  width: calc(100% + 40px);
+  margin: 0 -20px;
+  border-bottom: 1px solid rgb(117 111 105 / 25%);
+}
+
+/* full reset — an unstyled <button> ships a grey face and an outset border.
+   Fills its full-bleed row; the 20px padding is what keeps the text on the column. */
+.stepButton {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+  padding: 14px 20px;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #756f69;
+  transition: color 300ms ease;
+}
+
+/* work.module.css .workListItemBg — same brown, same wipe */
+.stepBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: rgba(92, 62, 16, 0.08);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 700ms ease-in-out 75ms;
+}
+
+.stepButtonOpen {
+  font-weight: 600;
+  color: #59534c;
+}
+
+.stepButtonOpen .stepBg {
+  clip-path: inset(0 0 0 0);
+}
+
+.num,
+.stepTitle {
+  position: relative;
+  z-index: 1;
+}
+
+.num {
+  flex-shrink: 0;
+  width: 32px;
+}
+
+/* 0fr→1fr animates to the panel's own height, no measuring in JS.
+   Same timing as .stepBg's wipe so the two read as one motion. */
+.panelWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 700ms ease-in-out 75ms;
+}
+
+.panelWrapOpen {
+  grid-template-rows: 1fr;
+}
+
+/* the clip: a 0fr row still lets its child's own box overflow.
+   Side padding puts the image and caption back on the 20px column. */
+.panel {
+  overflow: hidden;
+  padding: 0 20px;
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #d0cfce;
+}
+
+.image img {
+  object-fit: cover;
+}
+
+/* bottom space lives here, not on .panel — padding on a 0fr row's child stays visible */
+.caption {
+  margin: 16px 0 24px;
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 150%;
+  color: #756f69;
+}

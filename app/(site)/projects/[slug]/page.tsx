@@ -1,29 +1,10 @@
-import { notFound } from "next/navigation";
-import ProjectContent from "../ProjectContent";
-import { getPublishedProjectBySlug, getRelatedWorkItems } from "@/lib/projects/data";
-import styles from "./projectDetail.module.css";
+import { permanentRedirect } from "next/navigation";
 
 export const runtime = "nodejs";
 
-type ProjectPageProps = {
-  params: Promise<{ slug: string }>;
-};
-
-// Direct hits, refreshes and no-JS. In-app clicks open the overlay instead, so the
-// page behind stays mounted and the slide is ours — see ProjectOverlay.
-export default async function ProjectPage({ params }: ProjectPageProps) {
+// The detail page lives under /works now — the list it belongs to is /works, not
+// /projects. Kept as a redirect so links shared before the move still land.
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const project = await getPublishedProjectBySlug(slug);
-
-  if (!project) {
-    notFound();
-  }
-
-  const related = await getRelatedWorkItems(project.slug, project.category);
-
-  return (
-    <main className={styles.page}>
-      <ProjectContent project={project} related={related} />
-    </main>
-  );
+  permanentRedirect(`/works/${slug}`);
 }

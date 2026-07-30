@@ -12,6 +12,7 @@ import { useLoadBar } from "../LoadBar";
 import { curatedAssets } from "../assets";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "../about/FullnameBlock";
+import FullnameMobile from "../FullnameMobile";
 import FooterMenuText from "../work/FooterMenuText";
 import { useCursor } from "../contexts/CursorContext";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
@@ -44,15 +45,33 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const footerWordmarkRef = useRef<HTMLDivElement>(null);
+  const [mobile, setMobile] = useState(false);
+  // no auto-scroll on a phone — it's swipe-only there, so the plugins drop out entirely.
+  // useMemo because a fresh array every render would re-init embla every render.
+  const plugins = React.useMemo(
+    () =>
+      mobile
+        ? []
+        : [
+            WheelGesturesPlugin(),
+            // stopOnInteraction false = resume after drag/wheel too, not just mouse leave
+            AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true }),
+          ],
+    [mobile],
+  );
   const [emblaRef] = useEmblaCarousel(
     // align start: default "center" translates the track on init (mount blink)
     { loop: true, dragFree: true, align: "start" },
-    [
-      WheelGesturesPlugin(),
-      // stopOnInteraction false = resume after drag/wheel too, not just mouse leave
-      AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true }),
-    ],
+    plugins,
   );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 480px)");
+    const sync = () => setMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -134,7 +153,10 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
       />
       <div ref={contentRef}>
         <section className={styles.hero} aria-label="Curated spaces">
-          <h1 className={styles.title}>Curated Spaces</h1>
+          <div className={styles.titleRow}>
+            <span className={styles.titleLabel}>from jo&apos;s observation</span>
+            <h1 className={styles.title}>Curated Spaces</h1>
+          </div>
           <div
             ref={emblaRef}
             className={styles.carousel}
@@ -176,6 +198,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
           </div>
         </section>
         <div ref={footerWordmarkRef} style={{ "--wordmark-color": "#59534c" } as React.CSSProperties}>
+          <FullnameMobile open={footerWordmarkInView} />
           <FullnameBlock open={footerWordmarkInView} animation="letters" paddingBottom={64} />
         </div>
         <footer className={workStyles.workFooter}>
@@ -183,7 +206,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
             <span className={workStyles.workFooterMenuLabel}>(MENU)</span>
             <nav className={workStyles.workFooterMenu}>
               {FOOTER_MENU_ITEMS.map((item) => (
-                <FooterMenuText key={item} text={item} />
+                <FooterMenuText key={item} text={item} onNavigate={handleNavigate} />
               ))}
             </nav>
           </div>

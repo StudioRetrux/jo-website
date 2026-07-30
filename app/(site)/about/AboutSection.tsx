@@ -17,6 +17,7 @@ import AutoScroll from "embla-carousel-auto-scroll";
 import Header from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "./FullnameBlock";
+import FullnameMobile from "../FullnameMobile";
 import LogosCarousel from "./LogosCarousel";
 import AboutCategoryItem from "./AboutCategoryItem";
 import FooterMenuText from "../work/FooterMenuText";
@@ -517,6 +518,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           </div>
         </section>
         <div ref={footerWordmarkRef} style={{ "--wordmark-color": "#59534c" } as React.CSSProperties}>
+          <FullnameMobile open={footerWordmarkInView} />
           <FullnameBlock open={footerWordmarkInView} animation="letters" paddingBottom={64} />
         </div>
         <footer className={workStyles.workFooter}>
@@ -524,7 +526,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
             <span className={workStyles.workFooterMenuLabel}>(MENU)</span>
             <nav className={workStyles.workFooterMenu}>
               {FOOTER_MENU_ITEMS.map((item) => (
-                <FooterMenuText key={item} text={item} />
+                <FooterMenuText key={item} text={item} onNavigate={handleNavigate} />
               ))}
             </nav>
           </div>

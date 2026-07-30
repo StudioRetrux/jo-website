@@ -3,6 +3,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import styles from "./home.module.css";
+import ProjectLink from "../projects/ProjectLink";
 import { SIZES } from "../assets";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
 
@@ -192,7 +193,14 @@ export default function RightPanel({
           />
         </div>
 
-        <button type="button" className={styles.rightCta}>VIEW WORK</button>
+        {/* the slide's own work — ProjectLink opens the detail overlay, no reload */}
+        {slides[activeIndex].slug ? (
+          <ProjectLink slug={slides[activeIndex].slug} className={styles.rightCta}>
+            VIEW WORK
+          </ProjectLink>
+        ) : (
+          <button type="button" className={styles.rightCta}>VIEW WORK</button>
+        )}
       </div>
     </div>
   );

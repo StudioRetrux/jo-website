@@ -22,8 +22,34 @@
   overflow: hidden;
 }
 
+/* the label hangs off the title's left edge without shifting it: the negative margin
+   equals its own width plus the 18px gap, so it takes up no space in the centring */
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 64px;
+}
+
+.titleLabel {
+  width: 120px;
+  margin-left: -138px;
+  /* the h1's box top sits ~18px above its cap top (half-leading + ascender);
+     nudge the label down by that so the two texts line up, not the two boxes */
+  padding-top: 15px;
+  color: #000;
+  font-family: var(--font-albert-sans), "Albert Sans", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
 .title {
-  margin: 0 0 64px;
+  margin: 0;
   color: #000;
   font-family: var(--font-instrument-serif), "Instrument Serif", Georgia, "Times New Roman", serif;
   font-size: 88px;
@@ -120,6 +146,11 @@
     font-size: 112px;
   }
 
+  /* cap-top offset scales with the title */
+  .titleLabel {
+    padding-top: 19px;
+  }
+
   .carouselTrack {
     --carousel-gap: 53px;
   }
@@ -131,5 +162,65 @@
   .carouselMeta {
     font-size: 18px;
     letter-spacing: 1.8px;
+  }
+}
+
+/* Mobile: the label stops hanging off the title and stacks above it, left-aligned.
+   Wordmark and footer are the shared about/work components — already mobile-styled. */
+@media (max-width: 480px) {
+  .hero {
+    padding-block: 120px 0;
+  }
+
+  .titleRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
+
+  .titleLabel {
+    width: auto;
+    margin-left: 0;
+    padding-top: 0;
+    color: #59534c;
+    font-size: 10px;
+    letter-spacing: 1px;
+    opacity: 1;
+  }
+
+  .title {
+    font-size: 40px;
+    text-align: left;
+  }
+
+  .carousel {
+    margin-bottom: 64px;
+    padding-left: 20px;
+  }
+
+  .carouselTrack {
+    --carousel-gap: 16px;
+  }
+
+  /* one card per screen with the next peeking — the desktop figma-width ratio divides
+     by a 1440 frame, which on a phone lands anywhere between 30 and 50vw per slide */
+  .carouselImage {
+    width: 78dvw;
+  }
+
+  .carouselCaption {
+    gap: 2px;
+    margin-top: 12px;
+  }
+
+  .carouselTitle {
+    font-size: 20px;
+  }
+
+  .carouselMeta {
+    font-size: 10px;
+    letter-spacing: 1px;
   }
 }
