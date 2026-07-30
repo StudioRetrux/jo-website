@@ -15,6 +15,7 @@ import Image from "next/image";
 import Header from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "./FullnameBlock";
+import LogosCarousel from "./LogosCarousel";
 import AboutCategoryItem from "./AboutCategoryItem";
 import FooterMenuText from "../work/FooterMenuText";
 import workStyles from "../work/work.module.css";
@@ -37,6 +38,21 @@ type Props = {
 };
 
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
+/* the heading is revealed line by line, so the breaks are markup, not wrapping —
+   a 262px column on a phone needs its own set */
+const INFO_HEADING_LINES = ["We believe spaces should", "feel considered, not forced."];
+const INFO_HEADING_LINES_MOBILE = ["We believe spaces", "should feel considered,", "not forced."];
+const INFO_BODY =
+  "Through restraint and careful observation, each project is designed to support how people move, gather, and live.";
+
+const LOGOS = [
+  "Rectangle 119.png",
+  "Rectangle 120.png",
+  "Rectangle 121.png",
+  "Rectangle 122.png",
+  "Rectangle 123.png",
+];
+
 const SOCIAL_ITEMS = [
   { label: "Instagram", href: "https://instagram.com" },
   { label: "LinkedIn", href: "https://linkedin.com" },
@@ -48,6 +64,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
   const { navigateTo } = usePageNav();
   const { setMode } = useCursor();
   const [mounted, setMounted] = useState(false);
+  const [mobile, setMobile] = useState(false);
   const [ctaTrailActive, setCtaTrailActive] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroDescEnteredView, setHeroDescEnteredView] = useState(false);
@@ -87,6 +104,14 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
   });
 
   useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 480px)");
+    const sync = () => setMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useAnimationFrame(() => {
     if (!wrapperRef.current) return;
@@ -278,7 +303,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           <div className={styles.infoColumn}>
             <div className={styles.infoTextBlock}>
               <h2 ref={infoHeadingRef} className={styles.infoHeading}>
-                {["We believe spaces should", "feel considered, not forced."].map((line, index) => (
+                {(mobile ? INFO_HEADING_LINES_MOBILE : INFO_HEADING_LINES).map((line, index) => (
                   <span className={styles.infoHeadingLineClip} key={line}>
                     <span
                       className={styles.infoHeadingLineTrack}
@@ -304,9 +329,15 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                     : "none",
                 }}
               >
-                <span>Through restraint and careful observation, each</span>
-                <span>project is designed to support how people move,</span>
-                <span>gather, and live.</span>
+                {mobile ? (
+                  INFO_BODY
+                ) : (
+                  <>
+                    <span>Through restraint and careful observation, each</span>
+                    <span>project is designed to support how people move,</span>
+                    <span>gather, and live.</span>
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -343,7 +374,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                 src="/Resort Room 1.jpg"
                 alt="Resort room interior"
                 fill
-                sizes="50vw"
+                sizes="(max-width: 480px) 100vw, 50vw"
                 className={styles.imagesPanelImage}
               />
             </motion.div>
@@ -357,7 +388,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                 src="/Resort Room 2.jpg"
                 alt="Resort room lounge"
                 fill
-                sizes="50vw"
+                sizes="(max-width: 480px) 100vw, 50vw"
                 className={styles.imagesPanelImage}
               />
             </motion.div>
@@ -365,7 +396,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </section>
         <section ref={profileSectionRef} className={styles.profileSection} aria-label="Profile">
           <div className={styles.profileLeft}>
-            <span className={styles.profileTag}>{"{ABOUT}"}</span>
+            <span className={styles.profileTag}>(ABOUT)</span>
             <div className={styles.profileContent}>
               <h2 className={styles.profileName}>
                 <span className={styles.profileNameLine}>Yohanes</span>
@@ -395,7 +426,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                   src="/45.png"
                   alt="Yohanes Alexander"
                   fill
-                  sizes="50vw"
+                  sizes="(max-width: 480px) 100vw, 50vw"
                   className={styles.profileRightImage}
                 />
               </motion.div>
@@ -407,9 +438,13 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
             <p className={styles.logosTrustedHeading}>Trusted by</p>
             <p className={styles.logosTrustedBody}>Create thoughtful,<br />well-crafted spaces.</p>
           </div>
-          {["Rectangle 119.png", "Rectangle 120.png", "Rectangle 121.png", "Rectangle 122.png", "Rectangle 123.png"].map((logo) => (
-            <img key={logo} src={`/${logo}`} alt="" className={styles.logoItem} />
-          ))}
+          {mobile ? (
+            <LogosCarousel logos={LOGOS} />
+          ) : (
+            LOGOS.map((logo) => (
+              <img key={logo} src={`/${logo}`} alt="" className={styles.logoItem} />
+            ))
+          )}
         </section>
         <section className={styles.darkSection}>
           <div className={styles.darkSectionInner}>

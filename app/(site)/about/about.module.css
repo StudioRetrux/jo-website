@@ -60,54 +60,6 @@
   overflow: hidden;
 }
 
-/* mobile: fixed 56px over two lines instead of one fitted line (FullnameBlock skips
-   its fit() there, so nothing inline competes with this) */
-@media (max-width: 480px) {
-  .fullname {
-    padding: 0 24px;
-  }
-
-  .wordmark {
-    font-size: 56px;
-    line-height: 1;
-    text-align: left;
-    white-space: normal;
-  }
-
-  /* the hero name is its own scale: 72px/110%, centred, wrapping to two lines */
-  .fullname[data-animation="reveal"] {
-    padding: 0 20px;
-  }
-
-  .fullname[data-animation="reveal"] .wordmark {
-    font-size: 72px;
-    line-height: 1.1;
-    text-align: center;
-  }
-
-  /* wide source in a tall box: fill the height and centre the crop */
-  .heroImage {
-    background-size: auto 100%;
-    background-position: center;
-  }
-
-  .heroDescriptionRow {
-    justify-content: center;
-    padding: 0 24px 48px;
-    margin-top: 16px;
-  }
-
-  .heroDescription {
-    font-size: 14px;
-    text-align: center;
-  }
-
-  /* desktop breaks the line after "hospitality," — let it wrap on its own here */
-  .heroDescription br {
-    display: none;
-  }
-}
-
 .wordmarkLetter {
   display: inline-block;
   will-change: transform;
@@ -429,6 +381,22 @@
   align-self: center;
 }
 
+/* mobile only — rendered by LogosCarousel */
+.logosCarousel {
+  width: 100%;
+  overflow: hidden;
+}
+
+.logosCarouselTrack {
+  display: flex;
+  gap: 20px;
+}
+
+.logosCarouselSlide {
+  flex: 0 0 auto;
+  height: 64px;
+}
+
 .darkSection {
   width: 100%;
   height: 94dvh;
@@ -558,9 +526,12 @@
   transform: translateY(-88px);
 }
 
+/* anchored to the top of the image and pushed down, so the quote lands at the bottom
+   of the portrait rather than across the middle of it */
 .bgSectionOverlay {
   position: absolute;
-  bottom: 10%;
+  top: 0;
+  padding-top: 200px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -857,5 +828,282 @@
   .aboutCatText {
     height: 48px;
     font-size: 40px;
+  }
+}
+
+/* Mobile lives at the end of the file on purpose: media queries don't add specificity,
+   so anything declared later in the sheet beats them. */
+@media (max-width: 480px) {
+  /* footer wordmark: flat 56px over two lines instead of one fitted line
+     (FullnameBlock skips its fit() there, so nothing inline competes) */
+  .fullname {
+    padding: 0 24px;
+  }
+
+  .wordmark {
+    font-size: 56px;
+    line-height: 1;
+    text-align: left;
+    white-space: normal;
+  }
+
+  /* the hero name is its own scale: 72px/110%, centred, wrapping to two lines */
+  .fullname[data-animation="reveal"] {
+    padding: 0 20px;
+  }
+
+  .fullname[data-animation="reveal"] .wordmark {
+    font-size: 72px;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  /* wide source in a tall box: fill the height and centre the crop */
+  .heroImage {
+    background-size: auto 100%;
+    background-position: center;
+  }
+
+  .heroDescriptionRow {
+    justify-content: center;
+    padding: 0 24px 48px;
+    margin-top: 16px;
+  }
+
+  .heroDescription {
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  /* desktop breaks the line after "hospitality," — let it wrap on its own here */
+  .heroDescription br {
+    display: none;
+  }
+
+  /* info: one centred column — text, then a square image inset 20px */
+  .infoSection {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    gap: 80px;
+    padding: 96px 20px;
+  }
+
+  .infoColumn {
+    width: 100%;
+    height: auto;
+  }
+
+  .infoColumn:last-child {
+    padding: 0;
+  }
+
+  .infoTextBlock {
+    gap: 24px;
+  }
+
+  .infoHeading,
+  .infoBody {
+    max-width: 262px;
+  }
+
+  .infoHeading {
+    font-size: 32px;
+  }
+
+  .infoBody {
+    font-size: 12px;
+  }
+
+  .infoImageFrame {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  /* the two panels stack, splitting the section height instead of the width */
+  .imagesSection {
+    flex-direction: column;
+  }
+
+  .imagesPanel {
+    width: 100%;
+    height: 50%;
+  }
+
+  /* profile: text block over a 4:5 portrait, both inset 20px from the screen.
+     The tag stays beside the text as on desktop, just tighter. */
+  .profileSection {
+    flex-direction: column;
+    height: auto;
+    padding: 0 20px 48px;
+  }
+
+  .profileLeft {
+    width: 100%;
+    height: auto;
+    gap: 32px;
+    padding: 48px 20px;
+  }
+
+  .profileTag {
+    margin-right: 0;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: #756f69;
+  }
+
+  .profileName {
+    padding-bottom: 16px;
+    font-size: 48px;
+  }
+
+  .profileBioWrap {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .profileBio {
+    font-size: 12px;
+  }
+
+  /* desktop pushes this to the bottom of a full-height column and centres it on the
+     312px bio; here it just follows the bio */
+  .profileServicesBlock {
+    margin: 48px 0 0;
+  }
+
+  .profileServicesLabel,
+  .profileServices {
+    font-size: 12px;
+  }
+
+  .profileRight {
+    width: 100%;
+    height: auto;
+    padding: 0;
+  }
+
+  .profileRightInner {
+    width: 100%;
+    height: auto;
+  }
+
+  /* trusted by: text, then the logos as a looping strip clipped at the padding */
+  .logosSection {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    gap: 20px;
+    margin: 0;
+    padding: 24px 20px;
+  }
+
+  .logosTrustedBlock {
+    gap: 4px;
+  }
+
+  .logosTrustedHeading {
+    font-size: 24px;
+  }
+
+  .logosTrustedBody {
+    font-size: 12px;
+  }
+
+  /* desktop breaks after "thoughtful," — one line fits here */
+  .logosTrustedBody br {
+    display: none;
+  }
+
+  /* dark section: square image over the body copy and the category list */
+  .darkSection {
+    height: auto;
+    padding: 54px 20px;
+  }
+
+  .darkSectionInner {
+    flex-direction: column;
+    height: auto;
+    background: #f3eeea;
+  }
+
+  .darkSectionA {
+    width: 100%;
+    height: auto;
+  }
+
+  .darkSectionImage {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .darkSectionB {
+    gap: 32px;
+    padding-top: 20px;
+  }
+
+  .darkSectionBody {
+    margin: 0 20px;
+    font-size: 12px;
+  }
+
+  /* desktop breaks after "project types," — let it wrap */
+  .darkSectionBody br {
+    display: none;
+  }
+
+  .aboutCatItem {
+    height: 62px;
+    padding: 0 20px;
+  }
+
+  .aboutCatTextClip {
+    height: 30px;
+  }
+
+  .aboutCatText {
+    height: 28px;
+    font-size: 24px;
+  }
+
+  .aboutCatItem:hover .aboutCatTextTrack {
+    transform: translateY(-28px);
+  }
+
+  /* quote over a 248px portrait, the text itself wider than the image */
+  .bgSectionImageWrap {
+    width: 248px;
+    transform: none;
+  }
+
+  .bgSectionImage {
+    width: 100%;
+  }
+
+  .bgSectionOverlay {
+    width: 320px;
+    white-space: normal;
+  }
+
+  .bgSectionText {
+    font-size: 32px;
+    line-height: 1.1;
+    white-space: normal;
+    text-shadow: 0 4px 24px rgb(0 0 0 / 50%);
+  }
+
+  /* desktop hard-breaks three lines at 56px — let 32px wrap in the 320px column */
+  .bgSectionText br {
+    display: none;
+  }
+
+  .bgSectionCta {
+    margin-top: 24px;
+    font-size: 12px;
   }
 }

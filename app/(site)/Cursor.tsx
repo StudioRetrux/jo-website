@@ -44,6 +44,9 @@ export default function Cursor() {
   const entering = overlayMounted && isOverlay;
 
   useEffect(() => {
+    // pointerFine starts false, so nothing is rendered on the first pass — this has to
+    // re-run once it flips or there'd be no listener on the element that just mounted
+    if (!pointerFine) return;
     const cursor = cursorRef.current;
     if (!cursor) return;
 
@@ -84,7 +87,7 @@ export default function Cursor() {
       window.removeEventListener("pointermove", move);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [pointerFine, posRef]);
 
   const { x, y } = currentPos.current;
 
