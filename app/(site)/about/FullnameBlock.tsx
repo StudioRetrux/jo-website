@@ -76,6 +76,9 @@ export default function FullnameBlock({
     <div
       ref={fullnameRef}
       className={styles.fullname}
+      /* hero ("reveal") and footer ("letters") wordmarks share this component but need
+         different type scales on mobile — CSS keys off this */
+      data-animation={animation}
       style={Object.keys(paddingStyle).length ? paddingStyle : undefined}
     >
       <div ref={wordmarkRef} className={styles.wordmark} aria-label={FULL_NAME}>

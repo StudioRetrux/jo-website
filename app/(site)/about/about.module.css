@@ -73,6 +73,39 @@
     text-align: left;
     white-space: normal;
   }
+
+  /* the hero name is its own scale: 72px/110%, centred, wrapping to two lines */
+  .fullname[data-animation="reveal"] {
+    padding: 0 20px;
+  }
+
+  .fullname[data-animation="reveal"] .wordmark {
+    font-size: 72px;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  /* wide source in a tall box: fill the height and centre the crop */
+  .heroImage {
+    background-size: auto 100%;
+    background-position: center;
+  }
+
+  .heroDescriptionRow {
+    justify-content: center;
+    padding: 0 24px 48px;
+    margin-top: 16px;
+  }
+
+  .heroDescription {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  /* desktop breaks the line after "hospitality," — let it wrap on its own here */
+  .heroDescription br {
+    display: none;
+  }
 }
 
 .wordmarkLetter {

@@ -78,7 +78,8 @@
     position: absolute;
     top: 70px;
     left: 24px;
-    font-size: 10px;
+    font-size: 9px;
+    letter-spacing: 0.45px;
   }
 }
 
@@ -115,7 +116,7 @@
 }
 
 .headerNavCurrent {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 @media (min-width: 1920px) {
@@ -146,19 +147,19 @@
 
 .headerNav {
   font-family: var(--font-albert-sans), system-ui, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 300;
   line-height: 1.2;
-  letter-spacing: 0.7px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--header-fg, #f7f6f5);
 }
 
 @media (min-width: 1920px) {
   .headerNav {
-    font-size: 16px;
-    letter-spacing: 0.9px;
+    font-size: 14px;
+    letter-spacing: 0.7px;
   }
 }
 
