@@ -1106,4 +1106,75 @@
     margin-top: 24px;
     font-size: 12px;
   }
+
+  /* testimonials: embla drives the track here, so the keyframe scroll has to go —
+     both would move it at once */
+  .testimonialsSection {
+    height: auto;
+    padding: 96px 0;
+  }
+
+  .testimonialsHeading {
+    align-self: stretch;
+    margin: 0 0 24px;
+    color: #000;
+    font-size: 32px;
+    line-height: 1.1;
+    opacity: 0.7;
+  }
+
+  .testimonialsCarouselTrack {
+    width: auto;
+    gap: 16px;
+    animation: none;
+  }
+
+  .testimonialsCard {
+    width: 280px;
+    height: auto;
+    gap: 32px;
+    padding: 32px 24px 24px;
+  }
+
+  .testimonialsCardQuote {
+    font-size: 20px;
+  }
+
+  .testimonialsCardName {
+    font-size: 14px;
+  }
+
+  .testimonialsCardMeta {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .ctaSection {
+    height: auto;
+    padding: 96px 20px;
+  }
+
+  .ctaSectionInner {
+    gap: 24px;
+  }
+
+  .ctaSectionIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .ctaSectionText {
+    max-width: 320px;
+    font-size: 32px;
+    line-height: 1.1;
+  }
+
+  /* desktop breaks this in two at 56px — 32px wraps on its own */
+  .ctaSectionText br {
+    display: none;
+  }
+
+  .ctaSectionCta {
+    font-size: 12px;
+  }
 }

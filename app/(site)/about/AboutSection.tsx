@@ -12,6 +12,8 @@ import {
   useVelocity,
 } from "motion/react";
 import Image from "next/image";
+import useEmblaCarousel from "embla-carousel-react";
+import AutoScroll from "embla-carousel-auto-scroll";
 import Header from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "./FullnameBlock";
@@ -66,6 +68,13 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
   const [mounted, setMounted] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [ctaTrailActive, setCtaTrailActive] = useState(false);
+  // desktop scrolls the testimonials with a CSS keyframe; a phone needs to be able to
+  // drag, so embla takes the same markup over — ref is only attached under 480px
+  const [testimonialsEmblaRef] = useEmblaCarousel(
+    { loop: true, align: "center", dragFree: true },
+    // stopOnInteraction false = resume after a swipe, not just after touch end
+    [AutoScroll({ speed: 1, stopOnInteraction: false })],
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroDescEnteredView, setHeroDescEnteredView] = useState(false);
   const [infoHeadingEnteredView, setInfoHeadingEnteredView] = useState(false);
@@ -479,7 +488,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </section>
         <section className={styles.testimonialsSection}>
           <h2 className={styles.testimonialsHeading}>What They Say</h2>
-          <div className={styles.testimonialsCarouselWrap}>
+          <div className={styles.testimonialsCarouselWrap} ref={mobile ? testimonialsEmblaRef : undefined}>
             <div className={styles.testimonialsCarouselTrack}>
               {[...Array(8)].map((_, i) => (
                 <div key={i} className={styles.testimonialsCard}>
