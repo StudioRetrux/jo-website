@@ -130,7 +130,9 @@
 
 .aboutHeading {
   margin: 0;
-  text-indent: 128px;
+  /* the indent is the label's own width plus a constant gap — ~8.6px per uppercase char
+     of 14px Albert Sans. (ABOUT) lands on 128px, (CONCLUSION) gets the room it needs. */
+  text-indent: calc(var(--label-chars, 7) * 8.6px + 68px);
   font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
   font-size: 48px;
   font-weight: 400;
@@ -616,7 +618,8 @@
   }
 
   .aboutHeading {
-    text-indent: 72px;
+    /* 12px label here, so ~7.4px per char */
+    text-indent: calc(var(--label-chars, 7) * 7.4px + 20px);
     font-size: 30px;
   }
 }
@@ -649,7 +652,7 @@
   }
 
   .aboutHeading {
-    text-indent: 80px;
+    text-indent: calc(var(--label-chars, 7) * 7.4px + 28px);
     font-size: 32px;
   }
 

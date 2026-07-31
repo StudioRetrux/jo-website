@@ -304,7 +304,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                   : "none",
               }}
             >
-              Interior Designer specializing in dental, healthcare, hospitality,<br />
+              Interior Designer specializing in dental, healthcare, hospitality,{" "}<br />
               and commercial spaces.
             </p>
           </div>
@@ -446,7 +446,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         <section className={styles.logosSection} aria-label="Logos">
           <div className={styles.logosTrustedBlock}>
             <p className={styles.logosTrustedHeading}>Trusted by</p>
-            <p className={styles.logosTrustedBody}>Create thoughtful,<br />well-crafted spaces.</p>
+            <p className={styles.logosTrustedBody}>Create thoughtful,{" "}<br />well-crafted spaces.</p>
           </div>
           {mobile ? (
             <LogosCarousel logos={LOGOS} />
@@ -463,7 +463,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
             </div>
             <div className={styles.darkSectionB}>
               <p className={styles.darkSectionBody}>
-                The practice works across a range of project types,<br />
+                The practice works across a range of project types,{" "}<br />
                 approaching each with the same level of care, clarity, and consideration.
               </p>
               <div className={styles.aboutCatList}>
@@ -479,8 +479,8 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
             <img src="/452.png" alt="" className={styles.bgSectionImage} />
             <div className={styles.bgSectionOverlay}>
               <p className={styles.bgSectionText}>
-                Most of my ideas come from <em>observing</em> how<br />
-                <em>people</em> move and spend time in a space.<br />
+                Most of my ideas come from <em>observing</em> how{" "}<br />
+                <em>people</em> move and spend time in a space.{" "}<br />
                 Design <em>starts</em> there.
               </p>
               <a href="mailto:retruxstudio@gmail.com" className={styles.bgSectionCta}>Get in touch</a>
@@ -512,7 +512,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           <div className={styles.ctaSectionInner}>
             <img src="/Icon 1_1.png" alt="" className={styles.ctaSectionIcon} />
             <p className={styles.ctaSectionText}>
-              Let&apos;s create spaces that<br />feel just as thoughtful.
+              Let&apos;s create spaces that{" "}<br />feel just as thoughtful.
             </p>
             <a href="mailto:retruxstudio@gmail.com" className={styles.ctaSectionCta}>Consult</a>
           </div>

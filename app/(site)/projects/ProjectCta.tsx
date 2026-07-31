@@ -21,7 +21,7 @@ export default function ProjectCta() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/Icon 1_1.png" alt="" className={styles.ctaSectionIcon} />
         <p className={styles.ctaSectionText}>
-          Let&apos;s create spaces that<br />feel just as thoughtful.
+          Let&apos;s create spaces that{" "}<br />feel just as thoughtful.
         </p>
         <a href="mailto:retruxstudio@gmail.com" className={styles.ctaSectionCta}>Consult</a>
       </div>
