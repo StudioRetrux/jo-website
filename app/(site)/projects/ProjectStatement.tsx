@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ParallaxImage from "./ParallaxImage";
 import { SIZES } from "../assets";
 import type { Project } from "@/lib/projects/types";
 import styles from "./[slug]/projectDetail.module.css";
@@ -7,10 +7,9 @@ import styles from "./[slug]/projectDetail.module.css";
 export default function ProjectStatement({ project }: { project: Project }) {
   return (
     <section className={styles.statement}>
-      <Image
+      <ParallaxImage
         src={project.thumbnail.url}
         alt={project.thumbnail.alt}
-        fill
         sizes={SIZES.full}
         className={styles.statementImage}
       />

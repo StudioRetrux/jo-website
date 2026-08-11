@@ -502,7 +502,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
             </div>
             <div className={styles.workRibbonRight}>
               <span className={styles.workRibbonDev}>
-                Developed by <span className={styles.workRibbonLink}>Retrux</span>
+                Developed by <a href="https://instagram.com/retruxstd" target="_blank" rel="noreferrer noopener" className={styles.workRibbonLink}>Retrux</a>
               </span>
               <span className={styles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
             </div>

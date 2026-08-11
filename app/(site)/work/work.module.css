@@ -327,18 +327,37 @@
 }
 
 .workRibbonLink {
+  position: relative;
   color: #59534c;
   font-family: var(--font-albert-sans), system-ui, sans-serif;
   font-size: 14px;
   font-weight: 700;
   line-height: 1.5;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
+  text-decoration: none;
   text-transform: uppercase;
+}
+
+/* The underline is drawn, not decorated — text-decoration can't be animated. It wipes
+   out to the right on hover and grows back in from the left, because transform-origin
+   only flips while hovered and snaps back before the leave transition runs. */
+.workRibbonLink::after,
+.footerInfoLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.workRibbonLink:hover::after,
+.footerInfoLink:hover::after {
+  transform: scaleX(0);
+  transform-origin: right;
 }
 
 .workRibbonLinkPadded {
@@ -451,18 +470,14 @@
 }
 
 .footerInfoLink {
+  position: relative;
   color: #59534c;
   font-family: var(--font-albert-sans), system-ui, sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: 1.5;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
+  text-decoration: none;
   text-transform: uppercase;
 }
 

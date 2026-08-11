@@ -6,7 +6,10 @@ import styles from "./HomeCarousel.module.css";
 import { SIZES } from "../assets";
 
 // Input must go quiet this long before a new gesture counts.
-const GESTURE_QUIET_MS = 400;
+const GESTURE_QUIET_MS = 500;
+// Wheel crumbs under this never open a slide — a trackpad's momentum tail decays to
+// single-digit deltas, and treating those as intent is what carried one flick into two.
+const WHEEL_MIN_DELTA = 8;
 // Finger travel that makes a touch drag a swipe.
 const SWIPE_PX = 40;
 
@@ -49,10 +52,13 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
     };
 
     const onWheel = (e: WheelEvent) => {
-      if (e.deltaY === 0) return;
-      const first = !locked;
+      // Every event inside a live gesture re-arms, deltaY === 0 crumbs included. Skipping
+      // those let the quiet timer expire mid-flick, so the momentum still to come read as
+      // a second gesture and took the carousel two slides on one swipe.
+      if (locked) { arm(); return; }
+      if (Math.abs(e.deltaY) < WHEEL_MIN_DELTA) return;
       arm();
-      if (first) onAdvance(e.deltaY > 0 ? "down" : "up");
+      onAdvance(e.deltaY > 0 ? "down" : "up");
     };
 
     // same gesture, whichever axis the layout runs on: swipe left / up = forward

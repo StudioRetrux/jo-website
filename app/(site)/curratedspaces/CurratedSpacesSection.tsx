@@ -251,7 +251,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
             </div>
             <div className={workStyles.workRibbonRight}>
               <span className={workStyles.workRibbonDev}>
-                Developed by <span className={workStyles.workRibbonLink}>Retrux</span>
+                Developed by <a href="https://instagram.com/retruxstd" target="_blank" rel="noreferrer noopener" className={workStyles.workRibbonLink}>Retrux</a>
               </span>
               <span className={workStyles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
             </div>

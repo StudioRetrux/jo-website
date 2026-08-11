@@ -282,6 +282,9 @@
 .profileServicesBlock {
   display: flex;
   flex-direction: column;
+  /* auto alone collapsed the gap whenever the column ran out of slack — the design
+     keeps ~128px of air between the bio and the services list either way */
+  padding-top: 128px;
   margin-top: auto;
   margin-bottom: 48px;
   margin-left: calc((100% - 312px) / 2);
@@ -461,7 +464,7 @@
   position: relative;
   z-index: 1;
   display: block;
-  height: 40px;
+  height: 69px;
   overflow: hidden;
 }
 
@@ -473,14 +476,14 @@
 }
 
 .aboutCatItem:hover .aboutCatTextTrack {
-  transform: translateY(-38px);
+  transform: translateY(-67px);
 }
 
 .aboutCatText {
   display: block;
-  height: 38px;
+  height: 67px;
   font-family: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
-  font-size: 32px;
+  font-size: 56px;
   font-style: normal;
   font-weight: 400;
   line-height: 1.2;
@@ -531,7 +534,7 @@
 .bgSectionOverlay {
   position: absolute;
   top: 0;
-  padding-top: 200px;
+  padding-top: 374px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -548,7 +551,7 @@
   font-size: 56px;
   font-style: normal;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.05;
   white-space: nowrap;
 }
 
@@ -736,7 +739,7 @@
 
 .bgSectionCta {
   display: block;
-  margin-top: 32px;
+  margin-top: 48px;
   color: var(--Text-Light-Title, #F7F6F5);
   text-align: center;
   font-family: var(--font-albert-sans), system-ui, sans-serif;
@@ -761,6 +764,11 @@
 
   .bgSectionImage {
     width: 533px;
+  }
+
+  /* overlay offset tracks the taller portrait at this breakpoint */
+  .bgSectionOverlay {
+    padding-top: 498px;
   }
 
   .bgSectionText {
@@ -817,18 +825,6 @@
     font-size: 16px;
   }
 
-  .aboutCatTextClip {
-    height: 49px;
-  }
-
-  .aboutCatItem:hover .aboutCatTextTrack {
-    transform: translateY(-48px);
-  }
-
-  .aboutCatText {
-    height: 48px;
-    font-size: 40px;
-  }
 }
 
 /* Mobile lives at the end of the file on purpose: media queries don't add specificity,

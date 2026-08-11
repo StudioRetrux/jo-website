@@ -18,6 +18,16 @@
   object-fit: cover;
 }
 
+/* Frame for ParallaxImage: overscanned top and bottom so the drift stays covered. */
+.parallaxLayer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -60px;
+  bottom: -60px;
+  will-change: transform;
+}
+
 .heroShade {
   position: absolute;
   inset: 0;
@@ -465,7 +475,7 @@
   text-align: left;
   cursor: pointer;
   font-family: var(--font-albert-sans), system-ui, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 150%;
   color: #756f69;

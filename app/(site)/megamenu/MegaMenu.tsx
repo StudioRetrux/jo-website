@@ -227,6 +227,8 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
       </div>
       <div className={styles.megaMenuFooter} style={fadeUp}>
         <div className={headerStyles.headerLeft}>
+          <a href="mailto:hello@yohanes.alexander" className={styles.megaMenuLink}>Email</a>
+          {/* socials still point at bare domains — real handles are TBC */}
           <a href="https://instagram.com" className={styles.megaMenuLink}>Instagram</a>
           <a href="https://linkedin.com" className={styles.megaMenuLink}>LinkedIn</a>
           <a href="https://wa.me" className={styles.megaMenuLink}>WhatsApp</a>

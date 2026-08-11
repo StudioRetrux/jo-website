@@ -1,4 +1,4 @@
-import Image from "next/image";
+import ParallaxImage from "./ParallaxImage";
 import { SIZES } from "../assets";
 import styles from "./[slug]/projectDetail.module.css";
 
@@ -21,7 +21,7 @@ export default function ProjectHero({
 }) {
   return (
     <section className={styles.hero}>
-      <Image src={image} alt={alt} fill priority sizes={SIZES.full} className={styles.heroImage} />
+      <ParallaxImage src={image} alt={alt} priority sizes={SIZES.full} className={styles.heroImage} />
       <div className={styles.heroShade} />
       <div className={styles.heroContent}>
         <p className={styles.heroEyebrow}>

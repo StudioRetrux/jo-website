@@ -467,7 +467,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                 approaching each with the same level of care, clarity, and consideration.
               </p>
               <div className={styles.aboutCatList}>
-                {["Healthcare", "Hospitality", "Residential"].map((item) => (
+                {["Healthcare", "Hospitality", "Residential", "Commercial"].map((item) => (
                   <AboutCategoryItem key={item} text={item} />
                 ))}
               </div>
@@ -571,7 +571,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
             </div>
             <div className={workStyles.workRibbonRight}>
               <span className={workStyles.workRibbonDev}>
-                Developed by <span className={workStyles.workRibbonLink}>Retrux</span>
+                Developed by <a href="https://instagram.com/retruxstd" target="_blank" rel="noreferrer noopener" className={workStyles.workRibbonLink}>Retrux</a>
               </span>
               <span className={workStyles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
             </div>
