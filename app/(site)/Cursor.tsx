@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useCursor } from "./contexts/CursorContext";
 
+type OverlayKind = "view" | "arrow" | "drag";
+
 const SIZE = 12;
 const EASE = 0.08;
 
@@ -25,15 +27,15 @@ export default function Cursor() {
     return () => query.removeEventListener("change", sync);
   }, []);
   // held past the exit so the glyph doesn't swap mid fade-out
-  const [overlayKind, setOverlayKind] = useState<"view" | "arrow">("view");
+  const [overlayKind, setOverlayKind] = useState<OverlayKind>("view");
 
-  // "view" and "arrow" share the follower — only the glyph inside it differs
-  const isOverlay = mode === "view" || mode === "arrow";
+  // the three .cursor variants share the follower — glyph and skin differ
+  const isOverlay = mode === "view" || mode === "arrow" || mode === "drag";
 
   useEffect(() => {
     if (isOverlay) {
       setOverlayMounted(true);
-      setOverlayKind(mode === "arrow" ? "arrow" : "view");
+      setOverlayKind(mode as OverlayKind);
       return;
     }
     const t = setTimeout(() => setOverlayMounted(false), 150);
@@ -114,7 +116,11 @@ export default function Cursor() {
               width: 104,
               height: 104,
               borderRadius: "50%",
-              background: "#361e00",
+              // figma .cursor: CTA is solid, the arrow variants sit on a translucent
+              // wash with a hairline so the image beneath still reads through
+              background: overlayKind === "view" ? "#361e00" : "rgba(54, 30, 0, 0.6)",
+              border: overlayKind === "view" ? "none" : "2px solid rgba(247, 246, 245, 0.3)",
+              boxSizing: "border-box",
               transform: "translate(-50%, -50%)",
               display: "flex",
               alignItems: "center",
@@ -138,13 +144,7 @@ export default function Cursor() {
                 animation: `${entering ? "cursor-fade-in" : "cursor-fade-out"} 150ms linear forwards`,
               }}
             >
-              {overlayKind === "arrow" ? (
-                <svg width="40" height="16" viewBox="0 0 40 16" fill="none" aria-hidden="true">
-                  <path d="M0 8h37M30 1l7 7-7 7" stroke="currentColor" strokeWidth="1.5" />
-                </svg>
-              ) : (
-                "VIEW"
-              )}
+              {overlayKind === "view" ? "VIEW" : <CursorArrows kind={overlayKind} />}
             </span>
           </div>
         </div>
@@ -172,5 +172,40 @@ export default function Cursor() {
         }}
       />
     </>
+  );
+}
+
+// paths lifted verbatim from figma Icon 1:1 / Icon 1:1 - Big/Drag
+function CursorArrows({ kind }: { kind: "arrow" | "drag" }) {
+  if (kind === "drag") {
+    return (
+      <svg width="65.5" height="64" viewBox="0 0 65.5 64" fill="none" aria-hidden="true">
+        <path
+          d="M40.75 31.5H64.75M53.2213 42L64.75 31.5L53.2213 21"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M24.75 31.5H0.75M12.2787 42L0.75 31.5L12.2787 21"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <path
+        d="M2 19.832H38.6667M22.1667 36.332L38.6667 19.832L22.1667 3.33203"
+        stroke="currentColor"
+        strokeWidth="1.83333"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

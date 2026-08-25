@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useRef, useState } from "react";
 
-type CursorMode = "default" | "view" | "arrow" | "hidden";
+type CursorMode = "default" | "view" | "arrow" | "drag" | "hidden";
 
 type CursorContextType = {
   mode: CursorMode;

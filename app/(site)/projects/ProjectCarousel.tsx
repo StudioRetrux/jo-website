@@ -31,7 +31,7 @@ export default function ProjectCarousel() {
     <section
       className={styles.carousel}
       ref={emblaRef}
-      onMouseEnter={() => setMode("arrow")}
+      onMouseEnter={() => setMode("drag")}
       onMouseLeave={() => setMode("default")}
     >
       <div className={styles.carouselTrack}>

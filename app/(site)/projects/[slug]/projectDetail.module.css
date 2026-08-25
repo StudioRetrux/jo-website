@@ -82,7 +82,7 @@
   gap: 120px;
   align-self: stretch;
   padding: 120px 0;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat fixed;
   color: #35312c;
 }
 
@@ -196,7 +196,7 @@
   gap: 32px;
   width: 100%;
   padding: 0 64px 120px;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat fixed;
 }
 
 .otherHead {
@@ -270,7 +270,7 @@
   gap: 64px;
   width: 100%;
   padding: 120px 120px 0;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat fixed;
 }
 
 .creditsLabel {
@@ -414,7 +414,7 @@
   align-items: flex-start;
   width: 100%;
   padding: 120px 0;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat fixed;
 }
 
 /* 304 content + 64 padding each side. Sticky so the steps stay put while the
