@@ -461,6 +461,9 @@
 .footerInfoItems {
   display: flex;
   flex-direction: column;
+  /* flex-start, not the default stretch — the links draw their own underline via
+     ::after, so a stretched box runs the rule out to the column edge */
+  align-items: flex-start;
   gap: 4px;
   margin-top: 16px;
 }

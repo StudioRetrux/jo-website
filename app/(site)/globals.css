@@ -7,13 +7,21 @@ html {
   height: 100%;
 }
 
-html,
+/* clip, NOT hidden — `overflow-x: hidden` turns this into a scroll container, which
+   silently kills `position: sticky` for every descendant. clip crops the same way
+   without becoming a scrollport.
+   On the root it propagates to the viewport, so the clipping happens there and
+   `position: fixed` still resolves against the viewport. Do NOT add it to `body` too:
+   `overflow: clip` on a non-root element makes that element the containing block for
+   fixed descendants, which turns every fixed layer into a document-sized scrolling one
+   (the work-detail paper texture). */
+html {
+  max-width: 100vw;
+  overflow-x: clip;
+}
+
 body {
   max-width: 100vw;
-  /* clip, NOT hidden — `overflow-x: hidden` turns these into scroll containers, which
-     silently kills `position: sticky` for every descendant. clip crops the same way
-     without becoming a scrollport. */
-  overflow-x: clip;
 }
 
 body {

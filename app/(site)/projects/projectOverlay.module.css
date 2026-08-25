@@ -4,7 +4,7 @@
   z-index: 30;
   overflow-y: auto;
   overflow-x: hidden;
-  background: #f8f6f1;
+  background: #f7f6f5;
   color: #2e2925;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -12,4 +12,19 @@
 
 .overlay::-webkit-scrollbar {
   display: none;
+}
+
+/* same fixed paper texture as the route page — see .page::before in
+   projectDetail.module.css. The overlay is transformed, so this pins to the overlay
+   box, which is inset: 0. */
+.overlay::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+  pointer-events: none;
 }

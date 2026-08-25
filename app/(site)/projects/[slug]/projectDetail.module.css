@@ -1,7 +1,29 @@
 .page {
+  position: relative;
+  /* own stacking context, or the z-index -1 texture below escapes to the root and
+     ends up behind this element's own background */
+  isolation: isolate;
   min-height: 100vh;
-  background: #f8f6f1;
+  background: #f7f6f5;
   color: #2e2925;
+}
+
+/* The paper texture is one page-level surface, not a per-section background.
+   `background-attachment: fixed` can't do it here — the overlay is transformed and
+   body is `overflow-x: clip`, either of which downgrades it to `scroll`. A real fixed
+   layer pins to the viewport regardless (in the overlay it pins to the overlay box,
+   which is `inset: 0` — same rect). z-index -1 puts it above .page's own background
+   and below every section. */
+.page::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+  pointer-events: none;
 }
 
 .hero {
@@ -82,7 +104,6 @@
   gap: 120px;
   align-self: stretch;
   padding: 120px 0;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat fixed;
   color: #35312c;
 }
 
@@ -196,7 +217,6 @@
   gap: 32px;
   width: 100%;
   padding: 0 64px 120px;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat fixed;
 }
 
 .otherHead {
@@ -270,7 +290,6 @@
   gap: 64px;
   width: 100%;
   padding: 120px 120px 0;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat fixed;
 }
 
 .creditsLabel {
@@ -414,7 +433,6 @@
   align-items: flex-start;
   width: 100%;
   padding: 120px 0;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat fixed;
 }
 
 /* 304 content + 64 padding each side. Sticky so the steps stay put while the
