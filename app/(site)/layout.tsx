@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Cursor from "./Cursor";
 import { LoadBarProvider } from "./LoadBar";
 import { ProjectOverlayProvider } from "./projects/ProjectOverlay";
@@ -6,6 +5,7 @@ import { CursorProvider } from "./contexts/CursorContext";
 import { SectionProvider } from "./contexts/SectionContext";
 import { PageNavProvider } from "./contexts/PageNavContext";
 import { Albert_Sans, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { baseMetadata, baseViewport } from "../site";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -25,10 +25,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Johannes Alexander",
-  description: "Cinematic creative portfolio and project archive.",
-};
+// Titles, description, canonical, OG and Twitter tags all derive from app/site.ts.
+// The icons and share images come from the app/ file conventions (favicon.ico,
+// icon.svg, apple-icon.png, opengraph-image.jpg, twitter-image.jpg) — never listed here.
+export const metadata = baseMetadata;
+export const viewport = baseViewport;
 
 export default function RootLayout({
   children,

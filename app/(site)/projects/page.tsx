@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPublishedProjects } from "@/lib/projects/data";
@@ -6,6 +7,14 @@ import styles from "./projects.module.css";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Legacy list — /works is the canonical one and /projects/[slug] already redirects
+// there. Kept reachable, kept out of the index so the two don't compete.
+export const metadata: Metadata = {
+  title: "Projects",
+  robots: { index: false, follow: true },
+  alternates: { canonical: "/works" },
+};
+
 export default async function ProjectsPage() {
   const projects = await getPublishedProjects();
 
@@ -13,7 +22,7 @@ export default async function ProjectsPage() {
     <main className={styles.page}>
       <header className={styles.header}>
         <Link href="/" className={styles.brand}>
-          Johannes Alexander
+          Yohanes Alexander
         </Link>
         <p>Selected works</p>
       </header>
