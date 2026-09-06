@@ -230,17 +230,29 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
           <a href="mailto:hello@yohanes.alexander" className={styles.megaMenuLink}>Email</a>
           {/* socials still point at bare domains — real handles are TBC */}
           <a href="https://instagram.com" className={styles.megaMenuLink}>Instagram</a>
-          <a href="https://linkedin.com" className={styles.megaMenuLink}>LinkedIn</a>
-          <a href="https://wa.me" className={styles.megaMenuLink}>WhatsApp</a>
           <a href="https://tiktok.com" className={styles.megaMenuLink}>TikTok</a>
+          <a href="https://wa.me/6281234567890" className={styles.megaMenuLink}>WhatsApp</a>
         </div>
         <div className={headerStyles.headerRight}>
           <div className={styles.megaMenuFooterPolicies}>
             <a href="/terms" className={styles.megaMenuLink}>Terms of Use</a>
             <a href="/privacy" className={styles.megaMenuLink}>Privacy Policy</a>
           </div>
-          {/* its own class, not headerLocation — that one is hidden on mobile */}
-          <span className={styles.megaMenuCopyright}>© 2026. Yohanes Alexander</span>
+          <div className={styles.megaMenuFooterMeta}>
+            <span className={styles.megaMenuDev}>
+              Developed by{" "}
+              <a
+                href="https://instagram.com/retruxstd"
+                target="_blank"
+                rel="noreferrer noopener"
+                className={styles.megaMenuLink}
+              >
+                Retrux
+              </a>
+            </span>
+            {/* its own class, not headerLocation — that one is hidden on mobile */}
+            <span className={styles.megaMenuCopyright}>© 2026. Yohanes Alexander</span>
+          </div>
         </div>
       </div>
     </div>,

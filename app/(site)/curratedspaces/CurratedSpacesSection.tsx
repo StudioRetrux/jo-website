@@ -23,9 +23,8 @@ import styles from "./curratedspaces.module.css";
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
 const SOCIAL_ITEMS = [
   { label: "Instagram", href: "https://instagram.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "WhatsApp", href: "https://wa.me" },
   { label: "TikTok", href: "https://tiktok.com" },
+  { label: "WhatsApp", href: "https://wa.me/6281234567890" },
 ];
 
 type Props = {
@@ -157,12 +156,13 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
             <span className={styles.titleLabel}>from jo&apos;s observation</span>
             <h1 className={styles.title}>Curated Spaces</h1>
           </div>
+          {/* cards open a detail page, so the follower reads VIEW — not the carousel arrow */}
           <div
             ref={emblaRef}
             className={styles.carousel}
             aria-label="Curated spaces projects"
             data-lenis-prevent
-            onMouseEnter={() => setMode("arrow")}
+            onMouseEnter={() => setMode("view")}
             onMouseLeave={() => setMode("default")}
           >
             <div className={styles.carouselTrack}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCursor } from "./contexts/CursorContext";
 
 type OverlayKind = "view" | "arrow" | "drag";
@@ -12,6 +12,8 @@ export default function Cursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
   const currentPos = useRef({ x: 0, y: 0 });
+  // the dot only earns its opacity once the pointer has told us where it is
+  const movedRef = useRef(false);
   const { mode, posRef } = useCursor();
   const modeRef = useRef(mode);
   const [overlayMounted, setOverlayMounted] = useState(false);
@@ -31,6 +33,18 @@ export default function Cursor() {
 
   // the three .cursor variants share the follower — glyph and skin differ
   const isOverlay = mode === "view" || mode === "arrow" || mode === "drag";
+
+  // The dot and the 104px follower are two separate elements. Leaving the dot on under
+  // an overlay reads as a doubled cursor, so the overlay takes the dot's place outright.
+  const syncDot = useCallback(() => {
+    const cursor = cursorRef.current;
+    if (!cursor) return;
+    const m = modeRef.current;
+    const visible = movedRef.current && m === "default";
+    cursor.style.opacity = visible ? "1" : "0";
+  }, []);
+
+  useEffect(() => { syncDot(); }, [mode, syncDot]);
 
   useEffect(() => {
     if (isOverlay) {
@@ -67,7 +81,8 @@ export default function Cursor() {
         current.x = target.x;
         current.y = target.y;
       }
-      cursor!.style.opacity = modeRef.current === "hidden" ? "0" : "1";
+      movedRef.current = true;
+      syncDot();
     }
 
     function tick() {
@@ -89,7 +104,7 @@ export default function Cursor() {
       window.removeEventListener("pointermove", move);
       cancelAnimationFrame(frame);
     };
-  }, [pointerFine, posRef]);
+  }, [pointerFine, posRef, syncDot]);
 
   const { x, y } = currentPos.current;
 
@@ -113,8 +128,8 @@ export default function Cursor() {
         >
           <div
             style={{
-              width: 104,
-              height: 104,
+              width: 112,
+              height: 112,
               borderRadius: "50%",
               // figma .cursor: CTA is solid, the arrow variants sit on a translucent
               // wash with a hairline so the image beneath still reads through
@@ -165,6 +180,8 @@ export default function Cursor() {
           mixBlendMode: "difference",
           pointerEvents: "none",
           opacity: 0,
+          // matches the overlay's own 150ms in/out, so the handover reads as one cursor
+          transition: "opacity 150ms linear",
           zIndex: 9997,
           willChange: "transform",
           marginLeft: -SIZE / 2,

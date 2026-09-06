@@ -71,7 +71,7 @@
 
 .workContent {
   width: 100%;
-  padding: 24px 86px 200px;
+  padding: 24px 86px 120px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -361,7 +361,9 @@
 }
 
 .workRibbonLinkPadded {
-  padding-right: 16px;
+  /* margin, not padding — the drawn ::after spans the element box, so padding here
+     stretched the underline across the gap and joined it to the next link's */
+  margin-right: 16px;
 }
 
 .workRibbonCopyright {

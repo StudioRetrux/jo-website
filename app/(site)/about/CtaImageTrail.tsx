@@ -10,8 +10,10 @@ const TRAIL_IMAGES = [
 const IMG_W = 260;
 const IMG_H = 185;
 const SPAWN_DIST = 160;
-const SCALE_IN_MS = 400;
-const LIFETIME_MS = 3200;
+const SCALE_IN_MS = 260;
+const LIFETIME_MS = 1400;
+/** Cards on screen at once. The sixth evicts the oldest rather than queueing behind it. */
+const MAX_PARTICLES = 5;
 
 interface Particle {
   el: HTMLDivElement;
@@ -61,6 +63,9 @@ export default function CtaImageTrail({ active }: Props) {
       `;
       wrap.appendChild(el);
       particles.current.push({ el, startTime: performance.now(), rotation });
+      while (particles.current.length > MAX_PARTICLES) {
+        particles.current.shift()!.el.remove();
+      }
     };
 
     const tick = (now: number) => {
@@ -112,7 +117,8 @@ export default function CtaImageTrail({ active }: Props) {
       style={{
         position: "absolute",
         inset: 0,
-        overflow: "hidden",
+        // no clipping: a card spawned near an edge should finish its life hanging over
+        // the section boundary rather than being sliced off at it
         pointerEvents: active ? "auto" : "none",
         zIndex: 0,
       }}

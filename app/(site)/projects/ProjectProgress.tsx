@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import ParallaxImage from "./ParallaxImage";
 import { scrollParent } from "./scrollParent";
 import styles from "./[slug]/projectDetail.module.css";
 
@@ -100,7 +100,7 @@ export default function ProjectProgress() {
             className={styles.progressBlock}
           >
             <div className={styles.progressImage}>
-              <Image src={step.image} alt={step.title} fill sizes="(max-width: 700px) 100vw, 60vw" />
+              <ParallaxImage src={step.image} alt={step.title} sizes="(max-width: 700px) 100vw, 60vw" />
             </div>
             <p className={styles.progressCaption}>{step.caption}</p>
           </div>

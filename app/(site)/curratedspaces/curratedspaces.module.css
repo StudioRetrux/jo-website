@@ -5,10 +5,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 100dvh;
-  background-color: #f7f6f5;
-  background-image: url('/megamenu.png');
-  background-repeat: repeat;
-  background-size: auto;
+  /* same paper as every other page — repeat/auto tiled it and read as a different colour */
+  background: #f7f6f5 url('/megamenu.png') center / cover no-repeat;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -18,7 +16,10 @@
 }
 
 .hero {
-  padding-block: 240px;
+  /* 92px clears the out-of-flow header, then the same 70px drop the work page's title
+     uses — 240px left the title stranded below the menu */
+  padding-top: 162px;
+  padding-bottom: 240px;
   overflow: hidden;
 }
 

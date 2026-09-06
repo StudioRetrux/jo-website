@@ -19,9 +19,8 @@ const PAGE_BY_ITEM: Record<string, Page> = {
 };
 const SOCIAL_ITEMS = [
   { label: "Instagram", href: "https://instagram.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "WhatsApp", href: "https://wa.me" },
   { label: "TikTok", href: "https://tiktok.com" },
+  { label: "WhatsApp", href: "https://wa.me/6281234567890" },
 ];
 
 // Same footer the work and curated pages use — their styles, not a copy of them.

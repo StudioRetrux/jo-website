@@ -30,9 +30,8 @@ function EmailIcon({ className }: { className?: string }) {
 
 const SOCIAL_ITEMS = [
   { label: "INSTAGRAM", href: "https://instagram.com" },
-  { label: "LINKEDIN", href: "https://linkedin.com" },
-  { label: "WHATSAPP", href: "https://wa.me" },
   { label: "TIKTOK", href: "https://tiktok.com" },
+  { label: "WHATSAPP", href: "https://wa.me/6281234567890" },
 ];
 
 type Props = {
@@ -131,9 +130,10 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         <a
           href="https://wa.me/6281234567890"
           className={`${styles.col} ${styles.colMid} ${styles.colSplit}`}
-          onMouseEnter={() => setHovered("wa")}
         >
-          <div className={styles.half}>
+          {/* the trigger is this half only — icon, label and number. Leaving is still the
+              section's job, so walking down to CONTACT NOW doesn't retract the curtain. */}
+          <div className={styles.half} onMouseEnter={() => setHovered("wa")}>
             <WaIcon className={styles.waIcon} />
             <h2 className={styles.waTitle}>Whatsapp</h2>
             <span className={styles.waNumber}>(62) 81234 567890</span>
@@ -145,9 +145,8 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         <a
           href="mailto:hello@yohanes.alexander"
           className={`${styles.col} ${styles.colRight} ${styles.colSplit}`}
-          onMouseEnter={() => setHovered("email")}
         >
-          <div className={styles.half}>
+          <div className={styles.half} onMouseEnter={() => setHovered("email")}>
             <EmailIcon className={styles.waIcon} />
             <h2 className={styles.waTitle}>Email</h2>
             <span className={styles.waNumber}>hello@yohanes.alexander</span>

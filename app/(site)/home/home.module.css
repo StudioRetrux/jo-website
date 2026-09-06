@@ -298,11 +298,11 @@
 
 .rightTag {
   font-family: var(--font-albert-sans), system-ui, sans-serif;
-  font-size: 21px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 1.2;
-  letter-spacing: 1.05px;
+  letter-spacing: 0.7px;
   color: #000000;
   opacity: 0.5;
   text-align: center;
@@ -328,7 +328,7 @@
 
 .rightDescription {
   font-family: var(--font-albert-sans), system-ui, sans-serif;
-  font-size: 24px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -338,19 +338,15 @@
 }
 
 .rightCta {
+  position: relative;
   font-family: var(--font-albert-sans), system-ui, sans-serif;
-  font-size: 21px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: 1.5;
   color: #361e00;
   text-align: center;
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: auto;
-  text-underline-offset: auto;
-  text-underline-position: from-font;
+  text-decoration: none;
   background: none;
   border: none;
   cursor: pointer;
@@ -360,9 +356,31 @@
   padding: 0;
 }
 
+/* Same drawn underline as the footer links — text-decoration can't be animated.
+   Wipes out to the right on hover, grows back in from the left. */
+.rightCta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rightCta:hover::after {
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
 .rightScroll {
   position: absolute;
-  bottom: 80px;
+  /* viewport-relative so the hint stays balanced between VIEW WORK and the bottom
+     edge at every height — a fixed 80px sat far too low on tall screens */
+  bottom: 12dvh;
   left: 0;
   right: 0;
   font-family: var(--font-albert-sans), system-ui, sans-serif;
@@ -456,6 +474,18 @@
   .rightScroll {
     font-size: 14px;
     letter-spacing: 2.8px;
-    bottom: 86px;
+  }
+
+  .rightTag {
+    font-size: 21px;
+    letter-spacing: 1.05px;
+  }
+
+  .rightDescription {
+    font-size: 24px;
+  }
+
+  .rightCta {
+    font-size: 21px;
   }
 }

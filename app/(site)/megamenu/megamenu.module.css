@@ -120,29 +120,23 @@
   text-underline-offset: var(--mega-menu-text-underline-offset, 6px);
 }
 
+/* Instrument Serif: ascent 0.99em, descent 0.31em, cap 0.72em. At line-height 1.2 the
+   content box is taller than the line box, so the cap top sits 0.22em below the line
+   box top. The old -18px offset pulled 72px caps ~2px above the clip and shaved them;
+   these values keep the same cap inset the 56px base has, scaled by 72/56. The hover
+   travel is item height + offset, so it moves with them. 2560 needs no override — the
+   type stays 72px there, so the 1920 metrics already hold. */
 @media (min-width: 1920px) {
   .megaMenuTextClip {
-    --mega-menu-text-clip-height: 64px;
+    --mega-menu-text-clip-height: 68px;
     --mega-menu-text-font-size: 72px;
     --mega-menu-text-item-height: 86px;
-    --mega-menu-text-track-offset: -18px;
+    --mega-menu-text-track-offset: -9px;
   }
 
   .megaMenuTextClip:hover .megaMenuTextTrack,
   .megaMenuTextTrackActive {
-    transform: translateY(var(--mega-menu-text-hover-y, -68px));
-  }
-}
-
-@media (min-width: 2560px) {
-  .megaMenuTextClip {
-    --mega-menu-text-track-offset: -7px;
-    --mega-menu-text-clip-height: 82px;
-  }
-
-  .megaMenuTextClip:hover .megaMenuTextTrack,
-  .megaMenuTextTrackActive {
-    transform: translateY(var(--mega-menu-text-hover-y, -72px));
+    transform: translateY(var(--mega-menu-text-hover-y, -77px));
   }
 }
 
@@ -156,6 +150,29 @@
   display: flex;
   align-items: center;
   gap: 24px;
+}
+
+/* dev credit + copyright travel together on the footer's right edge, the same pairing
+   the page ribbons use */
+.megaMenuFooterMeta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.megaMenuDev {
+  font-family: var(--font-albert-sans), system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #f7f6f5;
+  white-space: nowrap;
+}
+
+@media (min-width: 1920px) {
+  .megaMenuDev {
+    font-size: 16px;
+  }
 }
 
 .megaMenuCopyright {
@@ -239,9 +256,16 @@
   /* the four socials have to hold one line at 360 — 14px overflows, so scale the
      footer type down rather than letting it wrap */
   .megaMenuLink,
+  .megaMenuDev,
   .megaMenuCopyright {
     font-size: 11px;
     letter-spacing: 0.3px;
+  }
+
+  .megaMenuFooterMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .megaMenuFooter > * {

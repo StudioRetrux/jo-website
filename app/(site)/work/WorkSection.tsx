@@ -43,9 +43,8 @@ const FULL_NAME = "Yohanes Alexander";
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
 const SOCIAL_ITEMS = [
   { label: "Instagram", href: "https://instagram.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "WhatsApp", href: "https://wa.me" },
   { label: "TikTok", href: "https://tiktok.com" },
+  { label: "WhatsApp", href: "https://wa.me/6281234567890" },
 ];
 
 type Phase = "closed" | "pre-open" | "open";
