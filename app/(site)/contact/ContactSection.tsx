@@ -58,7 +58,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
       setMenuOpen(false);
       return;
     }
-    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
+    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact", "Terms of Use": "terms", "Privacy Policy": "privacy" };
     const page = pageMap[item];
     if (page) {
       // menu stays put and gets covered by the page sliding up over it (INCOMING_Z),

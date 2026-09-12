@@ -254,10 +254,12 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
       if (item === "Work") { window.location.assign("/works"); return; }
       if (item === "Curated Spaces") { window.location.assign("/curratedspaces"); return; }
       if (item === "Contact") { window.location.assign("/contact"); return; }
+      if (item === "Terms of Use") { window.location.assign("/terms"); return; }
+      if (item === "Privacy Policy") { window.location.assign("/privacy"); return; }
       setMenuOpen(false);
       return;
     }
-    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
+    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact", "Terms of Use": "terms", "Privacy Policy": "privacy" };
     const page = pageMap[item];
     if (page) {
       // menu stays put and gets covered by the page sliding up over it (INCOMING_Z),
@@ -565,8 +567,28 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         <div className={workStyles.workRibbon}>
           <div className={workStyles.workRibbonInner}>
             <div className={workStyles.workRibbonLeft}>
-              <a href="/terms" className={`${workStyles.workRibbonLink} ${workStyles.workRibbonLinkPadded}`}>Terms of Use</a>
-              <a href="/privacy" className={workStyles.workRibbonLink}>Privacy Policy</a>
+              <a
+                href="/terms"
+                className={`${workStyles.workRibbonLink} ${workStyles.workRibbonLinkPadded}`}
+                onClick={(event) => {
+                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+                  event.preventDefault();
+                  handleNavigate("Terms of Use");
+                }}
+              >
+                Terms of Use
+              </a>
+              <a
+                href="/privacy"
+                className={workStyles.workRibbonLink}
+                onClick={(event) => {
+                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+                  event.preventDefault();
+                  handleNavigate("Privacy Policy");
+                }}
+              >
+                Privacy Policy
+              </a>
             </div>
             <div className={workStyles.workRibbonRight}>
               <span className={workStyles.workRibbonDev}>

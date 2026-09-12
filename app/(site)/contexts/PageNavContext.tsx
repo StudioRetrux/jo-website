@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { usePathname } from "next/navigation";
 import { useSection } from "./SectionContext";
 
-export type Page = "home" | "work" | "about" | "curratedspaces" | "contact";
+export type Page = "home" | "work" | "about" | "curratedspaces" | "contact" | "terms" | "privacy";
 
 export const SLIDE_DURATION = 700;
 export const SLIDE_EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
@@ -21,6 +21,8 @@ const PAGE_PATHS: Record<Page, string> = {
   about: "/about",
   curratedspaces: "/curratedspaces",
   contact: "/contact",
+  terms: "/terms",
+  privacy: "/privacy",
 };
 
 const PATH_PAGES: Record<string, Page> = {
@@ -29,6 +31,8 @@ const PATH_PAGES: Record<string, Page> = {
   "/about": "about",
   "/curratedspaces": "curratedspaces",
   "/contact": "contact",
+  "/terms": "terms",
+  "/privacy": "privacy",
 };
 
 type PageNavContextType = {

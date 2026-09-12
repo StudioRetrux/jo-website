@@ -105,8 +105,8 @@ export default function RightPanel({
   revealTransition,
 }: Props) {
   const activeIndex = carouselIncoming ?? carouselCurrent;
-  // Bar is 50% wide (css); remaining 50% of travel split across the slides.
-  const barStep = slides.length > 1 ? 50 / (slides.length - 1) : 0;
+  // Progress fill, not a travelling thumb: slide 1 of 5 is 20% wide, slide 5 is 100%.
+  const barFill = ((activeIndex + 1) / slides.length) * 100;
 
   return (
     <div
@@ -122,7 +122,7 @@ export default function RightPanel({
           <div className={styles.rightIndicatorRail} />
           <div
             className={styles.rightIndicatorBar}
-            style={{ left: `${activeIndex * barStep}%` }}
+            style={{ width: `${barFill}%` }}
           />
         </div>
         <span className={styles.rightIndicatorText}>{pad(slides.length)}</span>

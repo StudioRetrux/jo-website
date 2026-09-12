@@ -233,8 +233,31 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
         </div>
         <div className={headerStyles.headerRight}>
           <div className={styles.megaMenuFooterPolicies}>
-            <a href="/terms" className={styles.megaMenuLink}>Terms of Use</a>
-            <a href="/privacy" className={styles.megaMenuLink}>Privacy Policy</a>
+            <a
+              href="/terms"
+              className={styles.megaMenuLink}
+              onClick={(event) => {
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+                event.preventDefault();
+                // same as a nav item: suppress the panel's own close, the page slides over it
+                setInstant(true);
+                onNavigate?.("Terms of Use");
+              }}
+            >
+              Terms of Use
+            </a>
+            <a
+              href="/privacy"
+              className={styles.megaMenuLink}
+              onClick={(event) => {
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+                event.preventDefault();
+                setInstant(true);
+                onNavigate?.("Privacy Policy");
+              }}
+            >
+              Privacy Policy
+            </a>
           </div>
           <div className={styles.megaMenuFooterMeta}>
             <span className={styles.megaMenuDev}>

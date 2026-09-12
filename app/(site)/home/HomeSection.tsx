@@ -12,6 +12,7 @@ import AboutSection from "../about/AboutSection";
 import WorkSection from "../work/WorkSection";
 import CurratedSpacesSection from "../curratedspaces/CurratedSpacesSection";
 import ContactSection from "../contact/ContactSection";
+import LegalSection from "../legal/LegalSection";
 import { usePageNav, INCOMING_Z, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 
 const REVEAL_MS = 700;
@@ -68,7 +69,7 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
   }, [carouselCurrent, slides.length]);
 
   function handleNavigate(item: string) {
-    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact" };
+    const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact", "Terms of Use": "terms", "Privacy Policy": "privacy" };
     const page = pageMap[item];
     if (page) {
       // menu stays put and gets covered by the page sliding up over it (INCOMING_Z),
@@ -106,6 +107,18 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
         open={activePage === "contact" || incomingPage === "contact"}
         slidePage={incomingPage === "contact"}
         zIndex={incomingPage === "contact" ? INCOMING_Z : undefined}
+      />
+      <LegalSection
+        kind="terms"
+        open={activePage === "terms" || incomingPage === "terms"}
+        slidePage={incomingPage === "terms"}
+        zIndex={incomingPage === "terms" ? INCOMING_Z : undefined}
+      />
+      <LegalSection
+        kind="privacy"
+        open={activePage === "privacy" || incomingPage === "privacy"}
+        slidePage={incomingPage === "privacy"}
+        zIndex={incomingPage === "privacy" ? INCOMING_Z : undefined}
       />
       <div
         style={{

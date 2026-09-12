@@ -2,23 +2,15 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Lenis from "@studio-freight/lenis";
-import useEmblaCarousel from "embla-carousel-react";
-import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
-import AutoScroll from "embla-carousel-auto-scroll";
-import Image from "next/image";
 import Header from "../home/Header";
-import ProjectLink from "../projects/ProjectLink";
-import { useLoadBar } from "../LoadBar";
-import { curatedAssets } from "../assets";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "../about/FullnameBlock";
 import FullnameMobile from "../FullnameMobile";
 import FooterMenuText from "../work/FooterMenuText";
-import { useCursor } from "../contexts/CursorContext";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
-import { DEFAULT_CURATED_SPACE_ITEMS, curatedSlug, type CuratedSpaceItem } from "@/lib/projects/curated-shared";
+import { LEGAL_PAGES, type LegalKind } from "./legal-content";
 import workStyles from "../work/work.module.css";
-import styles from "./curratedspaces.module.css";
+import styles from "./legal.module.css";
 
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
 const SOCIAL_ITEMS = [
@@ -28,61 +20,25 @@ const SOCIAL_ITEMS = [
 ];
 
 type Props = {
+  kind: LegalKind;
   open: boolean;
   slidePage?: boolean;
   homeNavigation?: "state" | "route";
   zIndex?: number;
-  items?: CuratedSpaceItem[];
 };
 
-export default function CurratedSpacesSection({ open, slidePage = true, homeNavigation = "state", zIndex, items = DEFAULT_CURATED_SPACE_ITEMS }: Props) {
+/** Terms and Privacy are the same page with different copy — one component, two entries. */
+export default function LegalSection({ kind, open, slidePage = true, homeNavigation = "state", zIndex }: Props) {
   const { navigateTo } = usePageNav();
-  const { setMode } = useCursor();
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [footerWordmarkInView, setFooterWordmarkInView] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const footerWordmarkRef = useRef<HTMLDivElement>(null);
-  const [mobile, setMobile] = useState(false);
-  // no auto-scroll on a phone — it's swipe-only there, so the plugins drop out entirely.
-  // useMemo because a fresh array every render would re-init embla every render.
-  const plugins = React.useMemo(
-    () =>
-      mobile
-        ? []
-        : [
-            WheelGesturesPlugin(),
-            // stopOnInteraction false = resume after drag/wheel too, not just mouse leave
-            AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true }),
-          ],
-    [mobile],
-  );
-  const [emblaRef] = useEmblaCarousel(
-    // align start: default "center" translates the track on init (mount blink)
-    { loop: true, dragFree: true, align: "start" },
-    plugins,
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 480px)");
-    const sync = () => setMobile(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
+  const page = LEGAL_PAGES[kind];
 
   useEffect(() => { setMounted(true); }, []);
-
-  // carousel imagery is the heavy part of this page — warm it the first time the
-  // section opens, with the bar reporting progress
-  const { preload } = useLoadBar();
-  const preloaded = useRef(false);
-  useEffect(() => {
-    if (!open || preloaded.current) return;
-    preloaded.current = true;
-    preload(curatedAssets(items));
-  }, [open, items, preload]);
 
   useEffect(() => {
     if (!open) {
@@ -115,6 +71,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
       if (item === "Home") { window.location.assign("/"); return; }
       if (item === "Work") { window.location.assign("/works"); return; }
       if (item === "About") { window.location.assign("/about"); return; }
+      if (item === "Curated Spaces") { window.location.assign("/curratedspaces"); return; }
       if (item === "Contact") { window.location.assign("/contact"); return; }
       if (item === "Terms of Use") { window.location.assign("/terms"); return; }
       if (item === "Privacy Policy") { window.location.assign("/privacy"); return; }
@@ -122,15 +79,24 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
       return;
     }
     const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact", "Terms of Use": "terms", "Privacy Policy": "privacy" };
-    const page = pageMap[item];
-    if (page) {
+    const target = pageMap[item];
+    if (target) {
       // menu stays put and gets covered by the page sliding up over it (INCOMING_Z),
       // then drops with no animation of its own once it's hidden
-      navigateTo(page);
+      navigateTo(target);
       setTimeout(() => setMenuOpen(false), SLIDE_DURATION);
     } else {
       setMenuOpen(false);
     }
+  }
+
+  /** Plain left-click slides; the href stays for middle-click, ctrl-click and crawlers. */
+  function ribbonClick(item: string) {
+    return (event: React.MouseEvent) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      event.preventDefault();
+      handleNavigate(item);
+    };
   }
 
   return (
@@ -149,54 +115,16 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
         isHome={open}
         onMenuToggle={() => setMenuOpen((v) => !v)}
         style={{ transition: "none" }}
-        navLabel="Home / Curated Spaces"
+        navLabel={page.navLabel}
         homeNavigation={homeNavigation}
       />
       <div ref={contentRef}>
-        <section className={styles.hero} aria-label="Curated spaces">
-          <div className={styles.titleRow}>
-            <span className={styles.titleLabel}>from jo&apos;s observation</span>
-            <h1 className={styles.title}>Curated Spaces</h1>
-          </div>
-          {/* cards open a detail page, so the follower reads VIEW — not the carousel arrow */}
-          <div
-            ref={emblaRef}
-            className={styles.carousel}
-            aria-label="Curated spaces projects"
-            data-lenis-prevent
-            onMouseEnter={() => setMode("view")}
-            onMouseLeave={() => setMode("default")}
-          >
-            <div className={styles.carouselTrack}>
-              {/* ponytail: items doubled so embla loop always has content wider than viewport */}
-              {[...items, ...items].map((item, i) => (
-                <article
-                  className={styles.carouselCard}
-                  key={`${item.src}-${i}`}
-                  // unitless: the CSS divides it by the 1440 frame before applying a unit
-                  style={{ "--image-width": item.width } as React.CSSProperties}
-                >
-                  <ProjectLink kind="curated" slug={curatedSlug(item.title)} className={styles.carouselLink}>
-                    <Image
-                      src={item.src}
-                      alt={item.title}
-                      width={item.width}
-                      height={item.height}
-                      className={styles.carouselImage}
-                      draggable={false}
-                    />
-                    <div className={styles.carouselCaption}>
-                      <h2 className={styles.carouselTitle}>{item.title}</h2>
-                      <p className={styles.carouselMeta}>
-                        {item.category}
-                        <span aria-hidden="true">{" \u2022 "}</span>
-                        {item.year}
-                      </p>
-                    </div>
-                  </ProjectLink>
-                </article>
-              ))}
-            </div>
+        <section className={styles.hero} aria-label={page.title}>
+          <h1 className={styles.title}>{page.title}</h1>
+          <div className={styles.prose}>
+            {page.paragraphs.map((text) => (
+              <p key={text.slice(0, 40)}>{text}</p>
+            ))}
           </div>
         </section>
         <div ref={footerWordmarkRef} style={{ "--wordmark-color": "#59534c" } as React.CSSProperties}>
@@ -251,22 +179,14 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
               <a
                 href="/terms"
                 className={`${workStyles.workRibbonLink} ${workStyles.workRibbonLinkPadded}`}
-                onClick={(event) => {
-                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
-                  event.preventDefault();
-                  handleNavigate("Terms of Use");
-                }}
+                onClick={ribbonClick("Terms of Use")}
               >
                 Terms of Use
               </a>
               <a
                 href="/privacy"
                 className={workStyles.workRibbonLink}
-                onClick={(event) => {
-                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
-                  event.preventDefault();
-                  handleNavigate("Privacy Policy");
-                }}
+                onClick={ribbonClick("Privacy Policy")}
               >
                 Privacy Policy
               </a>
