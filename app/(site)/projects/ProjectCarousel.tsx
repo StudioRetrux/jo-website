@@ -37,14 +37,18 @@ export default function ProjectCarousel() {
       <div className={styles.carouselTrack}>
         {SLIDES.map((src, i) => (
           <div className={styles.carouselSlide} key={`${src}-${i}`}>
-            <Image
-              src={src}
-              alt=""
-              fill
-              sizes="80vw"
-              draggable={false}
-              className={styles.carouselImage}
-            />
+            {/* the slide carries the gap as padding, so the image needs its own box to
+                fill — `inset: 0` resolves against the padding box, not the content box */}
+            <div className={styles.carouselFrame}>
+              <Image
+                src={src}
+                alt=""
+                fill
+                sizes="80vw"
+                draggable={false}
+                className={styles.carouselImage}
+              />
+            </div>
           </div>
         ))}
       </div>

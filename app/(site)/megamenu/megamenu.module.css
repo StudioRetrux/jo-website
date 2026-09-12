@@ -18,6 +18,11 @@
 .megaMenuBody {
   display: flex;
   flex: 1;
+  /* A flex item's default min-height is `auto` — its own content. That gave the body a
+     floor it refused to go under, so on a short viewport it pushed the footer past the
+     bottom of this fixed, clip-path'd panel and the links there were painted out.
+     min-height: 0 lets it yield, so the footer's 92px is never negotiable. */
+  min-height: 0;
 }
 
 .megaMenuLeft,
@@ -137,6 +142,52 @@
   .megaMenuTextClip:hover .megaMenuTextTrack,
   .megaMenuTextTrackActive {
     transform: translateY(var(--mega-menu-text-hover-y, -77px));
+  }
+}
+
+/* Short viewports. Everything stacked here is a fixed height — 92px header, 92px
+   footer, the nav's type metrics — so the panel needs a minimum of 705px (856px at the
+   72px type) before the footer runs off the bottom. 1366x768 and 1280x720 laptops land
+   under that once browser chrome is taken out. The gaps and padding are the only parts
+   that can give without disturbing the type, and these only engage when the room truly
+   isn't there: above 720px nothing below changes.
+
+   Must stay after the 1920 block to win on equal specificity, and before the 480 block
+   so phones keep their own, tighter set. */
+@media (max-height: 720px) {
+  .megaMenuNav {
+    gap: 24px;
+  }
+
+  .megaMenuLeft,
+  .megaMenuRight {
+    padding-block: 32px;
+  }
+
+  /* a viewport this short can't carry the 72px type either — back to the 56px set, or a
+     wide-but-short window (1920 with devtools docked) still overflows */
+  .megaMenuTextClip {
+    --mega-menu-text-clip-height: 53px;
+    --mega-menu-text-font-size: 56px;
+    --mega-menu-text-item-height: 67px;
+    --mega-menu-text-track-offset: -7px;
+  }
+
+  .megaMenuTextClip:hover .megaMenuTextTrack,
+  .megaMenuTextTrackActive {
+    transform: translateY(var(--mega-menu-text-hover-y, -60px));
+  }
+}
+
+/* floor: 92 + 92 + (5 x 53 nav) + 4 x 16 gap + 2 x 24 padding = 561px */
+@media (max-height: 620px) {
+  .megaMenuNav {
+    gap: 16px;
+  }
+
+  .megaMenuLeft,
+  .megaMenuRight {
+    padding-block: 24px;
   }
 }
 

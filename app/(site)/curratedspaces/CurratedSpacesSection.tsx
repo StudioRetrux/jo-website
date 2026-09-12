@@ -22,9 +22,9 @@ import styles from "./curratedspaces.module.css";
 
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
 const SOCIAL_ITEMS = [
-  { label: "Instagram", href: "https://instagram.com" },
-  { label: "TikTok", href: "https://tiktok.com" },
-  { label: "WhatsApp", href: "https://wa.me/6281234567890" },
+  { label: "Instagram", href: "https://www.instagram.com/nuansa.nuraga" },
+  { label: "TikTok", href: "https://www.tiktok.com/@nuansanuraga" },
+  { label: "WhatsApp", href: "https://wa.me/6287823139800" },
 ];
 
 type Props = {
@@ -216,8 +216,8 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
                 <span className={workStyles.footerInfoTitle}>GET IN TOUCH</span>
               </div>
               <div className={workStyles.footerInfoItems}>
-                <a className={workStyles.footerInfoLink} href="mailto:hello@yohanes.alexander">hello@yohanes.alexander</a>
-                <a className={workStyles.footerInfoLink} href="tel:+6283453294234">+62 83453294234</a>
+                <a className={workStyles.footerInfoLink} href="mailto:yohanes.ptan@gmail.com" target="_blank" rel="noreferrer noopener">yohanes.ptan@gmail.com</a>
+                <a className={workStyles.footerInfoLink} href="tel:+6287823139800">+62 878 2313 9800</a>
               </div>
               <div className={workStyles.footerInfoGroup}>
                 <div className={workStyles.footerInfoTitleRow}>
@@ -225,7 +225,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
                 </div>
                 <div className={workStyles.footerInfoItems}>
                   {SOCIAL_ITEMS.map((item) => (
-                    <a className={workStyles.footerInfoLink} href={item.href} key={item.label}>{item.label}</a>
+                    <a className={workStyles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener">{item.label}</a>
                   ))}
                 </div>
               </div>

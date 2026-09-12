@@ -325,14 +325,25 @@
 }
 
 .carouselTrack {
+  --carousel-gap: 40px;
   display: flex;
-  gap: 40px;
   height: 640px;
 }
 
+/* Spacing as slide padding, not flex `gap` — a gap belongs to no slide, so embla's loop
+   drops it at the last->first seam and those two photos end up touching. Split across
+   both edges so every neighbouring pair reads as one full gap, the seam included, and
+   the centred slide stays optically centred. The basis grows by the gap so the visible
+   frame keeps the 79.4% the peeks were measured against. */
 .carouselSlide {
+  flex: 0 0 calc(79.4% + var(--carousel-gap));
+  height: 100%;
+  padding-inline: calc(var(--carousel-gap) / 2);
+}
+
+.carouselFrame {
   position: relative;
-  flex: 0 0 79.4%;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   background: #d0cfce;
@@ -787,12 +798,12 @@
   /* the gallery carousel: one slide with its neighbours peeking, same as the
      testimonials strip on About */
   .carouselTrack {
-    gap: 12px;
+    --carousel-gap: 12px;
     height: 240px;
   }
 
   .carouselSlide {
-    flex: 0 0 78%;
+    flex: 0 0 calc(78% + var(--carousel-gap));
   }
 
   /* (MEET THE TEAM) above the names, which pair up two to a row */

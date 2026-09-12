@@ -29,9 +29,9 @@ function EmailIcon({ className }: { className?: string }) {
 }
 
 const SOCIAL_ITEMS = [
-  { label: "INSTAGRAM", href: "https://instagram.com" },
-  { label: "TIKTOK", href: "https://tiktok.com" },
-  { label: "WHATSAPP", href: "https://wa.me/6281234567890" },
+  { label: "INSTAGRAM", href: "https://www.instagram.com/nuansa.nuraga" },
+  { label: "TIKTOK", href: "https://www.tiktok.com/@nuansanuraga" },
+  { label: "WHATSAPP", href: "https://wa.me/6287823139800" },
 ];
 
 type Props = {
@@ -100,11 +100,31 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         <div className={`${styles.curtain} ${styles.curtainEmail}`}>
           <Image src="/Resort Room 2.jpg" alt="" fill sizes="100vw" className={styles.curtainImage} />
         </div>
+        {/* The .cta layer is a sibling of the columns, not a child, so moving onto a button
+            reads as leaving the column — same handlers here keep the curtain open. */}
         <div className={`${styles.cta} ${styles.ctaWa}`}>
-          <a href="https://wa.me/6281234567890" className={styles.ctaButton}>Contact Now</a>
+          <a
+            href="https://wa.me/6287823139800"
+            className={styles.ctaButton}
+            onMouseEnter={() => setHovered("wa")}
+            onMouseLeave={() => setHovered("")}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Contact Now
+          </a>
         </div>
         <div className={`${styles.cta} ${styles.ctaEmail}`}>
-          <a href="mailto:hello@yohanes.alexander" className={styles.ctaButton}>Contact Now</a>
+          <a
+            href="mailto:yohanes.ptan@gmail.com"
+            className={styles.ctaButton}
+            onMouseEnter={() => setHovered("email")}
+            onMouseLeave={() => setHovered("")}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Contact Now
+          </a>
         </div>
         <div className={`${styles.col} ${styles.colLeft}`}>
           <Image src="/left.png" alt="" width={960} height={960} className={styles.leftImage} />
@@ -121,35 +141,41 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
               </div>
               <div className={`${workStyles.footerInfoItems} ${styles.socialItems}`}>
                 {SOCIAL_ITEMS.map((item) => (
-                  <a className={workStyles.footerInfoLink} href={item.href} key={item.label}>{item.label}</a>
+                  <a className={workStyles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener">{item.label}</a>
                 ))}
               </div>
             </div>
           </div>
         </div>
         <a
-          href="https://wa.me/6281234567890"
+          href="https://wa.me/6287823139800"
           className={`${styles.col} ${styles.colMid} ${styles.colSplit}`}
+          onMouseEnter={() => setHovered("wa")}
+          onMouseLeave={() => setHovered("")}
+          target="_blank"
+          rel="noreferrer noopener"
         >
-          {/* the trigger is this half only — icon, label and number. Leaving is still the
-              section's job, so walking down to CONTACT NOW doesn't retract the curtain. */}
-          <div className={styles.half} onMouseEnter={() => setHovered("wa")}>
+          <div className={styles.half}>
             <WaIcon className={styles.waIcon} />
             <h2 className={styles.waTitle}>Whatsapp</h2>
-            <span className={styles.waNumber}>(62) 81234 567890</span>
+            <span className={styles.waNumber}>(62) 878 2313 9800</span>
           </div>
           <div className={styles.half}>
             <Image src="/whatsapp.png" alt="WhatsApp" width={233} height={233} className={styles.waImage} />
           </div>
         </a>
         <a
-          href="mailto:hello@yohanes.alexander"
+          href="mailto:yohanes.ptan@gmail.com"
           className={`${styles.col} ${styles.colRight} ${styles.colSplit}`}
+          onMouseEnter={() => setHovered("email")}
+          onMouseLeave={() => setHovered("")}
+          target="_blank"
+          rel="noreferrer noopener"
         >
-          <div className={styles.half} onMouseEnter={() => setHovered("email")}>
+          <div className={styles.half}>
             <EmailIcon className={styles.waIcon} />
             <h2 className={styles.waTitle}>Email</h2>
-            <span className={styles.waNumber}>hello@yohanes.alexander</span>
+            <span className={styles.waNumber}>yohanes.ptan@gmail.com</span>
           </div>
           <div className={styles.half}>
             <Image src="/email.png" alt="Email" width={233} height={233} className={styles.waImage} />

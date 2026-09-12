@@ -168,11 +168,11 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
         </div>
         <div className={headerStyles.headerRight}>
           <span className={headerStyles.headerLocation}>Jakarta, Indonesia</span>
-          <a href="mailto:hello@yohanes.alexander" className={headerStyles.headerEmail}>
-            hello@yohanes.alexander
+          <a href="mailto:yohanes.ptan@gmail.com" className={headerStyles.headerEmail} target="_blank" rel="noreferrer noopener">
+            yohanes.ptan@gmail.com
           </a>
           {/* mobile stand-in for the two above — CSS swaps them */}
-          <a href="mailto:hello@yohanes.alexander" className={headerStyles.headerEmailIcon} aria-label="Email">
+          <a href="mailto:yohanes.ptan@gmail.com" className={headerStyles.headerEmailIcon} aria-label="Email" target="_blank" rel="noreferrer noopener">
             <Image src="/Envelope 2.svg" alt="" width={24} height={24} />
           </a>
         </div>
@@ -227,11 +227,9 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
       </div>
       <div className={styles.megaMenuFooter} style={fadeUp}>
         <div className={headerStyles.headerLeft}>
-          <a href="mailto:hello@yohanes.alexander" className={styles.megaMenuLink}>Email</a>
-          {/* socials still point at bare domains — real handles are TBC */}
-          <a href="https://instagram.com" className={styles.megaMenuLink}>Instagram</a>
-          <a href="https://tiktok.com" className={styles.megaMenuLink}>TikTok</a>
-          <a href="https://wa.me/6281234567890" className={styles.megaMenuLink}>WhatsApp</a>
+          <a href="https://www.instagram.com/nuansa.nuraga" className={styles.megaMenuLink} target="_blank" rel="noreferrer noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@nuansanuraga" className={styles.megaMenuLink} target="_blank" rel="noreferrer noopener">TikTok</a>
+          <a href="https://wa.me/6287823139800" className={styles.megaMenuLink} target="_blank" rel="noreferrer noopener">WhatsApp</a>
         </div>
         <div className={headerStyles.headerRight}>
           <div className={styles.megaMenuFooterPolicies}>

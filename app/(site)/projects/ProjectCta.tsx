@@ -23,7 +23,7 @@ export default function ProjectCta() {
         <p className={styles.ctaSectionText}>
           Let&apos;s create spaces that{" "}<br />feel just as thoughtful.
         </p>
-        <a href="mailto:retruxstudio@gmail.com" className={styles.ctaSectionCta}>Consult</a>
+        <a href="https://wa.me/6287823139800" className={styles.ctaSectionCta} target="_blank" rel="noreferrer noopener">Consult</a>
       </div>
     </section>
   );

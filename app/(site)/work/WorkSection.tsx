@@ -42,9 +42,9 @@ const SECTION_GAP = "256px";
 const FULL_NAME = "Yohanes Alexander";
 const FOOTER_MENU_ITEMS = ["Work", "About", "Curated Spaces", "Contact"];
 const SOCIAL_ITEMS = [
-  { label: "Instagram", href: "https://instagram.com" },
-  { label: "TikTok", href: "https://tiktok.com" },
-  { label: "WhatsApp", href: "https://wa.me/6281234567890" },
+  { label: "Instagram", href: "https://www.instagram.com/nuansa.nuraga" },
+  { label: "TikTok", href: "https://www.tiktok.com/@nuansanuraga" },
+  { label: "WhatsApp", href: "https://wa.me/6287823139800" },
 ];
 
 type Phase = "closed" | "pre-open" | "open";
@@ -332,6 +332,14 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
               const switchCardId = firstVisibleCard()?.id;
               const isFiltered = (card: WorkItem) =>
                 activeFilter !== "All" && card.category !== activeFilter;
+              // A gap only earns its height when a visible card sits above it. Under a
+              // filter the first surviving card can be several slots — or a whole chunk —
+              // down, and every gap leading up to it was still being rendered at full
+              // height. `index` is the position in `works` of the card the spacer sits on
+              // top of, so this reads as "nothing above me survived the filter".
+              const firstVisibleIndex = works.findIndex((card) => !isFiltered(card));
+              const nothingVisibleAbove = (index: number) =>
+                firstVisibleIndex === -1 || index <= firstVisibleIndex;
               const exitFor = (card: WorkItem) =>
                 gridExiting ? (card.id === switchCardId ? "hide" : "slide-right") : undefined;
 
@@ -344,6 +352,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                 const paired = chunk.map((card, index) => ({
                   card,
                   slot: GRID_SLOTS[index],
+                  index: chunkIndex * GRID_SLOTS.length + index,
                 }));
                 const rowPairs = paired.filter(({ slot }) => slot.row);
                 const nonRowPairs = paired.filter(({ slot }) => !slot.row);
@@ -355,7 +364,10 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                     {chunkIndex > 0 && (
                       <WorkSpacer
                         height={SECTION_GAP}
-                        collapsed={chunk.every((card) => isFiltered(card))}
+                        collapsed={
+                          chunk.every((card) => isFiltered(card)) ||
+                          nothingVisibleAbove(chunkIndex * GRID_SLOTS.length)
+                        }
                       />
                     )}
                     {rowPairs.length > 0 && (
@@ -382,7 +394,10 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                       </div>
                     )}
                     {nonRowPairs[0]?.slot.marginTop && (
-                      <WorkSpacer height={nonRowPairs[0].slot.marginTop} collapsed={rowFiltered} />
+                      <WorkSpacer
+                        height={nonRowPairs[0].slot.marginTop}
+                        collapsed={rowFiltered || nothingVisibleAbove(nonRowPairs[0].index)}
+                      />
                     )}
                     {nonRowPairs.map(({ card, slot }, index) => {
                       const cardFiltered = isFiltered(card);
@@ -406,7 +421,10 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                             exitPhase={exitFor(card)}
                           />
                           {nextPair?.slot.marginTop && (
-                            <WorkSpacer height={nextPair.slot.marginTop} collapsed={cardFiltered} />
+                            <WorkSpacer
+                              height={nextPair.slot.marginTop}
+                              collapsed={cardFiltered || nothingVisibleAbove(nextPair.index)}
+                            />
                           )}
                         </React.Fragment>
                       );
@@ -458,11 +476,11 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                 <span className={styles.footerInfoTitle}>GET IN TOUCH</span>
               </div>
               <div className={styles.footerInfoItems}>
-                <a className={styles.footerInfoLink} href="mailto:hello@yohanes.alexander">
-                  hello@yohanes.alexander
+                <a className={styles.footerInfoLink} href="mailto:yohanes.ptan@gmail.com" target="_blank" rel="noreferrer noopener">
+                  yohanes.ptan@gmail.com
                 </a>
-                <a className={styles.footerInfoLink} href="tel:+6283453294234">
-                  +62 83453294234
+                <a className={styles.footerInfoLink} href="tel:+6287823139800">
+                  +62 878 2313 9800
                 </a>
               </div>
               <div className={styles.footerInfoGroup}>
@@ -471,7 +489,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
                 </div>
                 <div className={styles.footerInfoItems}>
                   {SOCIAL_ITEMS.map((item) => (
-                    <a className={styles.footerInfoLink} href={item.href} key={item.label}>
+                    <a className={styles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener">
                       {item.label}
                     </a>
                   ))}

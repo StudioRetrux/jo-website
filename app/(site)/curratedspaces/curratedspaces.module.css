@@ -78,7 +78,7 @@
 }
 
 .carouselTrack {
-  --carousel-gap: 40px;
+  --carousel-gap: 24px;
   display: flex;
   /* no explicit width: embla uses track width as viewport size —
      max-content made it as wide as content, so embla saw "everything fits",
@@ -153,7 +153,7 @@
   }
 
   .carouselTrack {
-    --carousel-gap: 53px;
+    --carousel-gap: 36px;
   }
 
   .carouselTitle {
