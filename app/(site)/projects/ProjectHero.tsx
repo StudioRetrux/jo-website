@@ -1,4 +1,4 @@
-import ParallaxImage from "./ParallaxImage";
+import InertiaImage from "./InertiaImage";
 import { SIZES } from "../assets";
 import styles from "./[slug]/projectDetail.module.css";
 
@@ -21,7 +21,7 @@ export default function ProjectHero({
 }) {
   return (
     <section className={styles.hero}>
-      <ParallaxImage src={image} alt={alt} priority sizes={SIZES.full} className={styles.heroImage} />
+      <InertiaImage src={image} alt={alt} priority sizes={SIZES.full} className={styles.heroImage} />
       <div className={styles.heroShade} />
       <div className={styles.heroContent}>
         <p className={styles.heroEyebrow}>

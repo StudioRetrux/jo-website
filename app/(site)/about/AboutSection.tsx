@@ -6,9 +6,7 @@ import {
   motion,
   useAnimationFrame,
   useMotionValue,
-  useScroll,
   useSpring,
-  useTransform,
   useVelocity,
 } from "motion/react";
 import Image from "next/image";
@@ -24,12 +22,12 @@ import { WORK_CATEGORIES } from "@/lib/projects/types";
 import FooterMenuText from "../work/FooterMenuText";
 import workStyles from "../work/work.module.css";
 import CtaImageTrail from "./CtaImageTrail";
+// same weighted-lag images the project pages use
+import InertiaImage from "../projects/InertiaImage";
 import { useCursor } from "../contexts/CursorContext";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 import styles from "./about.module.css";
 
-const IMAGES_MOMENTUM_LIMIT = 20;
-const IMAGES_MOMENTUM_FACTOR = -0.02;
 const HERO_ENTRY_MOMENTUM_LIMIT = 36;
 const HERO_ENTRY_MOMENTUM_FACTOR = 0.035;
 const HERO_ENTRY_LEAD_OFFSET = -16;
@@ -98,19 +96,6 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
     stiffness: 26,
     damping: 32,
     mass: 2.4,
-  });
-  const { scrollY } = useScroll({ container: wrapperRef });
-  const scrollVelocity = useVelocity(scrollY);
-  const imagesMomentumTarget = useTransform(scrollVelocity, (velocity) =>
-    Math.max(
-      -IMAGES_MOMENTUM_LIMIT,
-      Math.min(IMAGES_MOMENTUM_LIMIT, velocity * IMAGES_MOMENTUM_FACTOR),
-    )
-  );
-  const imagesMomentumY = useSpring(imagesMomentumTarget, {
-    stiffness: 48,
-    damping: 20,
-    mass: 1.15,
   });
 
   useEffect(() => { setMounted(true); }, []);
@@ -378,32 +363,20 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </section>
         <section ref={imagesSectionRef} className={styles.imagesSection} aria-label="Images">
           <div className={styles.imagesPanel}>
-            <motion.div
-              className={styles.imagesPanelLayer}
-              style={{ y: imagesMomentumY, scale: 1.08 }}
-            >
-              <Image
-                src="/Resort Room 1.jpg"
-                alt="Resort room interior"
-                fill
-                sizes="(max-width: 480px) 100vw, 50vw"
-                className={styles.imagesPanelImage}
-              />
-            </motion.div>
+            <InertiaImage
+              src="/Resort Room 1.jpg"
+              alt="Resort room interior"
+              sizes="(max-width: 480px) 100vw, 50vw"
+              className={styles.imagesPanelImage}
+            />
           </div>
           <div className={styles.imagesPanel}>
-            <motion.div
-              className={styles.imagesPanelLayer}
-              style={{ y: imagesMomentumY, scale: 1.08 }}
-            >
-              <Image
-                src="/Resort Room 2.jpg"
-                alt="Resort room lounge"
-                fill
-                sizes="(max-width: 480px) 100vw, 50vw"
-                className={styles.imagesPanelImage}
-              />
-            </motion.div>
+            <InertiaImage
+              src="/Resort Room 2.jpg"
+              alt="Resort room lounge"
+              sizes="(max-width: 480px) 100vw, 50vw"
+              className={styles.imagesPanelImage}
+            />
           </div>
         </section>
         <section ref={profileSectionRef} className={styles.profileSection} aria-label="Profile">
@@ -433,15 +406,13 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           </div>
           <div className={styles.profileRight}>
             <div className={styles.profileRightInner}>
-              <motion.div className={styles.profileRightLayer} style={{ y: imagesMomentumY }}>
-                <Image
-                  src="/45.png"
-                  alt="Yohanes Alexander"
-                  fill
-                  sizes="(max-width: 480px) 100vw, 50vw"
-                  className={styles.profileRightImage}
-                />
-              </motion.div>
+              <Image
+                src="/45.png"
+                alt="Yohanes Alexander"
+                fill
+                sizes="(max-width: 480px) 100vw, 50vw"
+                className={styles.profileRightImage}
+              />
             </div>
           </div>
         </section>
@@ -488,6 +459,9 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           </div>
         </section>
         <section className={styles.bgSection} aria-label="Background">
+          <div className={styles.bgSectionBgClip}>
+            <InertiaImage src="/BG.png" alt="" sizes="100vw" className={styles.bgSectionBg} />
+          </div>
           <div className={styles.bgSectionImageWrap}>
             <img src="/452.png" alt="" className={styles.bgSectionImage} />
             <div className={styles.bgSectionOverlay}>

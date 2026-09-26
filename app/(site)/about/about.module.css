@@ -200,12 +200,6 @@
   overflow: hidden;
 }
 
-.imagesPanelLayer {
-  position: absolute;
-  inset: -12% 0;
-  will-change: transform;
-}
-
 .imagesPanelImage {
   object-fit: cover;
   object-position: center;
@@ -329,11 +323,6 @@
   overflow: hidden;
 }
 
-.profileRightLayer {
-  position: absolute;
-  inset: -12% 0;
-  will-change: transform;
-}
 
 .profileRightImage {
   object-fit: cover;
@@ -516,10 +505,21 @@
   position: relative;
   width: 100%;
   height: 94dvh;
-  background: url('/BG.png') center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* its own clip, not the section's — the portrait above is nudged up and may overhang */
+.bgSectionBgClip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.bgSectionBg {
+  object-fit: cover;
+  object-position: center;
 }
 
 .bgSectionImage {

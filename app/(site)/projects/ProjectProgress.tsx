@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import ParallaxImage from "./ParallaxImage";
+import InertiaImage from "./InertiaImage";
 import { scrollParent } from "./scrollParent";
 import styles from "./[slug]/projectDetail.module.css";
 
@@ -100,7 +100,7 @@ export default function ProjectProgress() {
             className={styles.progressBlock}
           >
             <div className={styles.progressImage}>
-              <ParallaxImage src={step.image} alt={step.title} sizes="(max-width: 700px) 100vw, 60vw" />
+              <InertiaImage src={step.image} alt={step.title} sizes="(max-width: 700px) 100vw, 60vw" />
             </div>
             <p className={styles.progressCaption}>{step.caption}</p>
           </div>

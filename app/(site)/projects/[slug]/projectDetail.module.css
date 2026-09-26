@@ -40,13 +40,13 @@
   object-fit: cover;
 }
 
-/* Frame for ParallaxImage: overscanned top and bottom so the drift stays covered. */
-.parallaxLayer {
+/* Frame for InertiaImage: overscanned top and bottom so the lag stays covered. */
+.inertiaLayer {
   position: absolute;
   left: 0;
   right: 0;
-  top: -60px;
-  bottom: -60px;
+  top: -40px;
+  bottom: -40px;
   will-change: transform;
 }
 
