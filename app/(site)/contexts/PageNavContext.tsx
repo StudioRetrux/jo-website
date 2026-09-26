@@ -38,7 +38,7 @@ const PATH_PAGES: Record<string, Page> = {
 type PageNavContextType = {
   activePage: Page;
   incomingPage: Page | null;
-  navigateTo: (page: Page) => void;
+  navigateTo: (page: Page, search?: string) => void;
 };
 
 const PageNavContext = createContext<PageNavContextType>({
@@ -77,11 +77,11 @@ export function PageNavProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const navigateTo = useCallback(
-    (page: Page) => {
+    (page: Page, search = "") => {
       if (animatingRef.current || page === activePageRef.current) return;
       animatingRef.current = true;
       setIncomingPage(page);
-      navigate(PAGE_PATHS[page]);
+      navigate(PAGE_PATHS[page] + search);
 
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = window.setTimeout(() => {

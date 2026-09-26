@@ -197,6 +197,23 @@
   flex-shrink: 0;
 }
 
+/* Not the header's strict 50:50 — the right half holds its 50dvw line while the
+   content fits, grows into the left when it doesn't, and only then wraps its groups
+   (never the words inside a link). */
+@media (min-width: 481px) {
+  .megaMenuFooter > :first-child {
+    flex: 1;
+    width: auto;
+  }
+
+  .megaMenuFooter > :last-child {
+    width: auto;
+    min-width: 50dvw;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+}
+
 .megaMenuFooterPolicies {
   display: flex;
   align-items: center;
@@ -246,6 +263,7 @@
   color: #f7f6f5;
   text-decoration: none;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* Same drawn underline as the footers: wipes out right on hover, back in from left. */

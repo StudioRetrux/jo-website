@@ -13,7 +13,7 @@ export default function ProjectCta() {
   return (
     <section
       className={styles.ctaSection}
-      onMouseEnter={() => { setTrailActive(true); setMode("hidden"); }}
+      onMouseEnter={() => setTrailActive(true)}
       onMouseLeave={() => { setTrailActive(false); setMode("default"); }}
     >
       <CtaImageTrail active={trailActive} />

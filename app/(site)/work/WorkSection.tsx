@@ -15,7 +15,7 @@ import SwitchMode, { captureSnapshot, type ImageSnapshot } from "./SwitchMode";
 import styles from "./work.module.css";
 import { useLoadBar } from "../LoadBar";
 import { workAssets } from "../assets";
-import type { WorkItem } from "@/lib/projects/types";
+import { WORK_CATEGORIES, type WorkItem } from "@/lib/projects/types";
 
 // Repeating 7-slot collage template. Work N uses slot N % 7; every full group
 // of 7 stacks below the previous one as a new "section".
@@ -107,6 +107,11 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
 
   function handleFilterChange(filter: string) {
     setActiveFilter(filter);
+    // keep ?category= honest, so a refresh doesn't bring back the category we arrived with
+    const url = new URL(window.location.href);
+    if (filter === "All") url.searchParams.delete("category");
+    else url.searchParams.set("category", filter);
+    window.history.replaceState(window.history.state, "", url);
   }
 
   function handleViewModeChange(mode: "grid" | "list") {
@@ -200,6 +205,9 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
 
   useEffect(() => {
     if (open) {
+      // arriving with ?category= (About's category list, or a refresh) picks that filter
+      const category = new URLSearchParams(window.location.search).get("category");
+      if (category !== null) setActiveFilter(category);
       setPhase("pre-open");
       const id = requestAnimationFrame(() =>
         requestAnimationFrame(() => setPhase("open"))
@@ -293,7 +301,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
         homeNavigation={homeNavigation}
       />
       <div ref={contentRef}>
-        <TitleArea phase={phase} categories={[...new Set(works.map((w) => w.category))].sort()} activeFilter={activeFilter} onFilterChange={handleFilterChange} viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+        <TitleArea phase={phase} categories={[...new Set([...WORK_CATEGORIES, ...works.map((w) => w.category)])].sort()} activeFilter={activeFilter} onFilterChange={handleFilterChange} viewMode={viewMode} onViewModeChange={handleViewModeChange} />
         <div
           className={styles.workContent}
           ref={workContentRef}

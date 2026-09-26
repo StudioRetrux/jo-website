@@ -13,6 +13,7 @@ import WorkSection from "../work/WorkSection";
 import CurratedSpacesSection from "../curratedspaces/CurratedSpacesSection";
 import ContactSection from "../contact/ContactSection";
 import LegalSection from "../legal/LegalSection";
+import { useProjectOverlay } from "../projects/ProjectOverlay";
 import { usePageNav, INCOMING_Z, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 
 const REVEAL_MS = 700;
@@ -29,6 +30,7 @@ type Props = {
 
 export default function HomeSection({ slides, works, curatedItems, carouselReady, preloading = false }: Props) {
   const { activePage, incomingPage, navigateTo } = usePageNav();
+  const { detailOpen } = useProjectOverlay();
   const [visible, setVisible] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [carouselCurrent, setCarouselCurrent] = useState(0);
@@ -62,8 +64,8 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
           setCarouselIncoming(null);
           setCarouselRevealing(false);
           setCarouselPhase("idle");
-          carouselLocked.current = false;
         }, UNLOCK_MS);
+        setTimeout(() => { carouselLocked.current = false; }, Math.max(UNLOCK_MS, REVEAL_MS));
       });
     });
   }, [carouselCurrent, slides.length]);
@@ -141,7 +143,8 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
             revealTransition={REVEAL_TRANSITION}
             direction={carouselDirection}
             onAdvance={carouselAdvance}
-            paused={menuOpen}
+            // input only belongs to the carousel while home is the thing on screen
+            paused={menuOpen || preloading || detailOpen || activePage !== "home" || incomingPage !== null}
           />
         )}
         <RightPanel

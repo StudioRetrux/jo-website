@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useCursor } from "../contexts/CursorContext";
 
 const TRAIL_IMAGES = [
   "/Resort Room 1.jpg",
@@ -12,6 +13,12 @@ const IMG_H = 185;
 const SPAWN_DIST = 160;
 const SCALE_IN_MS = 260;
 const LIFETIME_MS = 1400;
+const MAX_TILT_DEG = 20;
+// Half the footprint of a card at full tilt. Cards only spawn with their centre at least
+// this far inside the section, so none can reach the cards above or the wordmark below.
+const TILT = (MAX_TILT_DEG * Math.PI) / 180;
+const SAFE_X = Math.ceil((IMG_W * Math.cos(TILT) + IMG_H * Math.sin(TILT)) / 2);
+const SAFE_Y = Math.ceil((IMG_H * Math.cos(TILT) + IMG_W * Math.sin(TILT)) / 2);
 /** Cards on screen at once. The sixth evicts the oldest rather than queueing behind it. */
 const MAX_PARTICLES = 5;
 
@@ -30,13 +37,16 @@ export default function CtaImageTrail({ active }: Props) {
   const activeRef = useRef(active);
   const srcIdx = useRef(0);
   const rafHandle = useRef(0);
+  const { setMode } = useCursor();
+  // the cursor hides only where cards can spawn — outside that band it would just vanish
+  const inBand = useRef(false);
 
   // `active` only gates spawning. It must NOT be an effect dep: tearing the effect
   // down on mouse-leave would remove every card mid-flight. Once a card exists it
   // lives out its lifetime regardless of where the pointer goes.
   useEffect(() => {
     activeRef.current = active;
-    if (!active) lastPos.current = null;
+    if (!active) { lastPos.current = null; inBand.current = false; }
   }, [active]);
 
   useEffect(() => {
@@ -44,7 +54,7 @@ export default function CtaImageTrail({ active }: Props) {
     if (!wrap) return;
 
     const spawn = (x: number, y: number) => {
-      const rotation = (Math.random() - 0.5) * 40;
+      const rotation = (Math.random() - 0.5) * 2 * MAX_TILT_DEG;
       const src = TRAIL_IMAGES[srcIdx.current % TRAIL_IMAGES.length];
       srcIdx.current++;
 
@@ -91,6 +101,12 @@ export default function CtaImageTrail({ active }: Props) {
       const rect = wrap.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
+      const inside = x >= SAFE_X && x <= rect.width - SAFE_X && y >= SAFE_Y && y <= rect.height - SAFE_Y;
+      if (inside !== inBand.current) {
+        inBand.current = inside;
+        setMode(inside ? "hidden" : "default");
+      }
+      if (!inside) { lastPos.current = null; return; }
       const last = lastPos.current;
       if (last && Math.hypot(x - last.x, y - last.y) < SPAWN_DIST) return;
       lastPos.current = { x, y };
@@ -100,7 +116,7 @@ export default function CtaImageTrail({ active }: Props) {
     wrap.addEventListener("mousemove", onMove);
     rafHandle.current = requestAnimationFrame(tick);
 
-    // unmount only — see the note above
+    // unmount only — see the note above (setMode is a state setter, it never changes)
     return () => {
       wrap.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(rafHandle.current);
@@ -108,7 +124,7 @@ export default function CtaImageTrail({ active }: Props) {
       particles.current = [];
       lastPos.current = null;
     };
-  }, []);
+  }, [setMode]);
 
   return (
     <div

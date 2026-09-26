@@ -24,9 +24,9 @@ type Detail =
   | { kind: "project"; slug: string; project: Project; related: OtherItem[] }
   | { kind: "curated"; slug: string; item: CuratedSpaceItem; related: OtherItem[] };
 
-type Ctx = { openDetail: (kind: DetailKind, slug: string) => void };
+type Ctx = { openDetail: (kind: DetailKind, slug: string) => void; detailOpen: boolean };
 
-const ProjectOverlayContext = createContext<Ctx>({ openDetail: () => {} });
+const ProjectOverlayContext = createContext<Ctx>({ openDetail: () => {}, detailOpen: false });
 
 export const useProjectOverlay = () => useContext(ProjectOverlayContext);
 
@@ -105,7 +105,7 @@ export function ProjectOverlayProvider({ children }: { children: React.ReactNode
   useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
 
   return (
-    <ProjectOverlayContext.Provider value={{ openDetail }}>
+    <ProjectOverlayContext.Provider value={{ openDetail, detailOpen: detail !== null }}>
       {children}
       {mounted && detail && createPortal(
         <div

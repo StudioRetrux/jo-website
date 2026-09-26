@@ -1,3 +1,7 @@
+// the practice's project types — About lists these and Work always offers them as
+// filters, even before a category has any work in it
+export const WORK_CATEGORIES = ["Healthcare", "Hospitality", "Residential", "Retail"];
+
 export type ImageAsset = {
   url: string;
   alt: string;

@@ -20,6 +20,7 @@ import FullnameBlock from "./FullnameBlock";
 import FullnameMobile from "../FullnameMobile";
 import LogosCarousel from "./LogosCarousel";
 import AboutCategoryItem from "./AboutCategoryItem";
+import { WORK_CATEGORIES } from "@/lib/projects/types";
 import FooterMenuText from "../work/FooterMenuText";
 import workStyles from "../work/work.module.css";
 import CtaImageTrail from "./CtaImageTrail";
@@ -468,8 +469,19 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                 approaching each with the same level of care, clarity, and consideration.
               </p>
               <div className={styles.aboutCatList}>
-                {["Healthcare", "Hospitality", "Residential", "Retail"].map((item) => (
-                  <AboutCategoryItem key={item} text={item} />
+                {WORK_CATEGORIES.map((item) => (
+                  <AboutCategoryItem
+                    key={item}
+                    text={item}
+                    // real link (route mode and modifier-clicks just follow it); a plain
+                    // click slides the work page in with this category picked
+                    href={`/works?category=${encodeURIComponent(item)}`}
+                    onClick={homeNavigation === "route" ? undefined : (event) => {
+                      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+                      event.preventDefault();
+                      navigateTo("work", `?category=${encodeURIComponent(item)}`);
+                    }}
+                  />
                 ))}
               </div>
             </div>
@@ -506,7 +518,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </section>
         <section
           className={styles.ctaSection}
-          onMouseEnter={() => { setCtaTrailActive(true); setMode("hidden"); }}
+          onMouseEnter={() => setCtaTrailActive(true)}
           onMouseLeave={() => { setCtaTrailActive(false); setMode("default"); }}
         >
           <CtaImageTrail active={ctaTrailActive} />

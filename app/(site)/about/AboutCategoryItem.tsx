@@ -1,10 +1,10 @@
 import styles from "./about.module.css";
 
-type Props = { text: string };
+type Props = { text: string; href: string; onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void };
 
-export default function AboutCategoryItem({ text }: Props) {
+export default function AboutCategoryItem({ text, href, onClick }: Props) {
   return (
-    <div className={styles.aboutCatItem}>
+    <a href={href} onClick={onClick} className={styles.aboutCatItem}>
       <span className={styles.aboutCatItemBg} />
       <span className={styles.aboutCatTextClip}>
         <span className={styles.aboutCatTextTrack}>
@@ -12,6 +12,6 @@ export default function AboutCategoryItem({ text }: Props) {
           <span className={`${styles.aboutCatText} ${styles.aboutCatTextHover}`}>{text}</span>
         </span>
       </span>
-    </div>
+    </a>
   );
 }
