@@ -346,6 +346,7 @@
   flex-direction: column;
   justify-content: space-between;
   flex-shrink: 0;
+  padding-block: 12px;
 }
 
 .logosTrustedHeading {
@@ -824,6 +825,10 @@
     font-size: 64px;
   }
 
+  .logosTrustedBlock {
+    padding-block: 4px;
+  }
+
   .logosTrustedBody {
     font-size: 18px;
   }
@@ -1012,6 +1017,7 @@
   .logosTrustedBlock {
     width: 140px;
     gap: 4px;
+    padding-block: 0;
   }
 
   .logosCarouselTrack {
