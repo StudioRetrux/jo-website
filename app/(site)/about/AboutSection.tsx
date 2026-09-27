@@ -421,13 +421,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
             <p className={styles.logosTrustedHeading}>Trusted by</p>
             <p className={styles.logosTrustedBody}>Create thoughtful,{" "}<br />well-crafted spaces.</p>
           </div>
-          {mobile ? (
-            <LogosCarousel logos={LOGOS} />
-          ) : (
-            LOGOS.map((logo) => (
-              <img key={logo} src={`/${logo}`} alt="" className={styles.logoItem} />
-            ))
-          )}
+          <LogosCarousel logos={LOGOS} />
         </section>
         <section className={styles.darkSection}>
           <div className={styles.darkSectionInner}>

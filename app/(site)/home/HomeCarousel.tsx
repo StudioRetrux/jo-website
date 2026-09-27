@@ -4,12 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./HomeCarousel.module.css";
 import { SIZES } from "../assets";
+import { wheelDirection, type WheelGesture } from "./wheelGesture";
 
-// A wheel event after this much silence starts a new gesture.
-const GESTURE_GAP_MS = 150;
-// Wheel crumbs under this never open a slide — a trackpad's momentum tail decays to
-// single-digit deltas, and treating those as intent is what carried one flick into two.
-const WHEEL_MIN_DELTA = 8;
 // Finger travel that makes a touch drag a swipe.
 const SWIPE_PX = 40;
 
@@ -48,22 +44,12 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
     // advance per gesture. HomeSection's lock then holds until the slide lands.
     const advance = (dir: "down" | "up") => advanceRef.current(dir);
 
-    // Wheel covers mouse wheels and trackpads. A trackpad flick is one unbroken stream
-    // of events — ramp-up, then a jittery momentum tail lasting seconds — so a gesture is
-    // "events with no gap over GESTURE_GAP_MS", and each gesture fires at most once.
-    // Don't try to spot a new flick inside a running stream by delta size: momentum
-    // jitter passes any such test and one flick moves two slides.
-    let lastWheelAt = -Infinity;
-    let armed = true;
+    // Trackpads send small deltas over many events; count their travel as one gesture.
+    const wheel: WheelGesture = { lastAt: -Infinity, travel: 0, armed: true };
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      if (e.timeStamp - lastWheelAt > GESTURE_GAP_MS) armed = true;
-      lastWheelAt = e.timeStamp;
-      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (!armed || Math.abs(delta) < WHEEL_MIN_DELTA) return;
-      // spent even if the carousel is still locked — a flick mid-animation doesn't queue
-      armed = false;
-      advance(delta > 0 ? "down" : "up");
+      const dir = wheelDirection(wheel, e);
+      if (dir) advance(dir);
     };
 
     // one advance per finger-down, whichever axis the layout runs on

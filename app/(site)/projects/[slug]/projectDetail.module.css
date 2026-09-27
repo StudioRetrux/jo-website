@@ -48,6 +48,7 @@
   top: -40px;
   bottom: -40px;
   will-change: transform;
+  transition: transform 350ms ease-out;
 }
 
 .heroShade {

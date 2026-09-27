@@ -4,10 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import AutoScroll from "embla-carousel-auto-scroll";
 import styles from "./about.module.css";
 
-/**
- * The client logos as a continuously scrolling strip. Desktop lays the same five out
- * in a row with space-between; on a phone there's no room for that, so they loop.
- */
+/** The client logos as a continuously scrolling strip. */
 export default function LogosCarousel({ logos }: { logos: string[] }) {
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start", dragFree: true, containScroll: false },
@@ -18,8 +15,8 @@ export default function LogosCarousel({ logos }: { logos: string[] }) {
   return (
     <div className={styles.logosCarousel} ref={emblaRef}>
       <div className={styles.logosCarouselTrack}>
-        {logos.map((logo) => (
-          <div className={styles.logosCarouselSlide} key={logo}>
+        {[...logos, ...logos, ...logos].map((logo, index) => (
+          <div className={styles.logosCarouselSlide} key={`${logo}-${index}`}>
             <img src={`/${logo}`} alt="" className={styles.logoItem} />
           </div>
         ))}
