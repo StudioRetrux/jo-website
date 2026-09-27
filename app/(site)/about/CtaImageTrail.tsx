@@ -73,6 +73,7 @@ export default function CtaImageTrail({ active }: Props) {
       `;
       wrap.appendChild(el);
       particles.current.push({ el, startTime: performance.now(), rotation });
+      if (!rafHandle.current) rafHandle.current = requestAnimationFrame(tick);
       while (particles.current.length > MAX_PARTICLES) {
         particles.current.shift()!.el.remove();
       }
@@ -93,7 +94,7 @@ export default function CtaImageTrail({ active }: Props) {
         el.style.opacity = "1";
         return true;
       });
-      rafHandle.current = requestAnimationFrame(tick);
+      rafHandle.current = particles.current.length ? requestAnimationFrame(tick) : 0;
     };
 
     const onMove = (e: MouseEvent) => {
@@ -114,7 +115,6 @@ export default function CtaImageTrail({ active }: Props) {
     };
 
     wrap.addEventListener("mousemove", onMove);
-    rafHandle.current = requestAnimationFrame(tick);
 
     // unmount only — see the note above (setMode is a state setter, it never changes)
     return () => {

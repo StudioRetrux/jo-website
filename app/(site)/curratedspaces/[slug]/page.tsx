@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CuratedContent from "./CuratedContent";
+import ProjectSmoothScroll from "../../projects/ProjectSmoothScroll";
 import { pageMetadata } from "../../../site";
 import { getCuratedDetail } from "@/lib/projects/curated";
 import styles from "../../projects/[slug]/projectDetail.module.css";
@@ -37,6 +38,7 @@ export default async function CuratedSpacePage({ params }: PageProps) {
 
   return (
     <main className={styles.page}>
+      <ProjectSmoothScroll />
       <CuratedContent item={detail.item} related={detail.related} />
     </main>
   );

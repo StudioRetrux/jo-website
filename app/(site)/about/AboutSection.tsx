@@ -214,7 +214,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
   }, [open]);
 
   useEffect(() => {
-    if (!wrapperRef.current || !contentRef.current) return;
+    if (!open || !wrapperRef.current || !contentRef.current) return;
     const wrapper = wrapperRef.current;
     const lenis = new Lenis({
       wrapper,
@@ -232,7 +232,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
       cancelAnimationFrame(raf);
       lenis.destroy();
     };
-  }, []);
+  }, [open]);
 
   function handleNavigate(item: string) {
     if (homeNavigation === "route") {

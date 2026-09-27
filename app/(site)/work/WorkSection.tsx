@@ -247,7 +247,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
   }, [phase]);
 
   useEffect(() => {
-    if (!wrapperRef.current || !contentRef.current) return;
+    if (!open || !wrapperRef.current || !contentRef.current) return;
     const wrapper = wrapperRef.current;
     // Mobile scrolls natively (see .page in the media query) — Lenis would only fight
     // it, and smooth-scroll on touch is the platform's job anyway.
@@ -279,7 +279,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       cancelAnimationFrame(raf);
       lenis?.destroy();
     };
-  }, []);
+  }, [open]);
 
   return (
     <div

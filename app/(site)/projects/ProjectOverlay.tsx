@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { createPortal } from "react-dom";
 import ProjectContent from "./ProjectContent";
 import CuratedContent from "../curratedspaces/[slug]/CuratedContent";
+import ProjectSmoothScroll from "./ProjectSmoothScroll";
 import type { OtherItem } from "./ProjectOther";
 import type { CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import type { Project } from "@/lib/projects/types";
@@ -42,6 +43,8 @@ export function ProjectOverlayProvider({ children }: { children: React.ReactNode
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const overlayContentRef = useRef<HTMLDivElement>(null);
   // what the overlay is currently showing, so popstate can tell a reopen from a no-op
   // without waiting on a state update
   const slugRef = useRef<string | null>(null);
@@ -109,28 +112,32 @@ export function ProjectOverlayProvider({ children }: { children: React.ReactNode
       {children}
       {mounted && detail && createPortal(
         <div
+          ref={overlayRef}
           className={styles.overlay}
           style={{
             transform: open ? "translateY(0)" : "translateY(100%)",
             transition: `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}`,
           }}
         >
-          {/* shell is still mounted under us, so nav is state-driven — close, don't reload */}
-          {detail.kind === "curated" ? (
-            <CuratedContent
-              item={detail.item}
-              related={detail.related}
-              homeNavigation="state"
-              onLeave={close}
-            />
-          ) : (
-            <ProjectContent
-              project={detail.project}
-              related={detail.related}
-              homeNavigation="state"
-              onLeave={close}
-            />
-          )}
+          <ProjectSmoothScroll wrapperRef={overlayRef} contentRef={overlayContentRef} />
+          <div ref={overlayContentRef}>
+            {/* shell is still mounted under us, so nav is state-driven — close, don't reload */}
+            {detail.kind === "curated" ? (
+              <CuratedContent
+                item={detail.item}
+                related={detail.related}
+                homeNavigation="state"
+                onLeave={close}
+              />
+            ) : (
+              <ProjectContent
+                project={detail.project}
+                related={detail.related}
+                homeNavigation="state"
+                onLeave={close}
+              />
+            )}
+          </div>
         </div>,
         document.body,
       )}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ProjectContent from "../../projects/ProjectContent";
+import ProjectSmoothScroll from "../../projects/ProjectSmoothScroll";
 import { pageMetadata } from "../../../site";
 import { getPublishedProjectBySlug, getRelatedWorkItems } from "@/lib/projects/data";
 import styles from "../../projects/[slug]/projectDetail.module.css";
@@ -43,6 +44,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className={styles.page}>
+      <ProjectSmoothScroll />
       <ProjectContent project={project} related={related} />
     </main>
   );

@@ -57,14 +57,14 @@ export default function LegalSection({ kind, open, slidePage = true, homeNavigat
   }, [open]);
 
   useEffect(() => {
-    if (!wrapperRef.current || !contentRef.current) return;
+    if (!open || !wrapperRef.current || !contentRef.current) return;
     const wrapper = wrapperRef.current;
     const lenis = new Lenis({ wrapper, content: contentRef.current, smoothWheel: true });
     let raf: number;
     function loop(time: number) { lenis.raf(time); raf = requestAnimationFrame(loop); }
     raf = requestAnimationFrame(loop);
     return () => { cancelAnimationFrame(raf); lenis.destroy(); };
-  }, []);
+  }, [open]);
 
   function handleNavigate(item: string) {
     if (homeNavigation === "route") {
