@@ -120,6 +120,7 @@ export default function CtaImageTrail({ active }: Props) {
     return () => {
       wrap.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(rafHandle.current);
+      rafHandle.current = 0;
       particles.current.forEach(({ el }) => el.remove());
       particles.current = [];
       lastPos.current = null;
