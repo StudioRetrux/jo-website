@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import ProjectLink from "./ProjectLink";
 import SectionLink from "../SectionLink";
+import { useCursor } from "../contexts/CursorContext";
 import type { DetailKind } from "./ProjectOverlay";
 import styles from "./[slug]/projectDetail.module.css";
 
@@ -11,6 +14,7 @@ export type OtherItem = {
   category: string;
   year: string;
   image: string;
+  hoverImage?: string;
 };
 
 export default function ProjectOther({
@@ -28,6 +32,7 @@ export default function ProjectOther({
   homeNavigation?: "state" | "route";
   onLeave?: () => void;
 }) {
+  const { setMode } = useCursor();
   if (items.length === 0) return null;
 
   return (
@@ -45,9 +50,26 @@ export default function ProjectOther({
       </div>
       <div className={styles.otherGrid}>
         {items.map((item) => (
-          <ProjectLink key={item.id} kind={kind} slug={item.slug} className={styles.otherCard}>
+          <ProjectLink
+            key={item.id}
+            kind={kind}
+            slug={item.slug}
+            className={styles.otherCard}
+            onMouseEnter={() => setMode("view")}
+            onMouseLeave={() => setMode("default")}
+          >
             <div className={styles.otherImage}>
               <Image src={item.image} alt={item.title} fill sizes="(max-width: 480px) 78vw, 30vw" draggable={false} />
+              {item.hoverImage && item.hoverImage !== item.image && (
+                <Image
+                  src={item.hoverImage}
+                  alt=""
+                  fill
+                  sizes="(max-width: 480px) 78vw, 30vw"
+                  draggable={false}
+                  className={styles.otherHoverImage}
+                />
+              )}
             </div>
             <span className={styles.otherCardTitle}>{item.title}</span>
             <span className={styles.otherCardInfo}>

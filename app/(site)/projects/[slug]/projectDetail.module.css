@@ -276,6 +276,19 @@
   object-fit: cover;
 }
 
+.otherImage .otherHoverImage {
+  clip-path: inset(0 100% 0 0);
+  scale: 1.08;
+  transition: clip-path 700ms cubic-bezier(0.37, 0, 0.13, 1),
+    scale 700ms cubic-bezier(0.37, 0, 0.13, 1);
+}
+
+.otherCard:hover .otherHoverImage,
+.otherCard:focus-visible .otherHoverImage {
+  clip-path: inset(0 0% 0 0);
+  scale: 1;
+}
+
 /* the work grid's own rules, not a copy of them */
 .otherCardTitle {
   composes: workCardTitle from "../../work/work.module.css";

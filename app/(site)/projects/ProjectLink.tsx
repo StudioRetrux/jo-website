@@ -12,12 +12,16 @@ export default function ProjectLink({
   kind = "project",
   className,
   style,
+  onMouseEnter,
+  onMouseLeave,
   children,
 }: {
   slug: string;
   kind?: DetailKind;
   className?: string;
   style?: CSSProperties;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   children: ReactNode;
 }) {
   const { openDetail } = useProjectOverlay();
@@ -27,6 +31,8 @@ export default function ProjectLink({
       href={detailPath(kind, slug)}
       className={className}
       style={style}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       onClick={(event) => {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
         event.preventDefault();
