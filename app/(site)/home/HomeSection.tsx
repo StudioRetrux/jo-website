@@ -49,11 +49,10 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
   }, []);
 
   const carouselAdvance = useCallback((dir: "down" | "up") => {
-    if (carouselSliding || carouselLocked.current) return;
+    if (carouselSliding || carouselLocked.current || slides.length < 2) return;
     const next = dir === "down"
-      ? Math.min(carouselCurrent + 1, slides.length - 1)
-      : Math.max(carouselCurrent - 1, 0);
-    if (next === carouselCurrent) return;
+      ? (carouselCurrent + 1) % slides.length
+      : (carouselCurrent - 1 + slides.length) % slides.length;
     carouselLocked.current = true;
     setCarouselDirection(dir);
     setCarouselIncoming(next);
