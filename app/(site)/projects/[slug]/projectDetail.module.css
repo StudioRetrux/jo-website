@@ -22,7 +22,7 @@
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  background: #f7f6f5 url("/megamenu.png") center / cover no-repeat;
+  background: #f7f6f5 url("/megamenu.webp") center / cover no-repeat;
   pointer-events: none;
 }
 
@@ -38,17 +38,6 @@
 
 .heroImage {
   object-fit: cover;
-}
-
-/* Frame for InertiaImage: overscanned top and bottom so the lag stays covered. */
-.inertiaLayer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -40px;
-  bottom: -40px;
-  will-change: transform;
-  transition: transform 350ms ease-out;
 }
 
 .heroShade {

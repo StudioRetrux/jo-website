@@ -1,7 +1,7 @@
 .page {
   position: absolute;
   inset: 0;
-  background: #f7f6f5 url('/megamenu.png') center / cover no-repeat;
+  background: #f7f6f5 url('/megamenu.webp') center / cover no-repeat;
   z-index: 12;
   overflow: hidden;
 }

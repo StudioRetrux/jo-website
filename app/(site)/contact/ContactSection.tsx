@@ -95,10 +95,10 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         onMouseLeave={() => setHovered("")}
       >
         <div className={`${styles.curtain} ${styles.curtainWa}`}>
-          <Image src="/wabg.png" alt="" fill sizes="100vw" className={styles.curtainImage} />
+          <Image src="/wabg.webp" alt="" fill sizes="100vw" className={styles.curtainImage} />
         </div>
         <div className={`${styles.curtain} ${styles.curtainEmail}`}>
-          <Image src="/Resort Room 2.jpg" alt="" fill sizes="100vw" className={styles.curtainImage} />
+          <Image src="/Resort Room 2.webp" alt="" fill sizes="100vw" className={styles.curtainImage} />
         </div>
         {/* The .cta layer is a sibling of the columns, not a child, so moving onto a button
             reads as leaving the column — same handlers here keep the curtain open. */}
@@ -127,7 +127,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
           </a>
         </div>
         <div className={`${styles.col} ${styles.colLeft}`}>
-          <Image src="/left.png" alt="" width={960} height={960} className={styles.leftImage} />
+          <Image src="/left.webp" alt="" width={960} height={960} className={styles.leftImage} />
           <div className={styles.leftInfo}>
             <div className={workStyles.footerInfoTitleRow}>
               <span className={workStyles.footerInfoTitle}>OFFICE</span>
@@ -161,7 +161,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
             <span className={styles.waNumber}>(62) 878 2313 9800</span>
           </div>
           <div className={styles.half}>
-            <Image src="/whatsapp.png" alt="WhatsApp" width={233} height={233} className={styles.waImage} />
+            <Image src="/whatsapp.webp" alt="WhatsApp" width={233} height={233} className={styles.waImage} />
           </div>
         </a>
         <a
@@ -178,7 +178,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
             <span className={styles.waNumber}>yohanes.ptan@gmail.com</span>
           </div>
           <div className={styles.half}>
-            <Image src="/email.png" alt="Email" width={233} height={233} className={styles.waImage} />
+            <Image src="/email.webp" alt="Email" width={233} height={233} className={styles.waImage} />
           </div>
         </a>
       </section>

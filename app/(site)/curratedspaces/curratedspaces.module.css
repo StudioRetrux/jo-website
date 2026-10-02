@@ -6,7 +6,7 @@
   overflow-x: hidden;
   min-height: 100dvh;
   /* same paper as every other page — repeat/auto tiled it and read as a different colour */
-  background: #f7f6f5 url('/megamenu.png') center / cover no-repeat;
+  background: #f7f6f5 url('/megamenu.webp') center / cover no-repeat;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }

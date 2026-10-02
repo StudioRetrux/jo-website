@@ -22,8 +22,8 @@ import { WORK_CATEGORIES } from "@/lib/projects/types";
 import FooterMenuText from "../work/FooterMenuText";
 import workStyles from "../work/work.module.css";
 import CtaImageTrail from "./CtaImageTrail";
-// same weighted-lag images the project pages use
-import InertiaImage from "../projects/InertiaImage";
+// Shared scroll-position parallax for section and project images.
+import ParallaxImage from "../projects/ParallaxImage";
 import { useCursor } from "../contexts/CursorContext";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 import styles from "./about.module.css";
@@ -351,7 +351,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                 }}
               >
                 <Image
-                  src="/infoimage.png"
+                  src="/infoimage.webp"
                   alt="Warm wood interior wall with layered lighting and table lamps"
                   fill
                   sizes="(min-width: 768px) 50vw, 100vw"
@@ -363,16 +363,16 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </section>
         <section ref={imagesSectionRef} className={styles.imagesSection} aria-label="Images">
           <div className={styles.imagesPanel}>
-            <InertiaImage
-              src="/Resort Room 1.jpg"
+            <ParallaxImage
+              src="/Resort Room 1.webp"
               alt="Resort room interior"
               sizes="(max-width: 480px) 100vw, 50vw"
               className={styles.imagesPanelImage}
             />
           </div>
           <div className={styles.imagesPanel}>
-            <InertiaImage
-              src="/Resort Room 2.jpg"
+            <ParallaxImage
+              src="/Resort Room 2.webp"
               alt="Resort room lounge"
               sizes="(max-width: 480px) 100vw, 50vw"
               className={styles.imagesPanelImage}
@@ -407,7 +407,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           <div className={styles.profileRight}>
             <div className={styles.profileRightInner}>
               <Image
-                src="/45.png"
+                src="/45.webp"
                 alt="Yohanes Alexander"
                 fill
                 sizes="(max-width: 480px) 100vw, 50vw"
@@ -426,7 +426,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         <section className={styles.darkSection}>
           <div className={styles.darkSectionInner}>
             <div className={styles.darkSectionA}>
-              <img src="/healthcare.png" alt="" className={styles.darkSectionImage} />
+              <img src="/healthcare.webp" alt="" className={styles.darkSectionImage} />
             </div>
             <div className={styles.darkSectionB}>
               <p className={styles.darkSectionBody}>
@@ -454,10 +454,10 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </section>
         <section className={styles.bgSection} aria-label="Background">
           <div className={styles.bgSectionBgClip}>
-            <InertiaImage src="/BG.png" alt="" sizes="100vw" className={styles.bgSectionBg} />
+            <ParallaxImage src="/BG.webp" alt="" sizes="100vw" className={styles.bgSectionBg} />
           </div>
           <div className={styles.bgSectionImageWrap}>
-            <img src="/452.png" alt="" className={styles.bgSectionImage} />
+            <img src="/452.webp" alt="" className={styles.bgSectionImage} />
             <div className={styles.bgSectionOverlay}>
               <p className={styles.bgSectionText}>
                 Most of my ideas come from <em>observing</em> how{" "}<br />
@@ -491,7 +491,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         >
           <CtaImageTrail active={ctaTrailActive} />
           <div className={styles.ctaSectionInner}>
-            <img src="/Icon 1_1.png" alt="" className={styles.ctaSectionIcon} />
+            <img src="/Icon 1_1.webp" alt="" className={styles.ctaSectionIcon} />
             <p className={styles.ctaSectionText}>
               Let&apos;s create spaces that{" "}<br />feel just as thoughtful.
             </p>

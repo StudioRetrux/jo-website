@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import InertiaImage from "./InertiaImage";
+import ParallaxImage from "./ParallaxImage";
 import { scrollParent } from "./scrollParent";
 import styles from "./[slug]/projectDetail.module.css";
 
@@ -10,19 +10,19 @@ import styles from "./[slug]/projectDetail.module.css";
 export const STEPS = [
   {
     title: "Rethinking the Experience",
-    image: "/homeresortbatu1.jpg",
+    image: "/homeresortbatu1.webp",
     caption:
       "Every element is designed with purpose. Clean geometries and controlled proportions bring clarity, while material choices introduce a subtle warmth—balancing clinical precision with a more human experience.",
   },
   {
     title: "Designing with Intention",
-    image: "/homeresortbatu2.png",
+    image: "/homeresortbatu2.webp",
     caption:
       "The spatial layout is carefully structured to support both patients and staff. Zoning, circulation, and visibility are optimized to ensure efficiency without compromising comfort.",
   },
   {
     title: "Clarity in Function",
-    image: "/Resort Room 1.jpg",
+    image: "/Resort Room 1.webp",
     caption:
       "Every element is designed with purpose. Clean geometries and controlled proportions bring clarity, while material choices introduce a subtle warmth—balancing clinical precision with a more human experience.",
   },
@@ -100,7 +100,7 @@ export default function ProjectProgress() {
             className={styles.progressBlock}
           >
             <div className={styles.progressImage}>
-              <InertiaImage src={step.image} alt={step.title} sizes="(max-width: 700px) 100vw, 60vw" />
+              <ParallaxImage src={step.image} alt={step.title} sizes="(max-width: 700px) 100vw, 60vw" />
             </div>
             <p className={styles.progressCaption}>{step.caption}</p>
           </div>

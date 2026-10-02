@@ -25,8 +25,8 @@ export type CuratedSpacesConfig = z.infer<typeof curatedSpacesConfigSchema>;
 // Seed/fallback: the original hardcoded carousel — used when no config is
 // saved yet, and as the admin editor's starting point.
 export const DEFAULT_CURATED_SPACE_ITEMS: CuratedSpaceItem[] = [
-  { src: "/cs1.png", width: 352, height: 235, title: "Cafe In Laws", category: "Hospitality", year: "2025" },
-  { src: "/cs2.png", width: 626, height: 417, title: "Cafe In Laws", category: "Hospitality", year: "2025" },
-  { src: "/cs4.png", width: 496, height: 331, title: "Audi Dental Denpasar", category: "Healthcare", year: "2025" },
-  { src: "/cs3.png", width: 626, height: 417, title: "Audi Dental Denpasar", category: "Healthcare", year: "2025" },
+  { src: "/cs1.webp", width: 352, height: 235, title: "Cafe In Laws", category: "Hospitality", year: "2025" },
+  { src: "/cs2.webp", width: 626, height: 417, title: "Cafe In Laws", category: "Hospitality", year: "2025" },
+  { src: "/cs4.webp", width: 496, height: 331, title: "Audi Dental Denpasar", category: "Healthcare", year: "2025" },
+  { src: "/cs3.webp", width: 626, height: 417, title: "Audi Dental Denpasar", category: "Healthcare", year: "2025" },
 ];

@@ -23,7 +23,7 @@ const phase1Ease: Bezier = [0.12, 0, 0.39, 0];
 const phase2Ease: Bezier = [0.19, 1, 0.22, 1];
 const veilMs = 800;
 const textMs = 800;
-const slideImages = ["/preload2.png", "/preload3.png", "/preload4ld.png"];
+const slideImages = ["/preload2.webp", "/preload3.webp", "/preload4ld.webp"];
 
 type PreloadOtherTarget = "work" | "about";
 

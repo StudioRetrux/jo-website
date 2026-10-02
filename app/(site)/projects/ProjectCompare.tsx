@@ -6,8 +6,8 @@ import Image from "next/image";
 import styles from "./[slug]/projectDetail.module.css";
 
 // ponytail: stand-in pair until the CMS carries before/after imagery.
-const BEFORE = "/Resort Room 1.jpg";
-const AFTER = "/Resort Room 2.jpg";
+const BEFORE = "/Resort Room 1.webp";
+const AFTER = "/Resort Room 2.webp";
 
 const STEP = 5;
 

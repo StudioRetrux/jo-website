@@ -13,8 +13,8 @@ const EASE = "700ms cubic-bezier(0.9, 0, 0.5, 1)";
 export const MEGAMENU_CLOSE_MS = 700;
 const FADE_UP_OPEN = "opacity 900ms cubic-bezier(0.4, 0, 0.2, 1) 450ms, transform 900ms cubic-bezier(0.4, 0, 0.2, 1) 450ms";
 const MENU_ITEMS = ["Home", "Work", "About", "Curated Spaces", "Contact"];
-const DEFAULT_MENU_IMAGE = "/preload4ld.png";
-const MENU_IMAGES = ["/preload4ld.png", "/preload1.webp", "/profilepic.png", "/preload3.png", "/preload4.png"];
+const DEFAULT_MENU_IMAGE = "/preload4ld.webp";
+const MENU_IMAGES = ["/preload4ld.webp", "/preload1.webp", "/profilepic.webp", "/preload3.webp", "/preload4.webp"];
 const THUMB_TRANSITION_MS = 600;
 const THUMB_SWITCH_CLOSE_MS = 320;
 

@@ -9,11 +9,11 @@ import styles from "./[slug]/projectDetail.module.css";
 
 // ponytail: stand-ins from public/ until the CMS carries a gallery.
 const SLIDES = [
-  "/homeresortbatu1.jpg",
-  "/homeresortbatu2.png",
-  "/Resort Room 1.jpg",
-  "/Resort Room 2.jpg",
-  "/Savart Denpasar 1.jpg",
+  "/homeresortbatu1.webp",
+  "/homeresortbatu2.webp",
+  "/Resort Room 1.webp",
+  "/Resort Room 2.webp",
+  "/Savart Denpasar 1.webp",
 ];
 
 export default function ProjectCarousel() {

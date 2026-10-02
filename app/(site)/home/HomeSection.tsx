@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import HomeCarousel from "./HomeCarousel";
 import Header from "./Header";
 import MegaMenu from "../megamenu/MegaMenu";
-import RightPanel, { CarouselPhase, UNLOCK_MS, MAX_EXIT_MS } from "./RightPanel";
+import RightPanel, { CarouselPhase, TEXT_TRANSITION_MS, MAX_EXIT_MS } from "./RightPanel";
 import type { CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
 import type { WorkItem } from "@/lib/projects/types";
@@ -16,7 +16,8 @@ import LegalSection from "../legal/LegalSection";
 import { useProjectOverlay } from "../projects/ProjectOverlay";
 import { usePageNav, INCOMING_Z, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 
-const REVEAL_MS = 700;
+// The image's transition end completes the slide, after all text has entered.
+const REVEAL_MS = Math.max(700, TEXT_TRANSITION_MS);
 const REVEAL_EASE = "cubic-bezier(0.4, 0, 0.5, 1)";
 const REVEAL_TRANSITION = `clip-path ${REVEAL_MS}ms ${REVEAL_EASE}, scale ${REVEAL_MS}ms ${REVEAL_EASE}`;
 
@@ -38,6 +39,8 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
   const [carouselRevealing, setCarouselRevealing] = useState(false);
   const [carouselPhase, setCarouselPhase] = useState<CarouselPhase>("idle");
   const [carouselDirection, setCarouselDirection] = useState<"down" | "up">("down");
+  // The incoming slide is our sliding state. The ref also blocks events before React renders.
+  const carouselSliding = carouselIncoming !== null;
   const carouselLocked = useRef(false);
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
   }, []);
 
   const carouselAdvance = useCallback((dir: "down" | "up") => {
-    if (carouselLocked.current) return;
+    if (carouselSliding || carouselLocked.current) return;
     const next = dir === "down"
       ? Math.min(carouselCurrent + 1, slides.length - 1)
       : Math.max(carouselCurrent - 1, 0);
@@ -59,16 +62,18 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
         setCarouselRevealing(true);
         setCarouselPhase("exiting");
         setTimeout(() => setCarouselPhase("entering"), MAX_EXIT_MS);
-        setTimeout(() => {
-          setCarouselCurrent(next);
-          setCarouselIncoming(null);
-          setCarouselRevealing(false);
-          setCarouselPhase("idle");
-        }, UNLOCK_MS);
-        setTimeout(() => { carouselLocked.current = false; }, Math.max(UNLOCK_MS, REVEAL_MS));
       });
     });
-  }, [carouselCurrent, slides.length]);
+  }, [carouselCurrent, carouselSliding, slides.length]);
+
+  const carouselSlideEnd = useCallback(() => {
+    if (carouselIncoming === null) return;
+    setCarouselCurrent(carouselIncoming);
+    setCarouselIncoming(null);
+    setCarouselRevealing(false);
+    setCarouselPhase("idle");
+    carouselLocked.current = false;
+  }, [carouselIncoming]);
 
   function handleNavigate(item: string) {
     const pageMap: Record<string, Page> = { Home: "home", Work: "work", About: "about", "Curated Spaces": "curratedspaces", Contact: "contact", "Terms of Use": "terms", "Privacy Policy": "privacy" };
@@ -143,6 +148,7 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
             revealTransition={REVEAL_TRANSITION}
             direction={carouselDirection}
             onAdvance={carouselAdvance}
+            onSlideEnd={carouselSlideEnd}
             // input only belongs to the carousel while home is the thing on screen
             paused={menuOpen || preloading || detailOpen || activePage !== "home" || incomingPage !== null}
           />

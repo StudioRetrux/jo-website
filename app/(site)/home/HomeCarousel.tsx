@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./HomeCarousel.module.css";
 import { SIZES } from "../assets";
-import { wheelDirection, type WheelGesture } from "./wheelGesture";
 
 // Finger travel that makes a touch drag a swipe.
 const SWIPE_PX = 40;
@@ -17,10 +16,11 @@ type Props = {
   revealTransition: string;
   direction: "down" | "up";
   onAdvance: (dir: "down" | "up") => void;
+  onSlideEnd: () => void;
   paused?: boolean;
 };
 
-export default function HomeCarousel({ slides, current, incoming, revealing, revealTransition, direction, onAdvance, paused = false }: Props) {
+export default function HomeCarousel({ slides, current, incoming, revealing, revealTransition, direction, onAdvance, onSlideEnd, paused = false }: Props) {
   // Stacked layout: the image is the top half and the page reads vertically, so a
   // vertical drag is ambiguous. Swipe sideways instead, and reveal on that axis too.
   const [horizontal, setHorizontal] = useState(false);
@@ -33,23 +33,19 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
     return () => query.removeEventListener("change", sync);
   }, []);
 
-  // latest onAdvance without re-subscribing: a re-subscribe mid-flick used to reset the
-  // gesture state, so the rest of that flick's momentum read as a fresh gesture
+  // Keep input handlers subscribed while the slide state changes.
   const advanceRef = useRef(onAdvance);
   useEffect(() => { advanceRef.current = onAdvance; });
 
   useEffect(() => {
     if (paused) return;
-    // No native scrolling on home — every input is swallowed and turned into at most one
-    // advance per gesture. HomeSection's lock then holds until the slide lands.
+    // HomeSection ignores advances while a slide is animating.
     const advance = (dir: "down" | "up") => advanceRef.current(dir);
 
-    // Trackpads send small deltas over many events; count their travel as one gesture.
-    const wheel: WheelGesture = { lastAt: -Infinity, travel: 0, armed: true };
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const dir = wheelDirection(wheel, e);
-      if (dir) advance(dir);
+      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (delta !== 0) advance(delta > 0 ? "down" : "up");
     };
 
     // one advance per finger-down, whichever axis the layout runs on
@@ -108,6 +104,11 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
           alt=""
           fill
           sizes={SIZES.full}
+          onTransitionEnd={(event) => {
+            if (revealing && event.target === event.currentTarget && event.propertyName === "clip-path") {
+              onSlideEnd();
+            }
+          }}
           style={{
             objectFit: "cover",
             objectPosition: "44% 50%",

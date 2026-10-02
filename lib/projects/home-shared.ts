@@ -41,8 +41,8 @@ export const FALLBACK_HOME_SLIDES: ResolvedHomeSlide[] = [
     tag: "HOSPITALITY • 2025",
     heading: "AMAINAIA HOTEL KUTA",
     descLines: ["A calm, well-crafted space designed", "for comfort and ease."],
-    background: "/preload4ld.png",
-    thumbnail: "/preload4ld.png",
+    background: "/preload4ld.webp",
+    thumbnail: "/preload4ld.webp",
   },
 ];
 

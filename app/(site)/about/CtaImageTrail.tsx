@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import { useCursor } from "../contexts/CursorContext";
 
 const TRAIL_IMAGES = [
-  "/Resort Room 1.jpg",
-  "/Resort Room 2.jpg",
+  "/Resort Room 1.webp",
+  "/Resort Room 2.webp",
 ];
 
 const IMG_W = 260;

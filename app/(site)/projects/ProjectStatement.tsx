@@ -1,4 +1,4 @@
-import InertiaImage from "./InertiaImage";
+import ParallaxImage from "./ParallaxImage";
 import { SIZES } from "../assets";
 import type { Project } from "@/lib/projects/types";
 import styles from "./[slug]/projectDetail.module.css";
@@ -7,7 +7,7 @@ import styles from "./[slug]/projectDetail.module.css";
 export default function ProjectStatement({ project }: { project: Project }) {
   return (
     <section className={styles.statement}>
-      <InertiaImage
+      <ParallaxImage
         src={project.thumbnail.url}
         alt={project.thumbnail.alt}
         sizes={SIZES.full}

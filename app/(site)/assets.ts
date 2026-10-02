@@ -18,12 +18,12 @@ export const SIZES = {
 
 /** Rendered by <Image>, so preload resolves them through the optimizer. */
 export const INTRO_BASE_IMAGE = "/preload1.webp";
-export const INTRO_REVEAL_IMAGES = ["/preload2.png", "/preload3.png"];
+export const INTRO_REVEAL_IMAGES = ["/preload2.webp", "/preload3.webp"];
 
 /** CSS background-image — served verbatim, never through the optimizer. */
 export const CSS_BACKGROUNDS: Asset[] = [
-  { src: "/rightbg.png", raw: true },
-  { src: "/megamenu.png", raw: true },
+  { src: "/rightbg.webp", raw: true },
+  { src: "/megamenu.webp", raw: true },
 ];
 
 /** Everything the home screen paints once the intro hands off. */

@@ -19,7 +19,7 @@ export default function ProjectCta() {
       <CtaImageTrail active={trailActive} />
       <div className={styles.ctaSectionInner}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/Icon 1_1.png" alt="" className={styles.ctaSectionIcon} />
+        <img src="/Icon 1_1.webp" alt="" className={styles.ctaSectionIcon} />
         <p className={styles.ctaSectionText}>
           Let&apos;s create spaces that{" "}<br />feel just as thoughtful.
         </p>

@@ -38,7 +38,7 @@ export const useLoadBar = () => useContext(LoadBarContext);
 
 /**
  * next/image never requests the raw path — it requests /_next/image?url=…&w=…&q=…
- * Warming "/preload2.png" therefore caches a URL the page never asks for, and the bar
+ * Warming "/preload2.webp" therefore caches a URL the page never asks for, and the bar
  * would report ready while the real fetch hasn't even started. Resolve the same srcSet
  * next/image would emit and let the browser pick the candidate it will actually use.
  */

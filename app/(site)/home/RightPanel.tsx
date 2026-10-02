@@ -16,7 +16,7 @@ const T_DESC2   = { exitDelayMs: 80, exitMs: 310, exitEasing: "cubic-bezier(0.55
 
 const ALL_TIMINGS = [T_TAG, T_HEADING, T_DESC1, T_DESC2];
 export const MAX_EXIT_MS = Math.max(...ALL_TIMINGS.map((t) => t.exitDelayMs + t.exitMs));
-export const UNLOCK_MS   = Math.max(...ALL_TIMINGS.map((t) => t.exitDelayMs + t.exitMs + t.delayMs + t.enterMs)) + 30;
+export const TEXT_TRANSITION_MS = MAX_EXIT_MS + Math.max(...ALL_TIMINGS.map((t) => t.delayMs + t.enterMs));
 
 function TextSlide({
   current,

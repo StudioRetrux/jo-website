@@ -4,7 +4,7 @@
   inset: 0;
   display: flex;
   flex-direction: column;
-  background: #35312c url('/megamenu.png') center / cover no-repeat;
+  background: #35312c url('/megamenu.webp') center / cover no-repeat;
   /* body-level now: must clear the .page wrappers (12/13) and preload (21) */
   z-index: 40;
 }
