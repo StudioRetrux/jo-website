@@ -7,6 +7,8 @@ import { SIZES } from "../assets";
 
 // Finger travel that makes a touch drag a swipe.
 const SWIPE_PX = 40;
+// Silence between wheel events that ends a gesture (inertia events arrive every ~16ms).
+const WHEEL_GAP_MS = 200;
 
 type Props = {
   slides: string[];
@@ -42,10 +44,22 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
     // HomeSection ignores advances while a slide is animating.
     const advance = (dir: "down" | "up") => advanceRef.current(dir);
 
+    // One advance per wheel gesture. Trackpad inertia keeps firing wheel events for
+    // 1-2s after the fingers lift (longer than the slide), so a gesture only ends once
+    // the stream goes quiet or flips direction — never when the animation finishes.
+    // ponytail: a fresh swipe during the inertia tail is folded into the old gesture;
+    // add delta-rise detection if that feels sticky.
+    let lastWheel = -Infinity;
+    let lastSign = 0;
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (delta !== 0) advance(delta > 0 ? "down" : "up");
+      if (delta === 0) return;
+      const sign = Math.sign(delta);
+      const newGesture = e.timeStamp - lastWheel > WHEEL_GAP_MS || sign !== lastSign;
+      lastWheel = e.timeStamp;
+      lastSign = sign;
+      if (newGesture) advance(sign > 0 ? "down" : "up");
     };
 
     // one advance per finger-down, whichever axis the layout runs on
