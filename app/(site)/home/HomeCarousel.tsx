@@ -4,11 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./HomeCarousel.module.css";
 import { SIZES } from "../assets";
+import { WheelGestures } from "wheel-gestures";
 
-// Finger travel that makes a touch drag a swipe.
+// Finger (or wheel) travel that makes a drag a swipe.
 const SWIPE_PX = 40;
-// Silence between wheel events that ends a gesture (inertia events arrive every ~16ms).
-const WHEEL_GAP_MS = 200;
 
 type Props = {
   slides: string[];
@@ -44,23 +43,21 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
     // HomeSection ignores advances while a slide is animating.
     const advance = (dir: "down" | "up") => advanceRef.current(dir);
 
-    // One advance per wheel gesture. Trackpad inertia keeps firing wheel events for
-    // 1-2s after the fingers lift (longer than the slide), so a gesture only ends once
-    // the stream goes quiet or flips direction — never when the animation finishes.
-    // ponytail: a fresh swipe during the inertia tail is folded into the old gesture;
-    // add delta-rise detection if that feels sticky.
-    let lastWheel = -Infinity;
-    let lastSign = 0;
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (delta === 0) return;
-      const sign = Math.sign(delta);
-      const newGesture = e.timeStamp - lastWheel > WHEEL_GAP_MS || sign !== lastSign;
-      lastWheel = e.timeStamp;
-      lastSign = sign;
-      if (newGesture) advance(sign > 0 ? "down" : "up");
-    };
+    // One advance per wheel gesture. wheel-gestures tells a real swipe from trackpad
+    // inertia, and starts a new gesture when a fresh swipe lands mid-inertia. Direction
+    // comes from the gesture's total movement, so one jittery event can't flip it. The
+    // gesture spends its one try even if a slide is running, so nothing queues.
+    const wheel = WheelGestures({ reverseSign: false });
+    let armed = false;
+    wheel.on("wheel", ({ isStart, isEnding, axisMovement: [x, y] }) => {
+      if (isStart) armed = true;
+      if (!armed || isEnding) return;
+      const moved = Math.abs(y) >= Math.abs(x) ? y : x;
+      if (Math.abs(moved) < SWIPE_PX) return;
+      armed = false;
+      advance(moved > 0 ? "down" : "up");
+    });
+    wheel.observe(window);
 
     // one advance per finger-down, whichever axis the layout runs on
     const axis = (touch: Touch) => (horizontal ? touch.clientX : touch.clientY);
@@ -89,12 +86,11 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
       if (!e.repeat) advance(e.shiftKey && e.key === " " ? "up" : dir);
     };
 
-    window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      window.removeEventListener("wheel", onWheel);
+      wheel.disconnect();
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("keydown", onKeyDown);
