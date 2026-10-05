@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import SplitReveal from "../SplitReveal";
 import styles from "./about.module.css";
 
 const FULL_NAME = "Yohanes Alexander";
-const WORDMARK_REVEAL_DURATION = 1200;
-const WORDMARK_LETTER_DELAY = 20;
 
 type PaddingValue = string | number;
 type AnimationMode = "letters" | "reveal";
@@ -29,7 +28,6 @@ export default function FullnameBlock({
   paddingBottom,
   paddingLeft,
 }: Props) {
-  const [fullnameEnteredView, setFullnameEnteredView] = useState(false);
   const fullnameRef = useRef<HTMLDivElement>(null);
   const wordmarkRef = useRef<HTMLDivElement>(null);
 
@@ -57,14 +55,6 @@ export default function FullnameBlock({
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!open) { setFullnameEnteredView(false); return; }
-    const id = requestAnimationFrame(() =>
-      requestAnimationFrame(() => setFullnameEnteredView(true))
-    );
-    return () => cancelAnimationFrame(id);
-  }, [open]);
-
   const paddingStyle = {
     ...(paddingTop !== undefined && { paddingTop: px(paddingTop) }),
     ...(paddingRight !== undefined && { paddingRight: px(paddingRight) }),
@@ -81,37 +71,17 @@ export default function FullnameBlock({
       data-animation={animation}
       style={Object.keys(paddingStyle).length ? paddingStyle : undefined}
     >
-      <div ref={wordmarkRef} className={styles.wordmark} aria-label={FULL_NAME}>
-        {animation === "reveal" ? (
-          <span
-            aria-hidden="true"
-            className={styles.wordmarkRevealTrack}
-            style={{
-              transform: fullnameEnteredView ? "translateY(0)" : "translateY(115%)",
-              transition: fullnameEnteredView
-                ? `transform ${WORDMARK_REVEAL_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`
-                : "none",
-            }}
-          >
-            {FULL_NAME}
-          </span>
-        ) : (
-          FULL_NAME.split("").map((letter, index) => (
-            <span
-              aria-hidden="true"
-              className={styles.wordmarkLetter}
-              key={`${letter}-${index}`}
-              style={{
-                transform: fullnameEnteredView ? "translateY(0)" : "translateY(115%)",
-                transition: fullnameEnteredView
-                  ? `transform ${WORDMARK_REVEAL_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1) ${index * WORDMARK_LETTER_DELAY}ms`
-                  : "none",
-              }}
-            >
-              {letter === " " ? " " : letter}
-            </span>
-          ))
-        )}
+      <div ref={wordmarkRef} className={styles.wordmark}>
+        {/* inner span so the fit above keeps the wordmark div to itself */}
+        <SplitReveal
+          as="span"
+          style={{ display: "block" }}
+          play={open}
+          type={animation === "reveal" ? "lines" : "chars"}
+          dynamic
+        >
+          {FULL_NAME}
+        </SplitReveal>
       </div>
     </div>
   );

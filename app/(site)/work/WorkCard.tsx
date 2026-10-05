@@ -29,9 +29,9 @@ type Props = {
 function revealStyle(phase: Phase | undefined): CSSProperties {
   if (!phase) return {};
   return {
-    transform: phase === "pre-open" ? "translateY(110%)" : "translateY(0)",
+    transform: phase === "pre-open" ? "translateY(101%)" : "translateY(0)",
     transition: phase === "open"
-      ? "transform 700ms cubic-bezier(0.4, 0, 0.2, 1) 120ms"
+      ? "transform var(--reveal-duration) var(--reveal-ease) 120ms"
       : "none",
   };
 }

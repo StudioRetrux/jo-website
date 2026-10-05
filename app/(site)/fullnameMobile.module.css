@@ -11,17 +11,6 @@
   text-transform: uppercase;
 }
 
-/* each line clips its own letters, so the reveal slides them up out of nothing */
-.line {
-  display: block;
-  overflow: hidden;
-}
-
-.letter {
-  display: inline-block;
-  will-change: transform;
-}
-
 @media (max-width: 480px) {
   .wordmark {
     display: block;

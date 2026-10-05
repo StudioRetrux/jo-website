@@ -16,6 +16,7 @@ import Header from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "./FullnameBlock";
 import FullnameMobile from "../FullnameMobile";
+import SplitReveal from "../SplitReveal";
 import LogosCarousel from "./LogosCarousel";
 import AboutCategoryItem from "./AboutCategoryItem";
 import { WORK_CATEGORIES } from "@/lib/projects/types";
@@ -75,7 +76,6 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
     [AutoScroll({ speed: 1, stopOnInteraction: false })],
   );
   const [menuOpen, setMenuOpen] = useState(false);
-  const [heroDescEnteredView, setHeroDescEnteredView] = useState(false);
   const [infoHeadingEnteredView, setInfoHeadingEnteredView] = useState(false);
   const [infoImageEnteredView, setInfoImageEnteredView] = useState(false);
   const [profileEnteredView, setProfileEnteredView] = useState(false);
@@ -125,14 +125,6 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
     heroEntryTargetY.set(0);
     heroEntryY.set(0);
   }, [heroEntryTargetY, heroEntryY, open]);
-
-  useEffect(() => {
-    if (!open) { setHeroDescEnteredView(false); return; }
-    const id = requestAnimationFrame(() =>
-      requestAnimationFrame(() => setHeroDescEnteredView(true))
-    );
-    return () => cancelAnimationFrame(id);
-  }, [open]);
 
   useEffect(() => {
     if (!open) { setInfoImageEnteredView(false); return; }
@@ -281,61 +273,44 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           <motion.div className={styles.heroImage} style={{ y: heroEntryY, scale: 1.06 }} />
           <FullnameBlock open={open} animation="reveal" paddingTop={0} paddingBottom={0} />
           <div className={styles.heroDescriptionRow}>
-            <p
-              className={styles.heroDescription}
-              style={{
-                opacity: heroDescEnteredView ? 1 : 0,
-                transform: heroDescEnteredView ? "translateY(0)" : "translateY(16px)",
-                transition: heroDescEnteredView
-                  ? "opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1) 200ms, transform 1200ms cubic-bezier(0.4, 0, 0.2, 1) 200ms"
-                  : "none",
-              }}
-            >
+            <SplitReveal as="p" className={styles.heroDescription} play={open} delay={0.2}>
               Interior Designer specializing in dental, healthcare, hospitality,{" "}<br />
               and commercial spaces.
-            </p>
+            </SplitReveal>
           </div>
         </div>
         <section ref={infoSectionRef} className={styles.infoSection} aria-label="About information">
           <div className={styles.infoColumn}>
             <div className={styles.infoTextBlock}>
+              {/* the h2 stays put for the observer; the split inside re-mounts with the breaks */}
               <h2 ref={infoHeadingRef} className={styles.infoHeading}>
-                {(mobile ? INFO_HEADING_LINES_MOBILE : INFO_HEADING_LINES).map((line, index) => (
-                  <span className={styles.infoHeadingLineClip} key={line}>
-                    <span
-                      className={styles.infoHeadingLineTrack}
-                      style={{
-                        transform: infoHeadingEnteredView ? "translateY(0)" : "translateY(115%)",
-                        transition: infoHeadingEnteredView
-                          ? `transform 700ms cubic-bezier(0.4, 0, 0.2, 1) ${index * 100}ms`
-                          : "none",
-                      }}
-                    >
-                      {line}
-                    </span>
-                  </span>
-                ))}
+                <SplitReveal
+                  key={mobile ? "mobile" : "desktop"}
+                  as="span"
+                  style={{ display: "block" }}
+                  play={infoHeadingEnteredView}
+                >
+                  {(mobile ? INFO_HEADING_LINES_MOBILE : INFO_HEADING_LINES).map((line, index) => (
+                    <React.Fragment key={line}>{index > 0 && <br />}{line}</React.Fragment>
+                  ))}
+                </SplitReveal>
               </h2>
-              <p
+              <SplitReveal
+                key={mobile ? "mobile" : "desktop"}
+                as="p"
                 className={styles.infoBody}
-                style={{
-                  opacity: infoHeadingEnteredView ? 1 : 0,
-                  transform: infoHeadingEnteredView ? "translateY(0)" : "translateY(16px)",
-                  transition: infoHeadingEnteredView
-                    ? "opacity 800ms cubic-bezier(0.4, 0, 0.2, 1), transform 800ms cubic-bezier(0.4, 0, 0.2, 1)"
-                    : "none",
-                }}
+                play={infoHeadingEnteredView}
               >
                 {mobile ? (
                   INFO_BODY
                 ) : (
                   <>
-                    <span>Through restraint and careful observation, each</span>
-                    <span>project is designed to support how people move,</span>
-                    <span>gather, and live.</span>
+                    Through restraint and careful observation, each<br />
+                    project is designed to support how people move,<br />
+                    gather, and live.
                   </>
                 )}
-              </p>
+              </SplitReveal>
             </div>
           </div>
           <div className={styles.infoColumn}>

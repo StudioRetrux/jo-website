@@ -134,9 +134,9 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
 
   const navReveal = (index: number): React.CSSProperties => ({
     display: "block",
-    transform: phase === "pre-open" ? "translateY(110%)" : "translateY(0)",
+    transform: phase === "pre-open" ? "translateY(101%)" : "translateY(0)",
     transition: phase === "open"
-      ? `transform 700ms cubic-bezier(0.4, 0, 0.2, 1) ${450 + index * 60}ms`
+      ? `transform var(--reveal-duration) var(--reveal-ease) ${450 + index * 100}ms`
       : "none",
   });
 
@@ -195,7 +195,6 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
                   onMouseEnter={() => { showThumb(i); setHoveredIndex(i); }}
                   onMouseLeave={() => { hideThumb(); setHoveredIndex(-1); }}
                   onClick={() => { setInstant(true); onNavigate?.(item); }}
-                  active={false}
                 />
               </div>
             ))}

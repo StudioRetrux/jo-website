@@ -97,12 +97,6 @@
   flex-direction: column;
   gap: 0;
   margin-top: var(--mega-menu-text-track-offset, -7px);
-  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.megaMenuTextClip:hover .megaMenuTextTrack,
-.megaMenuTextTrackActive {
-  transform: translateY(var(--mega-menu-text-hover-y, -60px));
 }
 
 .megaMenuNavItem {
@@ -128,8 +122,7 @@
 /* Instrument Serif: ascent 0.99em, descent 0.31em, cap 0.72em. At line-height 1.2 the
    content box is taller than the line box, so the cap top sits 0.22em below the line
    box top. The old -18px offset pulled 72px caps ~2px above the clip and shaved them;
-   these values keep the same cap inset the 56px base has, scaled by 72/56. The hover
-   travel is item height + offset, so it moves with them. 2560 needs no override — the
+   these values keep the same cap inset the 56px base has, scaled by 72/56. 2560 needs no override — the
    type stays 72px there, so the 1920 metrics already hold. */
 @media (min-width: 1920px) {
   .megaMenuTextClip {
@@ -137,11 +130,6 @@
     --mega-menu-text-font-size: 72px;
     --mega-menu-text-item-height: 86px;
     --mega-menu-text-track-offset: -9px;
-  }
-
-  .megaMenuTextClip:hover .megaMenuTextTrack,
-  .megaMenuTextTrackActive {
-    transform: translateY(var(--mega-menu-text-hover-y, -77px));
   }
 }
 
@@ -171,11 +159,6 @@
     --mega-menu-text-font-size: 56px;
     --mega-menu-text-item-height: 67px;
     --mega-menu-text-track-offset: -7px;
-  }
-
-  .megaMenuTextClip:hover .megaMenuTextTrack,
-  .megaMenuTextTrackActive {
-    transform: translateY(var(--mega-menu-text-hover-y, -60px));
   }
 }
 
@@ -302,7 +285,6 @@
     --mega-menu-text-clip-height: 38px;
     --mega-menu-text-item-height: 48px;
     --mega-menu-text-track-offset: -5px;
-    --mega-menu-text-hover-y: -43px;
   }
 
   .megaMenuRight {

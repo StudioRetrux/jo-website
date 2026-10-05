@@ -9,7 +9,6 @@ type Props = {
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   onClick?: () => void;
-  active?: boolean;
 };
 
 export default function MegaMenuText({
@@ -20,17 +19,16 @@ export default function MegaMenuText({
   onMouseEnter,
   onMouseLeave,
   onClick,
-  active,
 }: Props) {
   return (
     <span
-      className={styles.megaMenuTextClip}
+      className={`${styles.megaMenuTextClip} roll-trigger`}
       style={style}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
     >
-      <span className={`${styles.megaMenuTextTrack}${active ? ` ${styles.megaMenuTextTrackActive}` : ""}`}>
+      <span className={`${styles.megaMenuTextTrack} roll`}>
         <span className={styles.megaMenuNavItem} style={textStyle}>
           {text}
         </span>

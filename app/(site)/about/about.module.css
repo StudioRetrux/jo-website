@@ -60,16 +60,6 @@
   overflow: hidden;
 }
 
-.wordmarkLetter {
-  display: inline-block;
-  will-change: transform;
-}
-
-.wordmarkRevealTrack {
-  display: block;
-  will-change: transform;
-}
-
 .heroDescriptionRow {
   display: flex;
   width: 100%;
@@ -138,16 +128,6 @@
   text-align: center;
 }
 
-.infoHeadingLineClip {
-  display: block;
-  overflow: hidden;
-}
-
-.infoHeadingLineTrack {
-  display: block;
-  will-change: transform;
-}
-
 .infoBody {
   margin: 0;
   color: var(--Text-Dark-Body-Copy, #756f69);
@@ -158,10 +138,6 @@
   line-height: 1.5;
   letter-spacing: 0;
   text-align: center;
-}
-
-.infoBody span {
-  display: block;
 }
 
 .infoImageFrame {
@@ -466,11 +442,6 @@
   display: flex;
   flex-direction: column;
   margin-top: 1px;
-  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.aboutCatItem:hover .aboutCatTextTrack {
-  transform: translateY(-67px);
 }
 
 .aboutCatText {
@@ -1091,10 +1062,6 @@
   .aboutCatText {
     height: 28px;
     font-size: 24px;
-  }
-
-  .aboutCatItem:hover .aboutCatTextTrack {
-    transform: translateY(-28px);
   }
 
   /* quote over a 248px portrait, the text itself wider than the image */

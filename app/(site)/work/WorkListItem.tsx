@@ -27,7 +27,7 @@ export default function WorkListItem({ title = "Project Title", category, year, 
 
   return (
     <div
-      className={styles.workListItem}
+      className={`${styles.workListItem} roll-trigger`}
       data-work-list-item={filtered ? undefined : ""}
       ref={onEl}
       style={{

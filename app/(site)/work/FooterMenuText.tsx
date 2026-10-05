@@ -22,7 +22,7 @@ export default function FooterMenuText({ text, style, onNavigate }: Props) {
   const href = PATH_BY_ITEM[text];
 
   const label = (
-    <span className={styles.footerMenuTextTrack}>
+    <span className={`${styles.footerMenuTextTrack} roll`}>
       <span className={styles.footerMenuTextItem}>{text}</span>
       <span className={`${styles.footerMenuTextItem} ${styles.footerMenuTextItemHover}`}>
         {text}
@@ -31,7 +31,7 @@ export default function FooterMenuText({ text, style, onNavigate }: Props) {
   );
 
   if (!href) {
-    return <span className={styles.footerMenuTextClip} style={style}>{label}</span>;
+    return <span className={`${styles.footerMenuTextClip} roll-trigger`} style={style}>{label}</span>;
   }
 
   // Real anchor so middle-click, ctrl-click and crawlers get the route; a plain
@@ -39,7 +39,7 @@ export default function FooterMenuText({ text, style, onNavigate }: Props) {
   return (
     <a
       href={href}
-      className={styles.footerMenuTextClip}
+      className={`${styles.footerMenuTextClip} roll-trigger`}
       style={style}
       onClick={(event) => {
         if (!onNavigate) return;

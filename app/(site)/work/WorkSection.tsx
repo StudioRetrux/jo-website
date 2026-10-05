@@ -14,6 +14,7 @@ import WorkSpacer from "./WorkSpacer";
 import SwitchMode, { captureSnapshot, type ImageSnapshot } from "./SwitchMode";
 import styles from "./work.module.css";
 import { useLoadBar } from "../LoadBar";
+import SplitReveal from "../SplitReveal";
 import { workAssets } from "../assets";
 import { WORK_CATEGORIES, type WorkItem } from "@/lib/projects/types";
 
@@ -448,22 +449,10 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
         <div ref={fullnameViewRef} className={styles.fullnameReveal}>
         <FullnameMobile open={fullnameEnteredView} />
         <div ref={fullnameRef} className={styles.fullname}>
-          <div ref={wordmarkRef} className={styles.workWordmark} aria-label={FULL_NAME}>
-            {FULL_NAME.split("").map((letter, index) => (
-              <span
-                aria-hidden="true"
-                className={styles.workWordmarkLetter}
-                key={`${letter}-${index}`}
-                style={{
-                  transform: fullnameEnteredView ? "translateY(0)" : "translateY(115%)",
-                  transition: fullnameEnteredView
-                    ? `transform 800ms cubic-bezier(0.4, 0, 0.2, 1) ${index * 20}ms`
-                    : "none",
-                }}
-              >
-                {letter === " " ? "\u00a0" : letter}
-              </span>
-            ))}
+          <div ref={wordmarkRef} className={styles.workWordmark}>
+            <SplitReveal as="span" style={{ display: "block" }} play={fullnameEnteredView} type="chars" dynamic>
+              {FULL_NAME}
+            </SplitReveal>
           </div>
         </div>
         </div>

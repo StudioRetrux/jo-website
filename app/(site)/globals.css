@@ -47,6 +47,53 @@ a {
   text-decoration: none;
 }
 
+/* kononenkogroup.com's motion: their ease, their 1.109s duration (see SplitReveal) */
+:root {
+  --reveal-ease: cubic-bezier(0.17, 0.84, 0.44, 1);
+  --reveal-duration: 1.109s;
+}
+
+/* SplitReveal masks — SplitText names each mask after its piece (.ln → .ln-mask) */
+.ln-mask { display: block; overflow: hidden; }
+.ln-mask .ln { display: block; }
+.ln-mask .wd,
+.ln-mask .ch,
+.ch-mask,
+.ch-mask .ch { display: inline-block; }
+.ch-mask { overflow: hidden; }
+.ln-mask .ln,
+.ln-mask .wd,
+.ln-mask .ch,
+.ch-mask .ch { will-change: transform; }
+
+/* line-height under 1: pad each piece so its mask doesn't shave ascenders/descenders,
+   and pull the margins back so the layout doesn't move */
+.e-lh { --off: 0.5em; }
+.e-lh .ln-mask .ln,
+.e-lh .ln-mask .wd,
+.e-lh .ln-mask .ch,
+.e-lh .ch-mask .ch {
+  margin-block: calc(var(--off) * -1);
+  padding-block: calc(var(--off) / 2);
+}
+.e-lh .ln-mask:first-child :is(.ln, .wd, .ch) { margin-top: calc(var(--off) * -0.5); }
+.e-lh .ln-mask:last-child :is(.ln, .wd, .ch) { margin-bottom: calc(var(--off) * -0.5); }
+
+/* hover roll — their hover swap: the label leaves through the top of its clip while its
+   copy (the track's last child) follows from below. Percentages, so no per-breakpoint
+   offsets. Put .roll-trigger on whatever should start it. */
+.roll { position: relative; }
+.roll > * { transition: transform 0.6s var(--reveal-ease); }
+.roll > :last-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 0;
+  transform: translateY(101%);
+}
+.roll-trigger:hover .roll > :first-child { transform: translateY(-101%); }
+.roll-trigger:hover .roll > :last-child { transform: translateY(0); }
+
 @keyframes listItemEnter {
   from { opacity: 0; transform: translateY(100px); }
   to   { opacity: 1; transform: translateY(0); }
