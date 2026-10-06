@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectText from "./ProjectText";
 import { useState } from "react";
 import CtaImageTrail from "../about/CtaImageTrail";
 import { useCursor } from "../contexts/CursorContext";
@@ -20,10 +21,10 @@ export default function ProjectCta() {
       <div className={styles.ctaSectionInner}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/Icon 1_1.webp" alt="" className={styles.ctaSectionIcon} />
-        <p className={styles.ctaSectionText}>
+        <ProjectText as="p" className={styles.ctaSectionText}>
           Let&apos;s create spaces that{" "}<br />feel just as thoughtful.
-        </p>
-        <a href="https://wa.me/6287823139800" className={styles.ctaSectionCta} target="_blank" rel="noreferrer noopener">Consult</a>
+        </ProjectText>
+        <a href="https://wa.me/6287823139800" className={styles.ctaSectionCta} target="_blank" rel="noreferrer noopener"><ProjectText as="span">Consult</ProjectText></a>
       </div>
     </section>
   );

@@ -356,26 +356,26 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </section>
         <section ref={profileSectionRef} className={styles.profileSection} aria-label="Profile">
           <div className={styles.profileLeft}>
-            <span className={styles.profileTag}>(ABOUT)</span>
+            <SplitReveal as="span" className={styles.profileTag} play={open} scroll>(ABOUT)</SplitReveal>
             <div className={styles.profileContent}>
-              <h2 className={styles.profileName}>
+              <SplitReveal as="h2" className={styles.profileName} play={open} scroll>
                 <span className={styles.profileNameLine}>Yohanes</span>
                 <span className={styles.profileNameLine}>Alexander</span>
-              </h2>
+              </SplitReveal>
               <div className={styles.profileBioWrap}>
-                <p className={styles.profileBio}>
+                <SplitReveal as="p" className={styles.profileBio} play={open} scroll>
                   Yohanes Alexander is an interior designer with a strong focus on dental
                   environments, complemented by experience across healthcare, hospitality,
                   and commercial projects. His approach combines structured thinking with a
                   sensitivity to human experience—creating spaces that feel both clear and
                   comfortable.
-                </p>
+                </SplitReveal>
               </div>
               <div className={styles.profileServicesBlock}>
-                <span className={styles.profileServicesLabel}>services</span>
-                <p className={styles.profileServices}>
+                <SplitReveal as="span" className={styles.profileServicesLabel} play={open} scroll>services</SplitReveal>
+                <SplitReveal as="p" className={styles.profileServices} play={open} scroll>
                   Interior Designer / Space Planning / Concept Development / Design Consultation / Project Supervision
-                </p>
+                </SplitReveal>
               </div>
             </div>
           </div>
@@ -393,8 +393,8 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </section>
         <section className={styles.logosSection} aria-label="Logos">
           <div className={styles.logosTrustedBlock}>
-            <p className={styles.logosTrustedHeading}>Trusted by</p>
-            <p className={styles.logosTrustedBody}>Create thoughtful,{" "}<br />well-crafted spaces.</p>
+            <SplitReveal as="p" className={styles.logosTrustedHeading} play={open} scroll>Trusted by</SplitReveal>
+            <SplitReveal as="p" className={styles.logosTrustedBody} play={open} scroll>Create thoughtful,{" "}<br />well-crafted spaces.</SplitReveal>
           </div>
           <LogosCarousel logos={LOGOS} />
         </section>
@@ -404,10 +404,10 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
               <img src="/healthcare.webp" alt="" className={styles.darkSectionImage} />
             </div>
             <div className={styles.darkSectionB}>
-              <p className={styles.darkSectionBody}>
+              <SplitReveal as="p" className={styles.darkSectionBody} play={open} scroll>
                 The practice works across a range of project types,{" "}<br />
                 approaching each with the same level of care, clarity, and consideration.
-              </p>
+              </SplitReveal>
               <div className={styles.aboutCatList}>
                 {WORK_CATEGORIES.map((item) => (
                   <AboutCategoryItem
@@ -434,17 +434,17 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           <div className={styles.bgSectionImageWrap}>
             <img src="/452.webp" alt="" className={styles.bgSectionImage} />
             <div className={styles.bgSectionOverlay}>
-              <p className={styles.bgSectionText}>
+              <SplitReveal as="p" className={styles.bgSectionText} play={open} scroll>
                 Most of my ideas come from <em>observing</em> how{" "}<br />
                 <em>people</em> move and spend time in a space.{" "}<br />
                 Design <em>starts</em> there.
-              </p>
-              <a href="https://wa.me/6287823139800" className={styles.bgSectionCta} target="_blank" rel="noreferrer noopener">Get in touch</a>
+              </SplitReveal>
+              <a href="https://wa.me/6287823139800" className={styles.bgSectionCta} target="_blank" rel="noreferrer noopener"><SplitReveal as="span" play={open} scroll>Get in touch</SplitReveal></a>
             </div>
           </div>
         </section>
         <section className={styles.testimonialsSection}>
-          <h2 className={styles.testimonialsHeading}>What They Say</h2>
+          <SplitReveal as="h2" className={styles.testimonialsHeading} play={open} scroll>What They Say</SplitReveal>
           <div className={styles.testimonialsCarouselWrap} ref={mobile ? testimonialsEmblaRef : undefined}>
             <div className={styles.testimonialsCarouselTrack}>
               {[...Array(8)].map((_, i) => (
@@ -467,10 +467,10 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
           <CtaImageTrail active={ctaTrailActive} />
           <div className={styles.ctaSectionInner}>
             <img src="/Icon 1_1.webp" alt="" className={styles.ctaSectionIcon} />
-            <p className={styles.ctaSectionText}>
+            <SplitReveal as="p" className={styles.ctaSectionText} play={open} scroll>
               Let&apos;s create spaces that{" "}<br />feel just as thoughtful.
-            </p>
-            <a href="https://wa.me/6287823139800" className={styles.ctaSectionCta} target="_blank" rel="noreferrer noopener">Consult</a>
+            </SplitReveal>
+            <a href="https://wa.me/6287823139800" className={styles.ctaSectionCta} target="_blank" rel="noreferrer noopener"><SplitReveal as="span" play={open} scroll>Consult</SplitReveal></a>
           </div>
         </section>
         <div ref={footerWordmarkRef} style={{ "--wordmark-color": "#59534c" } as React.CSSProperties}>
@@ -479,42 +479,42 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         </div>
         <footer className={workStyles.workFooter}>
           <div className={`${workStyles.workFooterColumn} ${workStyles.workFooterLeft}`}>
-            <span className={workStyles.workFooterMenuLabel}>(MENU)</span>
+            <SplitReveal as="span" className={workStyles.workFooterMenuLabel} play={open} scroll>(MENU)</SplitReveal>
             <nav className={workStyles.workFooterMenu}>
               {FOOTER_MENU_ITEMS.map((item) => (
-                <FooterMenuText key={item} text={item} onNavigate={handleNavigate} />
+                <FooterMenuText key={item} text={item} onNavigate={handleNavigate} revealPlay={open} />
               ))}
             </nav>
           </div>
           <div className={`${workStyles.workFooterColumn} ${workStyles.workFooterRight}`}>
             <div className={workStyles.footerInfo}>
               <div className={workStyles.footerInfoTitleRow}>
-                <span className={workStyles.footerInfoTitle}>GET IN TOUCH</span>
+                <SplitReveal as="span" className={workStyles.footerInfoTitle} play={open} scroll>GET IN TOUCH</SplitReveal>
               </div>
               <div className={workStyles.footerInfoItems}>
-                <a className={workStyles.footerInfoLink} href="mailto:yohanes.ptan@gmail.com" target="_blank" rel="noreferrer noopener">yohanes.ptan@gmail.com</a>
-                <a className={workStyles.footerInfoLink} href="tel:+6287823139800">+62 878 2313 9800</a>
+                <a className={workStyles.footerInfoLink} href="mailto:yohanes.ptan@gmail.com" target="_blank" rel="noreferrer noopener"><SplitReveal as="span" play={open} scroll>yohanes.ptan@gmail.com</SplitReveal></a>
+                <a className={workStyles.footerInfoLink} href="tel:+6287823139800"><SplitReveal as="span" play={open} scroll>+62 878 2313 9800</SplitReveal></a>
               </div>
               <div className={workStyles.footerInfoGroup}>
                 <div className={workStyles.footerInfoTitleRow}>
-                  <span className={workStyles.footerInfoTitle}>SOCIALS</span>
+                  <SplitReveal as="span" className={workStyles.footerInfoTitle} play={open} scroll>SOCIALS</SplitReveal>
                 </div>
                 <div className={workStyles.footerInfoItems}>
                   {SOCIAL_ITEMS.map((item) => (
-                    <a className={workStyles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener">{item.label}</a>
+                    <a className={workStyles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener"><SplitReveal as="span" play={open} scroll>{item.label}</SplitReveal></a>
                   ))}
                 </div>
               </div>
             </div>
             <div className={workStyles.footerInfo}>
               <div className={workStyles.footerInfoTitleRow}>
-                <span className={workStyles.footerInfoTitle}>OFFICE</span>
+                <SplitReveal as="span" className={workStyles.footerInfoTitle} play={open} scroll>OFFICE</SplitReveal>
               </div>
               <div className={workStyles.footerInfoItems}>
-                <p className={workStyles.footerOfficeText}>
+                <SplitReveal as="p" className={workStyles.footerOfficeText} play={open} scroll>
                   Menara Palma, Jl.<br />
                   Sudirman no 12 , 123567
-                </p>
+                </SplitReveal>
               </div>
             </div>
           </div>
@@ -531,7 +531,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                   handleNavigate("Terms of Use");
                 }}
               >
-                Terms of Use
+                <SplitReveal as="span" play={open} scroll>Terms of Use</SplitReveal>
               </a>
               <a
                 href="/privacy"
@@ -542,14 +542,14 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
                   handleNavigate("Privacy Policy");
                 }}
               >
-                Privacy Policy
+                <SplitReveal as="span" play={open} scroll>Privacy Policy</SplitReveal>
               </a>
             </div>
             <div className={workStyles.workRibbonRight}>
               <span className={workStyles.workRibbonDev}>
-                Developed by <a href="https://instagram.com/retruxstd" target="_blank" rel="noreferrer noopener" className={workStyles.workRibbonLink}>Retrux</a>
+                <SplitReveal as="span" play={open} scroll>Developed by</SplitReveal>{" "}<a href="https://instagram.com/retruxstd" target="_blank" rel="noreferrer noopener" className={workStyles.workRibbonLink}><SplitReveal as="span" play={open} scroll>Retrux</SplitReveal></a>
               </span>
-              <span className={workStyles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
+              <SplitReveal as="span" className={workStyles.workRibbonCopyright} play={open} scroll>© 2026. Yohanes Alexander</SplitReveal>
             </div>
           </div>
         </div>

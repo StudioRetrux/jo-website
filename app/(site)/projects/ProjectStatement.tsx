@@ -1,3 +1,4 @@
+import ProjectText from "./ProjectText";
 import ParallaxImage from "./ParallaxImage";
 import { SIZES } from "../assets";
 import type { Project } from "@/lib/projects/types";
@@ -13,10 +14,10 @@ export default function ProjectStatement({ project }: { project: Project }) {
         sizes={SIZES.full}
         className={styles.statementImage}
       />
-      <p className={styles.statementText}>
+      <ProjectText as="p" className={styles.statementText}>
         Designed to efficiently make the experience not intimidating for everyone
         including kids
-      </p>
+      </ProjectText>
     </section>
   );
 }

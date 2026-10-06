@@ -4,6 +4,7 @@ import { useEffect, useRef, type CSSProperties, type ElementType, type ReactNode
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { CustomEase } from "gsap/CustomEase";
+import { scrollParent } from "./projects/scrollParent";
 
 /*
  * kononenkogroup.com's text reveal, 1:1 — their v-splittext + v-linereveal directives.
@@ -40,6 +41,8 @@ type Props = {
   delay?: number;
   /** their `dynamic` option: shrink the stagger as the char count grows */
   dynamic?: boolean;
+  /** Reveal once when this text enters its nearest scrolling viewport. */
+  scroll?: boolean;
 };
 
 /** line-height as a multiple of font-size, null when "normal" — their YU() */
@@ -56,23 +59,39 @@ function lineHeightRatio(el: HTMLElement) {
  * When the children change, change the `key` so it re-mounts and re-splits.
  */
 export default function SplitReveal({
-  children, play, type = "lines", as: Tag = "div", className, style, delay = 0, dynamic,
+  children, play, type = "lines", as: Tag = "div", className, style, delay = 0, dynamic, scroll = false,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
   const playRef = useRef(play);
+  const enteredRef = useRef(!scroll);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     let split: SplitText | null = null;
+    let observer: IntersectionObserver | null = null;
+    enteredRef.current = !scroll;
     let cancelled = false;
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const originalIndent = el.style.textIndent;
+    const originalTightLineHeight = el.classList.contains("e-lh");
 
     // fonts first, or the line breaks are measured against the fallback face; then a
     // frame, so anything else waiting on fonts (the wordmarks' font-size fit) lands first
     document.fonts.ready.then(() => requestAnimationFrame(() => {
       if (cancelled) return;
+      // Keep reduced-motion text in its original, immediately readable DOM.
+      if (reduced) return;
+      if (scroll) {
+        observer = new IntersectionObserver(([entry]) => {
+          if (!entry.isIntersecting) return;
+          enteredRef.current = true;
+          if (playRef.current) tweenRef.current?.play();
+          observer?.disconnect();
+        }, { root: scrollParent(el), threshold: 0 });
+        observer.observe(el);
+      }
       split = SplitText.create(el, {
         ...SPLIT[type],
         tag: "span",
@@ -81,7 +100,17 @@ export default function SplitReveal({
         charsClass: "ch",
         smartWrap: true,
         autoSplit: true,
+        onRevert() {
+          el.style.textIndent = originalIndent;
+        },
         onSplit(self) {
+          // Split line wrappers inherit text-indent. Transfer it to the first line
+          // only, as Kononenko does, so the inset section label keeps its space.
+          const indent = getComputedStyle(el).textIndent;
+          if (self.lines.length && indent !== "0px" && indent !== "0") {
+            el.style.textIndent = "0px";
+            (self.lines[0] as HTMLElement).style.marginInlineStart = indent;
+          }
           const ratio = lineHeightRatio(el);
           el.classList.toggle("e-lh", ratio !== null && ratio < 1);
           const stagger = dynamic
@@ -89,11 +118,11 @@ export default function SplitReveal({
             : STAGGER[type];
           const tween = gsap.from(self[type], {
             yPercent: 101,
-            duration: reduced ? 0 : DURATION,
-            stagger: reduced ? 0 : stagger,
+            duration: DURATION,
+            stagger,
             ease: "reveal",
             delay,
-            paused: !playRef.current,
+            paused: !playRef.current || !enteredRef.current,
           });
           tweenRef.current = tween;
           // returned so a resize re-split carries the tween's progress across
@@ -104,18 +133,20 @@ export default function SplitReveal({
 
     return () => {
       cancelled = true;
+      observer?.disconnect();
       split?.revert();
+      el.classList.toggle("e-lh", originalTightLineHeight);
       tweenRef.current = null;
     };
-  }, [type, delay, dynamic]);
+  }, [type, delay, dynamic, scroll]);
 
   useEffect(() => {
     playRef.current = play;
     const tween = tweenRef.current;
     if (!tween) return; // not split yet — onSplit reads playRef
-    if (play) tween.play();
+    if (play && enteredRef.current) tween.play();
     else tween.pause(0);
-  }, [play]);
+  }, [play, scroll]);
 
   return <Tag ref={ref} className={className} style={style}>{children}</Tag>;
 }

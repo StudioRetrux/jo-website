@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectText from "./ProjectText";
 import Image from "next/image";
 import ProjectLink from "./ProjectLink";
 import SectionLink from "../SectionLink";
@@ -38,14 +39,14 @@ export default function ProjectOther({
   return (
     <section className={styles.other}>
       <div className={styles.otherHead}>
-        <h2 className={styles.otherTitle}>{heading}</h2>
+        <ProjectText as="h2" className={styles.otherTitle}>{heading}</ProjectText>
         <SectionLink
           href={viewAllHref}
           mode={homeNavigation}
           onLeave={onLeave}
           className={styles.otherViewAll}
         >
-          View all
+          <ProjectText as="span">View all</ProjectText>
         </SectionLink>
       </div>
       <div className={styles.otherGrid}>
@@ -71,12 +72,12 @@ export default function ProjectOther({
                 />
               )}
             </div>
-            <span className={styles.otherCardTitle}>{item.title}</span>
-            <span className={styles.otherCardInfo}>
+            <ProjectText as="span" className={styles.otherCardTitle}>{item.title}</ProjectText>
+            <ProjectText as="span" className={styles.otherCardInfo}>
               {item.category}
               <span aria-hidden="true">{" • "}</span>
               {item.year}
-            </span>
+            </ProjectText>
           </ProjectLink>
         ))}
       </div>

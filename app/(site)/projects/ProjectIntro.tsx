@@ -1,3 +1,4 @@
+import ProjectText from "./ProjectText";
 import type { CSSProperties } from "react";
 import styles from "./[slug]/projectDetail.module.css";
 
@@ -24,10 +25,10 @@ export default function ProjectIntro({
       // wider than (ABOUT) — hand the length over so CSS sizes the indent per section
       style={{ "--label-chars": label.length } as CSSProperties}
     >
-      <span className={styles.aboutLabel}>{label}</span>
+      <ProjectText as="span" className={styles.aboutLabel}>{label}</ProjectText>
       <div className={styles.aboutText}>
-        <h2 className={styles.aboutHeading}>{heading}</h2>
-        <p className={styles.aboutBody}>{body}</p>
+        <ProjectText key={heading} as="h2" className={styles.aboutHeading}>{heading}</ProjectText>
+        <ProjectText key={body} as="p" className={styles.aboutBody}>{body}</ProjectText>
       </div>
     </div>
   );

@@ -75,6 +75,8 @@ export function ProjectOverlayProvider({ children }: { children: React.ReactNode
     // the entry we just returned to
     if (push) window.history.pushState({}, "", detailPath(kind, slug));
     slugRef.current = slug;
+    // A fresh detail starts at its hero, with its scroll reveals still waiting.
+    overlayRef.current?.scrollTo({ top: 0, behavior: "instant" });
     setDetail(data);
     // two frames: mount closed, then animate, or the transition never runs
     requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
@@ -124,6 +126,7 @@ export function ProjectOverlayProvider({ children }: { children: React.ReactNode
             {/* shell is still mounted under us, so nav is state-driven — close, don't reload */}
             {detail.kind === "curated" ? (
               <CuratedContent
+                key={detail.slug}
                 item={detail.item}
                 related={detail.related}
                 homeNavigation="state"
@@ -131,6 +134,7 @@ export function ProjectOverlayProvider({ children }: { children: React.ReactNode
               />
             ) : (
               <ProjectContent
+                key={detail.project.slug}
                 project={detail.project}
                 related={detail.related}
                 homeNavigation="state"

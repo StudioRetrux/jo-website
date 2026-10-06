@@ -1,3 +1,4 @@
+import ProjectText from "./ProjectText";
 import styles from "./[slug]/projectDetail.module.css";
 
 // ponytail: three identical columns, exactly as the mock has them.
@@ -7,12 +8,12 @@ const COLUMNS = [NAMES, NAMES, NAMES];
 export default function ProjectCredits() {
   return (
     <section className={styles.credits}>
-      <span className={styles.creditsLabel}>(MEET THE TEAM)</span>
+      <ProjectText as="span" className={styles.creditsLabel}>(MEET THE TEAM)</ProjectText>
       <div className={styles.creditsColumns}>
         {COLUMNS.map((names, i) => (
           <div className={styles.creditsColumn} key={i}>
             {names.map((name) => (
-              <span key={name}>{name}</span>
+              <ProjectText as="span" key={name}>{name}</ProjectText>
             ))}
           </div>
         ))}

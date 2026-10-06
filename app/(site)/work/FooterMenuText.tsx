@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import SplitReveal from "../SplitReveal";
 import styles from "./work.module.css";
 
 type Props = {
@@ -8,6 +9,8 @@ type Props = {
   style?: CSSProperties;
   /** in-app navigation for this label; without it the anchor just follows its href */
   onNavigate?: (item: string) => void;
+  /** Opt into a scroll reveal while preserving the menu's hover roll. */
+  revealPlay?: boolean;
 };
 
 const PATH_BY_ITEM: Record<string, string> = {
@@ -18,12 +21,18 @@ const PATH_BY_ITEM: Record<string, string> = {
   Contact: "/contact",
 };
 
-export default function FooterMenuText({ text, style, onNavigate }: Props) {
+export default function FooterMenuText({ text, style, onNavigate, revealPlay }: Props) {
   const href = PATH_BY_ITEM[text];
 
   const label = (
     <span className={`${styles.footerMenuTextTrack} roll`}>
-      <span className={styles.footerMenuTextItem}>{text}</span>
+      <span className={styles.footerMenuTextItem}>
+        {revealPlay === undefined ? text : (
+          <SplitReveal as="span" style={{ display: "block" }} play={revealPlay} scroll>
+            {text}
+          </SplitReveal>
+        )}
+      </span>
       <span className={`${styles.footerMenuTextItem} ${styles.footerMenuTextItemHover}`}>
         {text}
       </span>

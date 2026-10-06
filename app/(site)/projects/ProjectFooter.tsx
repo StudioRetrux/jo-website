@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectText from "./ProjectText";
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import FullnameBlock from "../about/FullnameBlock";
@@ -66,42 +67,42 @@ export default function ProjectFooter({
       </div>
       <footer className={styles.workFooter}>
         <div className={`${styles.workFooterColumn} ${styles.workFooterLeft}`}>
-          <span className={styles.workFooterMenuLabel}>(MENU)</span>
+          <ProjectText as="span" className={styles.workFooterMenuLabel}>(MENU)</ProjectText>
           <nav className={styles.workFooterMenu}>
             {FOOTER_MENU_ITEMS.map((item) => (
-              <FooterMenuText key={item} text={item} onNavigate={handleNavigate} />
+              <FooterMenuText key={item} text={item} onNavigate={handleNavigate} revealPlay />
             ))}
           </nav>
         </div>
         <div className={`${styles.workFooterColumn} ${styles.workFooterRight}`}>
           <div className={styles.footerInfo}>
             <div className={styles.footerInfoTitleRow}>
-              <span className={styles.footerInfoTitle}>GET IN TOUCH</span>
+              <ProjectText as="span" className={styles.footerInfoTitle}>GET IN TOUCH</ProjectText>
             </div>
             <div className={styles.footerInfoItems}>
-              <a className={styles.footerInfoLink} href="mailto:yohanes.ptan@gmail.com" target="_blank" rel="noreferrer noopener">yohanes.ptan@gmail.com</a>
-              <a className={styles.footerInfoLink} href="tel:+6287823139800">+62 878 2313 9800</a>
+              <a className={styles.footerInfoLink} href="mailto:yohanes.ptan@gmail.com" target="_blank" rel="noreferrer noopener"><ProjectText as="span">yohanes.ptan@gmail.com</ProjectText></a>
+              <a className={styles.footerInfoLink} href="tel:+6287823139800"><ProjectText as="span">+62 878 2313 9800</ProjectText></a>
             </div>
             <div className={styles.footerInfoGroup}>
               <div className={styles.footerInfoTitleRow}>
-                <span className={styles.footerInfoTitle}>SOCIALS</span>
+                <ProjectText as="span" className={styles.footerInfoTitle}>SOCIALS</ProjectText>
               </div>
               <div className={styles.footerInfoItems}>
                 {SOCIAL_ITEMS.map((item) => (
-                  <a className={styles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener">{item.label}</a>
+                  <a className={styles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener"><ProjectText as="span">{item.label}</ProjectText></a>
                 ))}
               </div>
             </div>
           </div>
           <div className={styles.footerInfo}>
             <div className={styles.footerInfoTitleRow}>
-              <span className={styles.footerInfoTitle}>OFFICE</span>
+              <ProjectText as="span" className={styles.footerInfoTitle}>OFFICE</ProjectText>
             </div>
             <div className={styles.footerInfoItems}>
-              <p className={styles.footerOfficeText}>
+              <ProjectText as="p" className={styles.footerOfficeText}>
                 Menara Palma, Jl.<br />
                 Sudirman no 12 , 123567
-              </p>
+              </ProjectText>
             </div>
           </div>
         </div>
@@ -109,14 +110,14 @@ export default function ProjectFooter({
       <div className={styles.workRibbon}>
         <div className={styles.workRibbonInner}>
           <div className={styles.workRibbonLeft}>
-            <a href="/terms" className={`${styles.workRibbonLink} ${styles.workRibbonLinkPadded}`}>Terms of Use</a>
-            <a href="/privacy" className={styles.workRibbonLink}>Privacy Policy</a>
+            <a href="/terms" className={`${styles.workRibbonLink} ${styles.workRibbonLinkPadded}`}><ProjectText as="span">Terms of Use</ProjectText></a>
+            <a href="/privacy" className={styles.workRibbonLink}><ProjectText as="span">Privacy Policy</ProjectText></a>
           </div>
           <div className={styles.workRibbonRight}>
               <span className={styles.workRibbonDev}>
-                Developed by <a href="https://instagram.com/retruxstd" target="_blank" rel="noreferrer noopener" className={styles.workRibbonLink}>Retrux</a>
+                <ProjectText as="span">Developed by</ProjectText>{" "}<a href="https://instagram.com/retruxstd" target="_blank" rel="noreferrer noopener" className={styles.workRibbonLink}><ProjectText as="span">Retrux</ProjectText></a>
               </span>
-              <span className={styles.workRibbonCopyright}>© 2026. Yohanes Alexander</span>
+              <ProjectText as="span" className={styles.workRibbonCopyright}>© 2026. Yohanes Alexander</ProjectText>
             </div>
         </div>
       </div>

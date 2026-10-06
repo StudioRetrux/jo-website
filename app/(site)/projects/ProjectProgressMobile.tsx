@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectText from "./ProjectText";
 import { useState } from "react";
 import Image from "next/image";
 import { STEPS } from "./ProjectProgress";
@@ -16,10 +17,10 @@ export default function ProjectProgressMobile() {
 
   return (
     <section className={styles.progress}>
-      <h2 className={styles.title}>Progress</h2>
-      <p className={styles.subtitle}>
+      <ProjectText as="h2" className={styles.title}>Progress</ProjectText>
+      <ProjectText as="p" className={styles.subtitle}>
         Carefully observe the regular routines of their dental clients
-      </p>
+      </ProjectText>
       <span className={styles.rule} aria-hidden="true" />
       <ol className={styles.list}>
         {STEPS.map((step, i) => (
@@ -32,8 +33,8 @@ export default function ProjectProgressMobile() {
             >
               {/* same left-to-right wipe as the work page list rows */}
               <span className={styles.stepBg} aria-hidden="true" />
-              <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
-              <span className={styles.stepTitle}>{step.title}</span>
+              <ProjectText as="span" className={styles.num}>{String(i + 1).padStart(2, "0")}</ProjectText>
+              <ProjectText as="span" className={styles.stepTitle}>{step.title}</ProjectText>
             </button>
             {/* always mounted: 0fr→1fr is what animates the height, and there's nothing
                 to transition from if the panel only exists while open */}
@@ -42,7 +43,7 @@ export default function ProjectProgressMobile() {
                 <div className={styles.image}>
                   <Image src={step.image} alt={step.title} fill sizes="100vw" />
                 </div>
-                <p className={styles.caption}>{step.caption}</p>
+                <ProjectText as="p" className={styles.caption}>{step.caption}</ProjectText>
               </div>
             </div>
           </li>

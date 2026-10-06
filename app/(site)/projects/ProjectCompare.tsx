@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectText from "./ProjectText";
 import type { PointerEvent as ReactPointerEvent, CSSProperties } from "react";
 import { useRef, useState } from "react";
 import Image from "next/image";
@@ -55,8 +56,8 @@ export default function ProjectCompare() {
         <div className={styles.compareClip}>
           <Image src={BEFORE} alt="Before" fill sizes="100vw" draggable={false} className={styles.compareImage} />
         </div>
-        <span className={`${styles.compareLabel} ${styles.compareLabelBefore}`}>Before</span>
-        <span className={`${styles.compareLabel} ${styles.compareLabelAfter}`}>After</span>
+        <ProjectText as="span" type="chars" className={`${styles.compareLabel} ${styles.compareLabelBefore}`}>Before</ProjectText>
+        <ProjectText as="span" type="chars" className={`${styles.compareLabel} ${styles.compareLabelAfter}`}>After</ProjectText>
         <div className={styles.compareLine} aria-hidden="true" />
         <div className={styles.compareHandle} aria-hidden="true">
           <span className={styles.compareGrab} />

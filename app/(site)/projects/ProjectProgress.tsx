@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectText from "./ProjectText";
 import { useEffect, useRef, useState } from "react";
 import ParallaxImage from "./ParallaxImage";
 import { scrollParent } from "./scrollParent";
@@ -69,10 +70,10 @@ export default function ProjectProgress() {
   return (
     <section className={styles.progress}>
       <aside className={styles.progressAside}>
-        <h2 className={styles.progressTitle}>Progress</h2>
-        <p className={styles.progressSubtitle}>
+        <ProjectText as="h2" className={styles.progressTitle}>Progress</ProjectText>
+        <ProjectText as="p" className={styles.progressSubtitle}>
           Carefully observe the regular routines of their dental clients
-        </p>
+        </ProjectText>
         <span className={styles.progressRule} aria-hidden="true" />
         <ol className={styles.progressList}>
           {STEPS.map((step, i) => (
@@ -84,8 +85,8 @@ export default function ProjectProgress() {
                   blockRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" })
                 }
               >
-                <span className={styles.progressNum}>{String(i + 1).padStart(2, "0")}</span>
-                {step.title}
+                <ProjectText as="span" className={styles.progressNum}>{String(i + 1).padStart(2, "0")}</ProjectText>
+                <ProjectText as="span">{step.title}</ProjectText>
               </button>
             </li>
           ))}
@@ -102,7 +103,7 @@ export default function ProjectProgress() {
             <div className={styles.progressImage}>
               <ParallaxImage src={step.image} alt={step.title} sizes="(max-width: 700px) 100vw, 60vw" />
             </div>
-            <p className={styles.progressCaption}>{step.caption}</p>
+            <ProjectText as="p" className={styles.progressCaption}>{step.caption}</ProjectText>
           </div>
         ))}
       </div>
