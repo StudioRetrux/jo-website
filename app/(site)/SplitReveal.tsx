@@ -39,6 +39,8 @@ type Props = {
   style?: CSSProperties;
   /** seconds */
   delay?: number;
+  /** seconds per piece, default their 1.109 */
+  duration?: number;
   /** their `dynamic` option: shrink the stagger as the char count grows */
   dynamic?: boolean;
   /** Reveal once when this text enters its nearest scrolling viewport. */
@@ -59,7 +61,7 @@ function lineHeightRatio(el: HTMLElement) {
  * When the children change, change the `key` so it re-mounts and re-splits.
  */
 export default function SplitReveal({
-  children, play, type = "lines", as: Tag = "div", className, style, delay = 0, dynamic, scroll = false,
+  children, play, type = "lines", as: Tag = "div", className, style, delay = 0, duration = DURATION, dynamic, scroll = false,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
   const tweenRef = useRef<gsap.core.Tween | null>(null);
@@ -113,12 +115,14 @@ export default function SplitReveal({
           }
           const ratio = lineHeightRatio(el);
           el.classList.toggle("e-lh", ratio !== null && ratio < 1);
+          // an inline root (a span in running text) must keep flowing with its siblings
+          el.classList.toggle("split-inline", getComputedStyle(el).display === "inline");
           const stagger = dynamic
             ? STAGGER.chars / Math.log2(self.chars.length + 2)
             : STAGGER[type];
           const tween = gsap.from(self[type], {
             yPercent: 101,
-            duration: DURATION,
+            duration,
             stagger,
             ease: "reveal",
             delay,
@@ -136,9 +140,10 @@ export default function SplitReveal({
       observer?.disconnect();
       split?.revert();
       el.classList.toggle("e-lh", originalTightLineHeight);
+      el.classList.remove("split-inline");
       tweenRef.current = null;
     };
-  }, [type, delay, dynamic, scroll]);
+  }, [type, delay, duration, dynamic, scroll]);
 
   useEffect(() => {
     playRef.current = play;

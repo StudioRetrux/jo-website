@@ -11,6 +11,7 @@ import ProjectLink from "../projects/ProjectLink";
 import { useLoadBar } from "../LoadBar";
 import { curatedAssets } from "../assets";
 import MegaMenu from "../megamenu/MegaMenu";
+import SplitReveal from "../SplitReveal";
 import FullnameBlock from "../about/FullnameBlock";
 import FullnameMobile from "../FullnameMobile";
 import FooterMenuText from "../work/FooterMenuText";
@@ -155,8 +156,8 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
       <div ref={contentRef}>
         <section className={styles.hero} aria-label="Curated spaces">
           <div className={styles.titleRow}>
-            <span className={styles.titleLabel}>from jo&apos;s observation</span>
-            <h1 className={styles.title}>Curated Spaces</h1>
+            <SplitReveal as="span" className={styles.titleLabel} play={open} delay={0.2}>from jo&apos;s observation</SplitReveal>
+            <SplitReveal as="h1" className={styles.title} play={open} delay={0.2}>Curated Spaces</SplitReveal>
           </div>
           {/* cards open a detail page, so the follower reads VIEW — not the carousel arrow */}
           <div

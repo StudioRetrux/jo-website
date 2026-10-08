@@ -61,6 +61,8 @@ a {
 .ch-mask,
 .ch-mask .ch { display: inline-block; }
 .ch-mask { overflow: hidden; }
+/* inline roots ("Developed by <a>Retrux</a>"): block lines would break the sentence */
+.split-inline > .ln-mask { display: inline-block; vertical-align: top; }
 .ln-mask .ln,
 .ln-mask .wd,
 .ln-mask .ch,
@@ -88,6 +90,8 @@ a {
   position: absolute;
   top: 0;
   left: 0;
+  /* absolute = sized to the label it copies; a wider copy (the menu's italic) would wrap */
+  white-space: nowrap;
   margin-top: 0;
   transform: translateY(101%);
 }

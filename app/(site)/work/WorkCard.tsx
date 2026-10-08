@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./work.module.css";
 import ProjectLink from "../projects/ProjectLink";
+import SplitReveal from "../SplitReveal";
 import { useCursor } from "../contexts/CursorContext";
 
 type Phase = "closed" | "pre-open" | "open";
@@ -242,8 +243,9 @@ export default function WorkCard({
               />
             )}
           </div>
-          <span className={styles.workCardTitle}>{title}</span>
-          <span className={styles.workCardInfo}>{resolvedInfo}</span>
+          {/* rises with the image: same trigger, same delay */}
+          <SplitReveal key={title} as="span" className={styles.workCardTitle} play={imagePhase === "open"} delay={imageRevealDelayMs / 1000}>{title}</SplitReveal>
+          <SplitReveal key={resolvedInfo} as="span" className={styles.workCardInfo} play={imagePhase === "open"} delay={imageRevealDelayMs / 1000 + 0.1}>{resolvedInfo}</SplitReveal>
         </div>
   );
 

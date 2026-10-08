@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Header from "../home/Header";
+import SplitReveal from "../SplitReveal";
 import MegaMenu from "../megamenu/MegaMenu";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 import workStyles from "../work/work.module.css";
@@ -130,18 +131,18 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
           <Image src="/left.webp" alt="" width={960} height={960} className={styles.leftImage} />
           <div className={styles.leftInfo}>
             <div className={workStyles.footerInfoTitleRow}>
-              <span className={workStyles.footerInfoTitle}>OFFICE</span>
+              <SplitReveal as="span" className={workStyles.footerInfoTitle} play={open} delay={0.2}>OFFICE</SplitReveal>
             </div>
             <div className={workStyles.footerInfoItems}>
-              <p className={workStyles.footerOfficeText}>Menara Palma, Jl. Sudirman no 12 , 123567</p>
+              <SplitReveal as="p" className={workStyles.footerOfficeText} play={open} delay={0.2}>Menara Palma, Jl. Sudirman no 12 , 123567</SplitReveal>
             </div>
             <div className={workStyles.footerInfoGroup}>
               <div className={workStyles.footerInfoTitleRow}>
-                <span className={workStyles.footerInfoTitle}>SOCIALS</span>
+                <SplitReveal as="span" className={workStyles.footerInfoTitle} play={open} delay={0.2}>SOCIALS</SplitReveal>
               </div>
               <div className={`${workStyles.footerInfoItems} ${styles.socialItems}`}>
                 {SOCIAL_ITEMS.map((item) => (
-                  <a className={workStyles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener">{item.label}</a>
+                  <a className={workStyles.footerInfoLink} href={item.href} key={item.label} target="_blank" rel="noreferrer noopener"><SplitReveal as="span" play={open} delay={0.2}>{item.label}</SplitReveal></a>
                 ))}
               </div>
             </div>
@@ -157,8 +158,8 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         >
           <div className={styles.half}>
             <WaIcon className={styles.waIcon} />
-            <h2 className={styles.waTitle}>Whatsapp</h2>
-            <span className={styles.waNumber}>(62) 878 2313 9800</span>
+            <SplitReveal as="h2" className={styles.waTitle} play={open} delay={0.2}>Whatsapp</SplitReveal>
+            <SplitReveal as="span" className={styles.waNumber} play={open} delay={0.2}>(62) 878 2313 9800</SplitReveal>
           </div>
           <div className={styles.half}>
             <Image src="/whatsapp.webp" alt="WhatsApp" width={233} height={233} className={styles.waImage} />
@@ -174,8 +175,8 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         >
           <div className={styles.half}>
             <EmailIcon className={styles.waIcon} />
-            <h2 className={styles.waTitle}>Email</h2>
-            <span className={styles.waNumber}>yohanes.ptan@gmail.com</span>
+            <SplitReveal as="h2" className={styles.waTitle} play={open} delay={0.2}>Email</SplitReveal>
+            <SplitReveal as="span" className={styles.waNumber} play={open} delay={0.2}>yohanes.ptan@gmail.com</SplitReveal>
           </div>
           <div className={styles.half}>
             <Image src="/email.webp" alt="Email" width={233} height={233} className={styles.waImage} />

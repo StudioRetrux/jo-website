@@ -32,6 +32,9 @@ export const STEPS = [
 /** Share of a block that must be on screen before it takes over the step list. */
 const VISIBLE = 0.2;
 
+/** slower than the page's 1.109s reveal — the next golden step (0.1 * φ^6) */
+export const SLOW = 1.794;
+
 export default function ProjectProgress() {
   const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [active, setActive] = useState(0);
@@ -70,8 +73,8 @@ export default function ProjectProgress() {
   return (
     <section className={styles.progress}>
       <aside className={styles.progressAside}>
-        <ProjectText as="h2" className={styles.progressTitle}>Progress</ProjectText>
-        <ProjectText as="p" className={styles.progressSubtitle}>
+        <ProjectText duration={SLOW} as="h2" className={styles.progressTitle}>Progress</ProjectText>
+        <ProjectText duration={SLOW} as="p" className={styles.progressSubtitle}>
           Carefully observe the regular routines of their dental clients
         </ProjectText>
         <span className={styles.progressRule} aria-hidden="true" />
@@ -85,8 +88,8 @@ export default function ProjectProgress() {
                   blockRefs.current[i]?.scrollIntoView({ behavior: "smooth", block: "center" })
                 }
               >
-                <ProjectText as="span" className={styles.progressNum}>{String(i + 1).padStart(2, "0")}</ProjectText>
-                <ProjectText as="span">{step.title}</ProjectText>
+                <ProjectText duration={SLOW} as="span" className={styles.progressNum}>{String(i + 1).padStart(2, "0")}</ProjectText>
+                <ProjectText duration={SLOW} as="span">{step.title}</ProjectText>
               </button>
             </li>
           ))}
@@ -103,7 +106,7 @@ export default function ProjectProgress() {
             <div className={styles.progressImage}>
               <ParallaxImage src={step.image} alt={step.title} sizes="(max-width: 700px) 100vw, 60vw" />
             </div>
-            <ProjectText as="p" className={styles.progressCaption}>{step.caption}</ProjectText>
+            <ProjectText duration={SLOW} as="p" className={styles.progressCaption}>{step.caption}</ProjectText>
           </div>
         ))}
       </div>
