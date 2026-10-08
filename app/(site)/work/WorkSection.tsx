@@ -250,6 +250,9 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
   useEffect(() => {
     if (!open || !wrapperRef.current || !contentRef.current) return;
     const wrapper = wrapperRef.current;
+    // every visit starts at the top — the section stays mounted, so it'd keep the last scroll
+    wrapper.scrollTop = 0;
+    hasScrolledAwayFromTop.current = false;
     // Mobile scrolls natively (see .page in the media query) — Lenis would only fight
     // it, and smooth-scroll on touch is the platform's job anyway.
     const smooth = !window.matchMedia("(max-width: 480px)").matches;

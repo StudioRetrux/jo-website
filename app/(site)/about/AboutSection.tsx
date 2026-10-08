@@ -208,6 +208,8 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
   useEffect(() => {
     if (!open || !wrapperRef.current || !contentRef.current) return;
     const wrapper = wrapperRef.current;
+    // every visit starts at the top — the section stays mounted, so it'd keep the last scroll
+    wrapper.scrollTop = 0;
     const lenis = new Lenis({
       wrapper,
       content: contentRef.current,

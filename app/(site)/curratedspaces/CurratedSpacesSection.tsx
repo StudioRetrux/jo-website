@@ -104,6 +104,8 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
   useEffect(() => {
     if (!open || !wrapperRef.current || !contentRef.current) return;
     const wrapper = wrapperRef.current;
+    // every visit starts at the top — the section stays mounted, so it'd keep the last scroll
+    wrapper.scrollTop = 0;
     const lenis = new Lenis({ wrapper, content: contentRef.current, smoothWheel: true });
     let raf: number;
     function loop(time: number) { lenis.raf(time); raf = requestAnimationFrame(loop); }
