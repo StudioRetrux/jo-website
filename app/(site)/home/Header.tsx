@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import styles from "./home.module.css";
 import { usePageNav, type Page } from "../contexts/PageNavContext";
+import { scrollParent } from "../projects/scrollParent";
 
 type Props = {
   isHome: boolean;
@@ -31,31 +32,55 @@ const NAV_TARGETS: Record<string, { page: Page; path: string }> = {
 
 export default function Header({ isHome, onMenuToggle, style, navLabel, homeNavigation = "state", onNavigate }: Props) {
   const { navigateTo } = usePageNav();
+  const headerRef = useRef<HTMLElement>(null);
   const [scrollHidden, setScrollHidden] = useState(false);
   // stays false until the first mobile scroll, so the page-entry transform and the
   // `transition: none` some callers pass keep priority until they've done their job
   const [scrollDriven, setScrollDriven] = useState(false);
 
   useEffect(() => {
+    if (!isHome) return;
     const mq = window.matchMedia("(max-width: 480px)");
-    let last = 0;
+    let removeScrollListener = () => {};
 
-    // capture phase: each page is its own `overflow-y: auto` box, and scroll doesn't
-    // bubble — this catches whichever one the finger is actually on
-    function onScroll(event: Event) {
-      if (!mq.matches) { setScrollDriven(false); return; }
-      const target = event.target;
-      const top = target instanceof HTMLElement ? target.scrollTop : window.scrollY;
-      const delta = top - last;
-      if (Math.abs(delta) < SCROLL_DELTA) return;
-      last = top;
-      setScrollDriven(true);
-      setScrollHidden(delta > 0 && top > SCROLL_REVEAL_TOP);
+    function syncScrollListener() {
+      removeScrollListener();
+      setScrollDriven(false);
+      setScrollHidden(false);
+      if (!mq.matches) return;
+
+      // Other sections stay mounted below the viewport. Their scroll events must
+      // never reveal this header at the bottom of the active page.
+      const parent = scrollParent(headerRef.current);
+      const target = parent ?? window;
+      const readTop = () => Math.max(0, Math.min(
+        parent ? parent.scrollTop : window.scrollY,
+        parent
+          ? parent.scrollHeight - parent.clientHeight
+          : document.documentElement.scrollHeight - window.innerHeight,
+      ));
+      let last = readTop();
+
+      function onScroll() {
+        const top = readTop();
+        const delta = top - last;
+        if (Math.abs(delta) < SCROLL_DELTA && top > SCROLL_REVEAL_TOP) return;
+        last = top;
+        setScrollDriven(true);
+        setScrollHidden(delta > 0 && top > SCROLL_REVEAL_TOP);
+      }
+
+      target.addEventListener("scroll", onScroll, { passive: true });
+      removeScrollListener = () => target.removeEventListener("scroll", onScroll);
     }
 
-    window.addEventListener("scroll", onScroll, true);
-    return () => window.removeEventListener("scroll", onScroll, true);
-  }, []);
+    syncScrollListener();
+    mq.addEventListener("change", syncScrollListener);
+    return () => {
+      removeScrollListener();
+      mq.removeEventListener("change", syncScrollListener);
+    };
+  }, [isHome]);
 
   // a page sliding back in starts at the top with its header showing
   useEffect(() => {
@@ -98,6 +123,7 @@ export default function Header({ isHome, onMenuToggle, style, navLabel, homeNavi
 
   return (
     <header
+      ref={headerRef}
       className={styles.header}
       style={{
         transform: isHome ? "translateY(0)" : "translateY(-100%)",
