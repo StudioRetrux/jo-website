@@ -75,6 +75,7 @@ export default function SplitReveal({
     let observer: IntersectionObserver | null = null;
     enteredRef.current = !scroll;
     let cancelled = false;
+    let hiddenBreaks: (readonly [HTMLBRElement, ParentNode, ChildNode | null])[] = [];
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const originalIndent = el.style.textIndent;
     const originalTightLineHeight = el.classList.contains("e-lh");
@@ -85,6 +86,13 @@ export default function SplitReveal({
       if (cancelled) return;
       // Keep reduced-motion text in its original, immediately readable DOM.
       if (reduced) return;
+      // SplitText treats every <br> as a forced line break, even one CSS hides at a
+      // breakpoint — pull the hidden ones out first, put them back after revert.
+      // ponytail: measured once per mount, crossing the breakpoint keeps the old breaks until reload
+      hiddenBreaks = Array.from(el.querySelectorAll("br"))
+        .filter((br) => getComputedStyle(br).display === "none")
+        .map((br) => [br, br.parentNode!, br.nextSibling] as const);
+      hiddenBreaks.forEach(([br]) => br.remove());
       if (scroll) {
         observer = new IntersectionObserver(([entry]) => {
           if (!entry.isIntersecting) return;
@@ -139,6 +147,7 @@ export default function SplitReveal({
       cancelled = true;
       observer?.disconnect();
       split?.revert();
+      hiddenBreaks.forEach(([br, parent, next]) => parent.insertBefore(br, next));
       el.classList.toggle("e-lh", originalTightLineHeight);
       el.classList.remove("split-inline");
       tweenRef.current = null;

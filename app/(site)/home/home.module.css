@@ -14,6 +14,14 @@
   mix-blend-mode: difference;
 }
 
+/* iOS only (-webkit-touch-callout is WebKit-iOS) — see IOS_HEADER_STYLE in Header.tsx */
+@supports (-webkit-touch-callout: none) {
+  .header {
+    --header-fg: var(--header-ios-fg, #f7f6f5);
+    mix-blend-mode: var(--header-ios-blend, difference);
+  }
+}
+
 .headerLeft,
 .headerRight {
   width: 50dvw;

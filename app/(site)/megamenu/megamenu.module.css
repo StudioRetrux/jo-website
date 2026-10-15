@@ -281,10 +281,17 @@
   .megaMenuLeft {
     width: 100dvw;
     padding: 24px;
+  }
+
+  /* on the clip itself, not inherited from .megaMenuLeft — the max-height: 720px block
+     sets these on the clip, and phones are all shorter than that */
+  .megaMenuTextClip {
     --mega-menu-text-font-size: 40px;
-    --mega-menu-text-clip-height: 38px;
+    /* 38px cut the underline off — room for it, still short of the copy below at 43px */
+    --mega-menu-text-clip-height: 42px;
     --mega-menu-text-item-height: 48px;
     --mega-menu-text-track-offset: -5px;
+    --mega-menu-text-underline-offset: 3px;
   }
 
   .megaMenuRight {
@@ -293,7 +300,7 @@
 
   /* item box is 48px (40px × 1.2), figma spaces the baselines ~61px apart */
   .megaMenuNav {
-    gap: 12px;
+    gap: 8px;
   }
 
   .megaMenuFooter {

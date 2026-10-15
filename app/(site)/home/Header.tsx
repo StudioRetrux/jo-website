@@ -21,6 +21,14 @@ const SCROLL_EASE = "transform 350ms cubic-bezier(0.4, 0, 0.2, 1)";
 const SCROLL_DELTA = 8;
 const SCROLL_REVEAL_TOP = 80;
 
+/** for pages that open on light paper: iOS WebKit drops the difference blend on the
+    sticky header, leaving #f7f6f5 on paper — these switch it to plain dark there only */
+export const IOS_HEADER_STYLE = {
+  transition: "none",
+  "--header-ios-fg": "#59534c",
+  "--header-ios-blend": "normal",
+} as CSSProperties;
+
 const NAV_TARGETS: Record<string, { page: Page; path: string }> = {
   home: { page: "home", path: "/" },
   work: { page: "work", path: "/works" },

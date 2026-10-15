@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Lenis from "@studio-freight/lenis";
-import Header from "../home/Header";
+import Header, { IOS_HEADER_STYLE } from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
 import FullnameMobile from "../FullnameMobile";
@@ -300,7 +300,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
       <Header
         isHome={true}
         onMenuToggle={() => setMenuOpen((v) => !v)}
-        style={{ transition: "none" }}
+        style={IOS_HEADER_STYLE}
         navLabel="home / work"
         homeNavigation={homeNavigation}
       />

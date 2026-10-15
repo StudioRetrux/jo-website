@@ -1076,8 +1076,10 @@
     width: 100%;
   }
 
+  /* desktop's 374px is 75% down a 500px portrait — same spot on the 310px one */
   .bgSectionOverlay {
     width: 320px;
+    padding-top: 232px;
     white-space: normal;
   }
 
@@ -1101,7 +1103,7 @@
   /* testimonials: embla drives the track here, so the keyframe scroll has to go —
      both would move it at once */
   .testimonialsSection {
-    height: auto;
+    min-height: 0;
     padding: 96px 0;
   }
 

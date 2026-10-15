@@ -6,7 +6,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import AutoScroll from "embla-carousel-auto-scroll";
 import Image from "next/image";
-import Header from "../home/Header";
+import Header, { IOS_HEADER_STYLE } from "../home/Header";
 import ProjectLink from "../projects/ProjectLink";
 import { useLoadBar } from "../LoadBar";
 import { curatedAssets } from "../assets";
@@ -45,33 +45,20 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
   const wrapperRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const footerWordmarkRef = useRef<HTMLDivElement>(null);
-  const [mobile, setMobile] = useState(false);
-  // no auto-scroll on a phone — it's swipe-only there, so the plugins drop out entirely.
-  // useMemo because a fresh array every render would re-init embla every render.
+  // useMemo because a fresh array every render would re-init embla every render
   const plugins = React.useMemo(
-    () =>
-      mobile
-        ? []
-        : [
-            WheelGesturesPlugin(),
-            // stopOnInteraction false = resume after drag/wheel too, not just mouse leave
-            AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true }),
-          ],
-    [mobile],
+    () => [
+      WheelGesturesPlugin(),
+      // stopOnInteraction false = resume after drag/wheel/swipe too, not just mouse leave
+      AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true }),
+    ],
+    [],
   );
   const [emblaRef] = useEmblaCarousel(
     // align start: default "center" translates the track on init (mount blink)
     { loop: true, dragFree: true, align: "start" },
     plugins,
   );
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 480px)");
-    const sync = () => setMobile(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -151,7 +138,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
       <Header
         isHome={open}
         onMenuToggle={() => setMenuOpen((v) => !v)}
-        style={{ transition: "none" }}
+        style={IOS_HEADER_STYLE}
         navLabel="Home / Curated Spaces"
         homeNavigation={homeNavigation}
       />
