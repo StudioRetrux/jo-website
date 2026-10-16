@@ -50,6 +50,12 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
 
   useEffect(() => { setMounted(true); }, []);
 
+  // mouse only: iOS fires enter on a tap, and the leave never comes if that tap opens
+  // WhatsApp/mail — coming back, the hover was stuck on and the text washed out
+  const hover = (value: typeof hovered) => (event: React.PointerEvent) => {
+    if (event.pointerType === "mouse") setHovered(value);
+  };
+
   function handleNavigate(item: string) {
     if (homeNavigation === "route") {
       if (item === "Home") { window.location.assign("/"); return; }
@@ -93,7 +99,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         className={styles.layout}
         aria-label="Contact"
         data-hover={hovered || undefined}
-        onMouseLeave={() => setHovered("")}
+        onPointerLeave={hover("")}
       >
         <div className={`${styles.curtain} ${styles.curtainWa}`}>
           <Image src="/wabg.webp" alt="" fill sizes="100vw" className={styles.curtainImage} />
@@ -107,8 +113,8 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
           <a
             href="https://wa.me/6287823139800"
             className={styles.ctaButton}
-            onMouseEnter={() => setHovered("wa")}
-            onMouseLeave={() => setHovered("")}
+            onPointerEnter={hover("wa")}
+            onPointerLeave={hover("")}
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -119,8 +125,8 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
           <a
             href="mailto:yohanes.ptan@gmail.com"
             className={styles.ctaButton}
-            onMouseEnter={() => setHovered("email")}
-            onMouseLeave={() => setHovered("")}
+            onPointerEnter={hover("email")}
+            onPointerLeave={hover("")}
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -151,8 +157,8 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         <a
           href="https://wa.me/6287823139800"
           className={`${styles.col} ${styles.colMid} ${styles.colSplit}`}
-          onMouseEnter={() => setHovered("wa")}
-          onMouseLeave={() => setHovered("")}
+          onPointerEnter={hover("wa")}
+          onPointerLeave={hover("")}
           target="_blank"
           rel="noreferrer noopener"
         >
@@ -168,8 +174,8 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         <a
           href="mailto:yohanes.ptan@gmail.com"
           className={`${styles.col} ${styles.colRight} ${styles.colSplit}`}
-          onMouseEnter={() => setHovered("email")}
-          onMouseLeave={() => setHovered("")}
+          onPointerEnter={hover("email")}
+          onPointerLeave={hover("")}
           target="_blank"
           rel="noreferrer noopener"
         >
