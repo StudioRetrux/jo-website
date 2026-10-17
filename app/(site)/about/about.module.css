@@ -571,6 +571,46 @@
   justify-content: center;
 }
 
+/* touch stand-in for the hover trail (CtaImageTrail): five cards that pop in once
+   when the section scrolls into view. Corners only, so the copy stays on plain paper. */
+.ctaCards {
+  display: none;
+}
+
+@media (hover: none) {
+  .ctaCards {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+}
+
+.ctaCard {
+  position: absolute;
+  width: 132px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgb(54 30 0 / 14%);
+  transform: scale(0) rotate(var(--tilt));
+  transition: transform 700ms cubic-bezier(0.17, 0.84, 0.44, 1) var(--delay);
+}
+
+.ctaCard img {
+  object-fit: cover;
+}
+
+.ctaCards[data-in] .ctaCard {
+  transform: scale(1) rotate(var(--tilt));
+}
+
+/* two up around the logo, three down around CONSULT */
+.ctaCard1 { top: 6%; left: 6%; --tilt: -9deg; --delay: 0ms; }
+.ctaCard2 { top: 3%; right: 7%; --tilt: 7deg; --delay: 120ms; }
+.ctaCard3 { bottom: 8%; left: 4%; --tilt: 6deg; --delay: 240ms; }
+.ctaCard4 { bottom: 2%; left: 50%; margin-left: -66px; width: 112px; --tilt: -4deg; --delay: 360ms; }
+.ctaCard5 { bottom: 9%; right: 5%; --tilt: -8deg; --delay: 480ms; }
+
 .ctaSectionInner {
   position: relative;
   z-index: 1;
@@ -1142,10 +1182,23 @@
     letter-spacing: 2px;
   }
 
+  /* tall bands above and below the copy for the touch cards to sit in */
   .ctaSection {
     height: auto;
-    padding: 96px 20px;
+    padding: 152px 20px;
   }
+
+  .ctaCard {
+    width: 112px;
+  }
+
+  /* pulled in towards the copy: top pair ends ~12px above the logo, bottom trio starts
+     ~16px under CONSULT, both pairs tucked in from the edges */
+  .ctaCard1 { top: 52px; left: 10%; }
+  .ctaCard2 { top: 40px; right: 10%; }
+  .ctaCard3 { bottom: 52px; left: 8%; }
+  .ctaCard4 { bottom: 28px; width: 96px; margin-left: -48px; }
+  .ctaCard5 { bottom: 56px; right: 8%; }
 
   .ctaSectionInner {
     gap: 24px;

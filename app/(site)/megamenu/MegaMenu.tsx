@@ -13,6 +13,7 @@ const EASE = "700ms cubic-bezier(0.9, 0, 0.5, 1)";
 export const MEGAMENU_CLOSE_MS = 700;
 const FADE_UP_OPEN = "opacity 900ms cubic-bezier(0.4, 0, 0.2, 1) 450ms, transform 900ms cubic-bezier(0.4, 0, 0.2, 1) 450ms";
 const MENU_ITEMS = ["Home", "Work", "About", "Curated Spaces", "Contact"];
+const MENU_PATHS: Record<string, string> = { Home: "/", Work: "/works", About: "/about", "Curated Spaces": "/curratedspaces", Contact: "/contact" };
 const DEFAULT_MENU_IMAGE = "/preload4ld.webp";
 const MENU_IMAGES = ["/preload4ld.webp", "/preload1.webp", "/profilepic.webp", "/preload3.webp", "/preload4.webp"];
 const THUMB_TRANSITION_MS = 600;
@@ -194,7 +195,13 @@ export default function MegaMenu({ open, onClose, onNavigate }: Props) {
                   style={navReveal(i)}
                   onMouseEnter={() => { showThumb(i); setHoveredIndex(i); }}
                   onMouseLeave={() => { hideThumb(); setHoveredIndex(-1); }}
-                  onClick={() => { setInstant(true); onNavigate?.(item); }}
+                  onClick={() => {
+                    // already there: nothing slides in to cover the panel, so it closes
+                    // with its own animation instead of vanishing
+                    if (window.location.pathname === MENU_PATHS[item]) { onClose(); return; }
+                    setInstant(true);
+                    onNavigate?.(item);
+                  }}
                 />
               </div>
             ))}

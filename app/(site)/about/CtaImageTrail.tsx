@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useCursor } from "../contexts/CursorContext";
+import styles from "./about.module.css";
 
 const TRAIL_IMAGES = [
   "/Resort Room 1.webp",
@@ -22,6 +24,16 @@ const SAFE_Y = Math.ceil((IMG_H * Math.cos(TILT) + IMG_W * Math.sin(TILT)) / 2);
 /** Cards on screen at once. The sixth evicts the oldest rather than queueing behind it. */
 const MAX_PARTICLES = 5;
 
+/** Touch has no hover to drive the trail — a fixed set of cards pops in instead,
+    placed around the text (positions are in the CSS, .ctaCard1–5), never over it. */
+const TOUCH_CARDS = [
+  "/Resort Room 1.webp",
+  "/infoimage.webp",
+  "/healthcare.webp",
+  "/homeresortbatu1.webp",
+  "/Resort Room 2.webp",
+];
+
 interface Particle {
   el: HTMLDivElement;
   startTime: number;
@@ -40,6 +52,20 @@ export default function CtaImageTrail({ active }: Props) {
   const { setMode } = useCursor();
   // the cursor hides only where cards can spawn — outside that band it would just vanish
   const inBand = useRef(false);
+  const [cardsIn, setCardsIn] = useState(false);
+
+  // once, the first time the section scrolls in. Hidden by CSS wherever hover exists.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap || !matchMedia("(hover: none)").matches) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setCardsIn(true);
+      observer.disconnect();
+    }, { threshold: 0.35 });
+    observer.observe(wrap);
+    return () => observer.disconnect();
+  }, []);
 
   // `active` only gates spawning. It must NOT be an effect dep: tearing the effect
   // down on mouse-leave would remove every card mid-flight. Once a card exists it
@@ -139,6 +165,14 @@ export default function CtaImageTrail({ active }: Props) {
         pointerEvents: active ? "auto" : "none",
         zIndex: 0,
       }}
-    />
+    >
+      <div className={styles.ctaCards} data-in={cardsIn || undefined}>
+        {TOUCH_CARDS.map((src, i) => (
+          <div key={src} className={`${styles.ctaCard} ${styles[`ctaCard${i + 1}`]}`}>
+            <Image src={src} alt="" fill sizes="160px" />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

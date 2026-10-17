@@ -49,14 +49,6 @@
   pointer-events: none;
 }
 
-.layout[data-hover="left"] .curtainLeft,
-.layout[data-hover="wa"] .curtainWa,
-.layout[data-hover="wa"] .ctaWa,
-.layout[data-hover="email"] .curtainEmail,
-.layout[data-hover="email"] .ctaEmail {
-  transform: translateY(0);
-}
-
 .curtainImage {
   object-fit: cover;
 }
@@ -97,19 +89,32 @@
   text-underline-position: from-font;
 }
 
-/* hover: section text goes light — header handles itself via mix-blend-mode */
-.layout[data-hover] .waTitle,
-.layout[data-hover] .waNumber,
-.layout[data-hover] .waIcon,
-.layout[data-hover] .leftInfo :is(span, p, a) {
-  color: #f7f6f8;
-}
+/* every hover effect is gated on a real mouse: iOS turns a tap into a hover, and when
+   that tap opens WhatsApp/mail the page comes back with it stuck on — text washed
+   out, images faded */
+@media (hover: hover) and (pointer: fine) {
+  .layout[data-hover="left"] .curtainLeft,
+  .layout[data-hover="wa"] .curtainWa,
+  .layout[data-hover="wa"] .ctaWa,
+  .layout[data-hover="email"] .curtainEmail,
+  .layout[data-hover="email"] .ctaEmail {
+    transform: translateY(0);
+  }
 
-/* hover: non-hovered sections' images, icons and text fade */
-.layout[data-hover]:not([data-hover="left"]) .colLeft :is(.leftImage, .leftInfo),
-.layout[data-hover]:not([data-hover="wa"]) .colMid :is(.waImage, .waIcon, .waTitle, .waNumber),
-.layout[data-hover]:not([data-hover="email"]) .colRight :is(.waImage, .waIcon, .waTitle, .waNumber) {
-  opacity: 0.3;
+  /* hover: section text goes light — header handles itself via mix-blend-mode */
+  .layout[data-hover] .waTitle,
+  .layout[data-hover] .waNumber,
+  .layout[data-hover] .waIcon,
+  .layout[data-hover] .leftInfo :is(span, p, a) {
+    color: #f7f6f8;
+  }
+
+  /* hover: non-hovered sections' images, icons and text fade */
+  .layout[data-hover]:not([data-hover="left"]) .colLeft :is(.leftImage, .leftInfo),
+  .layout[data-hover]:not([data-hover="wa"]) .colMid :is(.waImage, .waIcon, .waTitle, .waNumber),
+  .layout[data-hover]:not([data-hover="email"]) .colRight :is(.waImage, .waIcon, .waTitle, .waNumber) {
+    opacity: 0.3;
+  }
 }
 
 .leftInfo :is(span, p, a) {

@@ -92,6 +92,10 @@
   border-bottom: 1px solid rgb(89 83 76 / 20%);
   cursor: pointer;
   overflow: hidden;
+  /* iOS WebKit lets the inner's transformed (composited) layer escape overflow:hidden —
+     a filtered row slid up out of its 0px box and sat over the category bar. clip-path
+     clips composited children too. */
+  clip-path: inset(0);
   transition:
     height var(--work-list-filter-duration, 600ms) var(--work-list-filter-ease, cubic-bezier(0.65, 0, 0.35, 1)),
     border-color var(--work-list-filter-duration, 600ms) var(--work-list-filter-ease, cubic-bezier(0.65, 0, 0.35, 1)),
@@ -711,22 +715,22 @@
     font-size: 14px;
   }
 
+  /* no flex gap between cards: a filtered card collapses to 0px but stays in the
+     flow, and each one still took its 40px — a stack of empty gaps above the first
+     visible card. The 40px lives inside the card instead (below), so it collapses
+     with it. List rows never had a gap: their spacing is their own padding/borders. */
   .workContent {
-    gap: 40px;
-    padding: 16px 24px 40px;
-  }
-
-  /* the 40px is for cards only — list rows butt up against each other, their
-     spacing comes from their own 12px padding and shared borders */
-  .workContent:has(.workListItem) {
-    gap: 0;
+    padding: 16px 24px 0;
   }
 
   .workRow {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    gap: 40px;
+  }
+
+  .workCardOuter > div {
+    padding-bottom: 40px;
   }
 
   /**

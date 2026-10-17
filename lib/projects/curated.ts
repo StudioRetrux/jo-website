@@ -26,8 +26,9 @@ export type CuratedRelatedItem = {
 };
 
 /**
- * A curated space plus up to `limit` others in its category. Shared by the route and
- * the overlay's API so both resolve a slug identically.
+ * A curated space plus up to `limit` others — its own category first, topped up from
+ * the rest so a category of one still gets the section. Shared by the route and the
+ * overlay's API so both resolve a slug identically.
  */
 export async function getCuratedDetail(
   slug: string,
@@ -37,12 +38,16 @@ export async function getCuratedDetail(
   const item = items.find((entry) => curatedSlug(entry.title) === slug);
   if (!item) return null;
 
+  // stable sort: same category floats up, everything else keeps its carousel order
+  const ordered = [...items].sort(
+    (a, b) => Number(b.category === item.category) - Number(a.category === item.category),
+  );
   // deduped by slug so a repeated title doesn't list the same space twice
   const seen = new Set([slug]);
   const related: CuratedRelatedItem[] = [];
-  for (const entry of items) {
+  for (const entry of ordered) {
     const entrySlug = curatedSlug(entry.title);
-    if (entry.category !== item.category || seen.has(entrySlug)) continue;
+    if (seen.has(entrySlug)) continue;
     seen.add(entrySlug);
     related.push({
       id: entrySlug,
