@@ -1018,28 +1018,28 @@
     height: auto;
   }
 
-  /* Keep the trusted-by copy beside the moving logos. */
+  /* trusted-by copy on top, the logos still scrolling full-width beneath it */
   .logosSection {
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     height: auto;
-    gap: 16px;
+    gap: 24px;
     margin: 0;
-    padding: 24px 0 24px 20px;
+    padding: 32px 0 40px;
   }
 
   .logosTrustedBlock {
-    width: 140px;
-    gap: 4px;
-    padding-block: 0;
+    gap: 8px;
+    padding: 0 20px;
   }
 
   .logosCarouselTrack {
     height: 64px;
-    gap: 20px;
+    gap: 32px;
   }
 
   .logosTrustedHeading {
-    font-size: 24px;
+    font-size: 32px;
   }
 
   .logosTrustedBody {

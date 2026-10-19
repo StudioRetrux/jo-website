@@ -40,7 +40,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
-  const related = await getRelatedWorkItems(project.slug, project.category);
+  const related = await getRelatedWorkItems(project.slug);
 
   return (
     <main className={styles.page}>

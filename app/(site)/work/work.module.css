@@ -821,6 +821,8 @@
     grid-template-columns: 1fr;
     gap: 32px;
     padding: 0 24px;
+    /* desktop's 48px left a hole under the office block — match the 24px rhythm above */
+    margin-bottom: 24px;
   }
 
   .workFooterLeft {

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Header from "../home/Header";
 import SplitReveal from "../SplitReveal";
 import MegaMenu from "../megamenu/MegaMenu";
-import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page, closedStyle } from "../contexts/PageNavContext";
 import workStyles from "../work/work.module.css";
 import styles from "./contact.module.css";
 
@@ -85,6 +85,7 @@ export default function ContactSection({ open, slidePage = true, homeNavigation 
         transform: open ? "translateY(0)" : "translateY(100%)",
         transition: mounted && slidePage ? `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}` : "none",
         pointerEvents: open ? "auto" : "none",
+        ...closedStyle(open),
       }}
     >
       <MegaMenu open={menuOpen} onClose={() => setMenuOpen(false)} onNavigate={handleNavigate} />

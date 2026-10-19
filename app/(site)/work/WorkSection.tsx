@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Lenis from "@studio-freight/lenis";
 import Header, { IOS_HEADER_STYLE } from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
-import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page, closedStyle } from "../contexts/PageNavContext";
 import FullnameMobile from "../FullnameMobile";
 import FooterMenuText from "./FooterMenuText";
 import TitleArea from "./TitleArea";
@@ -294,6 +294,7 @@ export default function WorkSection({ works, open, slidePage = true, homeNavigat
         transform: open ? "translateY(0)" : "translateY(100%)",
         transition: mounted && slidePage ? `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}` : "none",
         pointerEvents: open ? "auto" : "none",
+        ...closedStyle(open),
       }}
     >
       <MegaMenu open={menuOpen} onClose={() => setMenuOpen(false)} onNavigate={handleNavigate} />

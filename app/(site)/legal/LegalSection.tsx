@@ -2,12 +2,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Lenis from "@studio-freight/lenis";
-import Header from "../home/Header";
+import Header, { IOS_HEADER_STYLE } from "../home/Header";
 import MegaMenu from "../megamenu/MegaMenu";
 import FullnameBlock from "../about/FullnameBlock";
 import FullnameMobile from "../FullnameMobile";
 import FooterMenuText from "../work/FooterMenuText";
-import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page, closedStyle } from "../contexts/PageNavContext";
 import { LEGAL_PAGES, type LegalKind } from "./legal-content";
 import workStyles from "../work/work.module.css";
 import styles from "./legal.module.css";
@@ -110,13 +110,14 @@ export default function LegalSection({ kind, open, slidePage = true, homeNavigat
         transform: open ? "translateY(0)" : "translateY(100%)",
         transition: mounted && slidePage ? `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}` : "none",
         pointerEvents: open ? "auto" : "none",
+        ...closedStyle(open),
       }}
     >
       <MegaMenu open={menuOpen} onClose={() => setMenuOpen(false)} onNavigate={handleNavigate} />
       <Header
         isHome={open}
         onMenuToggle={() => setMenuOpen((v) => !v)}
-        style={{ transition: "none" }}
+        style={IOS_HEADER_STYLE}
         navLabel={page.navLabel}
         homeNavigation={homeNavigation}
       />

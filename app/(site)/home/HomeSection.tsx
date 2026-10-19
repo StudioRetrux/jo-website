@@ -14,7 +14,7 @@ import CurratedSpacesSection from "../curratedspaces/CurratedSpacesSection";
 import ContactSection from "../contact/ContactSection";
 import LegalSection from "../legal/LegalSection";
 import { useProjectOverlay } from "../projects/ProjectOverlay";
-import { usePageNav, INCOMING_Z, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import { usePageNav, INCOMING_Z, SLIDE_DURATION, SLIDE_EASE, closedStyle, type Page } from "../contexts/PageNavContext";
 
 // The image's transition end completes the slide, after all text has entered.
 const REVEAL_MS = Math.max(700, TEXT_TRANSITION_MS);
@@ -134,6 +134,7 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
           zIndex: preloading ? 21 : (homeIncoming ? INCOMING_Z : 12),
           transform: homeOpen ? "translateY(0)" : "translateY(100%)",
           transition: visible && homeIncoming ? `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}` : "none",
+          ...closedStyle(homeOpen),
         }}
       >
         <MegaMenu open={menuOpen} onClose={() => setMenuOpen(false)} onNavigate={handleNavigate} />

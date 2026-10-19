@@ -15,6 +15,15 @@ export const SLIDE_EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
  */
 export const INCOMING_Z = 50;
 
+/**
+ * Closed sections sit at translateY(100%), right under the fold — near enough that lazy
+ * images load and every section paints. With all of them mounted, iOS Safari runs out of
+ * memory and kills the tab. Skip rendering closed ones; `open` stays true for the whole
+ * slide in either direction, so nothing visible is ever hidden.
+ */
+export const closedStyle = (open: boolean) =>
+  open ? undefined : ({ visibility: "hidden", contentVisibility: "hidden" } as const);
+
 const PAGE_PATHS: Record<Page, string> = {
   home: "/",
   work: "/works",

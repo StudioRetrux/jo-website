@@ -105,19 +105,15 @@ function toWorkItem(row: ProjectRow): WorkItem {
   };
 }
 
-/** Up to `limit` other published projects in the same category. */
-export async function getRelatedWorkItems(
-  slug: string,
-  category: string,
-  limit = 3,
-): Promise<WorkItem[]> {
-  const rows = await prisma.project.findMany({
-    where: { published: true, category, slug: { not: slug } },
-    orderBy: { createdAt: "asc" },
-    take: limit,
-  });
-
-  return rows.map(toWorkItem);
+/** Up to `limit` other published projects, picked at random. */
+export async function getRelatedWorkItems(slug: string, limit = 3): Promise<WorkItem[]> {
+  const others = (await getWorkItems()).filter((item) => item.slug !== slug);
+  // Fisher–Yates, only as far as the picks we need
+  for (let i = 0; i < Math.min(limit, others.length); i++) {
+    const j = i + Math.floor(Math.random() * (others.length - i));
+    [others[i], others[j]] = [others[j], others[i]];
+  }
+  return others.slice(0, limit);
 }
 
 export async function deleteProject(id: string): Promise<boolean> {

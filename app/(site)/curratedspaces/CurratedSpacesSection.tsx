@@ -16,7 +16,7 @@ import FullnameBlock from "../about/FullnameBlock";
 import FullnameMobile from "../FullnameMobile";
 import FooterMenuText from "../work/FooterMenuText";
 import { useCursor } from "../contexts/CursorContext";
-import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page, closedStyle } from "../contexts/PageNavContext";
 import { DEFAULT_CURATED_SPACE_ITEMS, curatedSlug, type CuratedSpaceItem } from "@/lib/projects/curated-shared";
 import workStyles from "../work/work.module.css";
 import styles from "./curratedspaces.module.css";
@@ -132,6 +132,7 @@ export default function CurratedSpacesSection({ open, slidePage = true, homeNavi
         transform: open ? "translateY(0)" : "translateY(100%)",
         transition: mounted && slidePage ? `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}` : "none",
         pointerEvents: open ? "auto" : "none",
+        ...closedStyle(open),
       }}
     >
       <MegaMenu open={menuOpen} onClose={() => setMenuOpen(false)} onNavigate={handleNavigate} />

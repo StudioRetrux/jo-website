@@ -13,7 +13,7 @@ export async function GET(_request: Request, ctx: RouteContext<"/api/projects/[s
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  const related = await getRelatedWorkItems(project.slug, project.category);
+  const related = await getRelatedWorkItems(project.slug);
 
   return Response.json({ project, related });
 }

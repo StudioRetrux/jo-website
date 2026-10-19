@@ -26,7 +26,7 @@ import CtaImageTrail from "./CtaImageTrail";
 // Shared scroll-position parallax for section and project images.
 import ParallaxImage from "../projects/ParallaxImage";
 import { useCursor } from "../contexts/CursorContext";
-import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page } from "../contexts/PageNavContext";
+import { usePageNav, SLIDE_DURATION, SLIDE_EASE, type Page, closedStyle } from "../contexts/PageNavContext";
 import styles from "./about.module.css";
 
 const HERO_ENTRY_MOMENTUM_LIMIT = 36;
@@ -260,6 +260,7 @@ export default function AboutSection({ open, slidePage = true, homeNavigation = 
         transform: open ? "translateY(0)" : "translateY(100%)",
         transition: mounted && slidePage ? `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}` : "none",
         pointerEvents: open ? "auto" : "none",
+        ...closedStyle(open),
       }}
     >
       <MegaMenu open={menuOpen} onClose={() => setMenuOpen(false)} onNavigate={handleNavigate} />
