@@ -858,6 +858,8 @@
     padding: 0 20px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    /* snap to the padding edge, not the scroller edge — else card 1 snaps flush left */
+    scroll-padding-inline: 20px;
     scrollbar-width: none;
   }
 
