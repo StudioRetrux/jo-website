@@ -15,7 +15,7 @@ const FADE_UP_OPEN = "opacity 900ms cubic-bezier(0.4, 0, 0.2, 1) 450ms, transfor
 const MENU_ITEMS = ["Home", "Work", "About", "Curated Spaces", "Contact"];
 const MENU_PATHS: Record<string, string> = { Home: "/", Work: "/works", About: "/about", "Curated Spaces": "/curratedspaces", Contact: "/contact" };
 const DEFAULT_MENU_IMAGE = "/preload4ld.webp";
-const MENU_IMAGES = ["/preload4ld.webp", "/preload1.webp", "/profilepic.webp", "/preload3.webp", "/preload4.webp"];
+const MENU_IMAGES = ["/preload2.webp", "/preload1.webp", "/profilepic.webp", "/preload3.webp", "/preload4.webp"];
 const THUMB_TRANSITION_MS = 600;
 const THUMB_SWITCH_CLOSE_MS = 320;
 
