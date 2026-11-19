@@ -1,10 +1,11 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { useEffect, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 import styles from "./home.module.css";
 import ProjectLink from "../projects/ProjectLink";
 import { SIZES } from "../assets";
+import { useCursor } from "../contexts/CursorContext";
 import type { ResolvedHomeSlide } from "@/lib/projects/home-shared";
 
 export type CarouselPhase = "idle" | "exiting" | "entering";
@@ -105,6 +106,14 @@ export default function RightPanel({
   revealTransition,
 }: Props) {
   const activeIndex = carouselIncoming ?? carouselCurrent;
+  const activeSlug = slides[activeIndex].slug;
+  const { setMode } = useCursor();
+
+  // the panel goes pointer-events:none when it closes, which swallows mouseleave —
+  // drop the VIEW follower ourselves so it doesn't outlive the panel
+  useEffect(() => {
+    if (!isHome) setMode("default");
+  }, [isHome, setMode]);
   // Progress fill, not a travelling thumb: slide 1 of 5 is 20% wide, slide 5 is 100%.
   const barFill = ((activeIndex + 1) / slides.length) * 100;
 
@@ -149,7 +158,13 @@ export default function RightPanel({
           className={styles.rightHeading}
         />
 
-        <div className={styles.rightThumbnail}>
+        {/* the image is a click target too, not only the small VIEW WORK link —
+            hovering it swaps in the VIEW cursor, same as the work grid */}
+        <ThumbnailFrame
+          slug={activeSlug}
+          onEnter={() => setMode("view")}
+          onLeave={() => setMode("default")}
+        >
           <Image
             src={slides[carouselCurrent].thumbnail}
             alt=""
@@ -174,7 +189,7 @@ export default function RightPanel({
               } as CSSProperties}
             />
           )}
-        </div>
+        </ThumbnailFrame>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 0, width: "100%" }}>
           <TextSlide
@@ -194,8 +209,8 @@ export default function RightPanel({
         </div>
 
         {/* the slide's own work — ProjectLink opens the detail overlay, no reload */}
-        {slides[activeIndex].slug ? (
-          <ProjectLink slug={slides[activeIndex].slug} className={styles.rightCta}>
+        {activeSlug ? (
+          <ProjectLink slug={activeSlug} className={styles.rightCta}>
             VIEW WORK
           </ProjectLink>
         ) : (
@@ -203,5 +218,29 @@ export default function RightPanel({
         )}
       </div>
     </div>
+  );
+}
+
+function ThumbnailFrame({
+  slug,
+  onEnter,
+  onLeave,
+  children,
+}: {
+  slug: string;
+  onEnter: () => void;
+  onLeave: () => void;
+  children: ReactNode;
+}) {
+  if (!slug) return <div className={styles.rightThumbnail}>{children}</div>;
+  return (
+    <ProjectLink
+      slug={slug}
+      className={styles.rightThumbnail}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
+      {children}
+    </ProjectLink>
   );
 }

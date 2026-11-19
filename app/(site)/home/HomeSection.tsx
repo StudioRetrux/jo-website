@@ -151,6 +151,7 @@ export default function HomeSection({ slides, works, curatedItems, carouselReady
             onSlideEnd={carouselSlideEnd}
             // input only belongs to the carousel while home is the thing on screen
             paused={menuOpen || preloading || detailOpen || activePage !== "home" || incomingPage !== null}
+            slug={slides[carouselIncoming ?? carouselCurrent]?.slug}
           />
         )}
         <RightPanel

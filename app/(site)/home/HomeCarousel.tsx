@@ -5,6 +5,8 @@ import Image from "next/image";
 import styles from "./HomeCarousel.module.css";
 import { SIZES } from "../assets";
 import { WheelGestures } from "wheel-gestures";
+import ProjectLink from "../projects/ProjectLink";
+import { useCursor } from "../contexts/CursorContext";
 
 // Finger (or wheel) travel that makes a drag a swipe.
 const SWIPE_PX = 40;
@@ -19,9 +21,19 @@ type Props = {
   onAdvance: (dir: "down" | "up") => void;
   onSlideEnd: () => void;
   paused?: boolean;
+  /** the work the on-screen slide belongs to; empty = nothing published to open */
+  slug?: string;
 };
 
-export default function HomeCarousel({ slides, current, incoming, revealing, revealTransition, direction, onAdvance, onSlideEnd, paused = false }: Props) {
+export default function HomeCarousel({ slides, current, incoming, revealing, revealTransition, direction, onAdvance, onSlideEnd, paused = false, slug = "" }: Props) {
+  const { setMode } = useCursor();
+
+  // the menu, a detail overlay or a page change can cover the image without a
+  // mouseleave reaching it — drop the VIEW follower once input leaves the carousel
+  useEffect(() => {
+    if (paused) setMode("default");
+  }, [paused, setMode]);
+
   // Stacked layout: the image is the top half and the page reads vertically, so a
   // vertical drag is ambiguous. Swipe sideways instead, and reveal on that axis too.
   const [horizontal, setHorizontal] = useState(false);
@@ -131,6 +143,18 @@ export default function HomeCarousel({ slides, current, incoming, revealing, rev
             transition: revealing ? revealTransition : "none",
           }}
         />
+      )}
+
+      {/* the whole image opens the slide's work, not only the panel's VIEW WORK link */}
+      {slug && !paused && (
+        <ProjectLink
+          slug={slug}
+          className={styles.hitArea}
+          onMouseEnter={() => setMode("view")}
+          onMouseLeave={() => setMode("default")}
+        >
+          <span className={styles.srOnly}>View work</span>
+        </ProjectLink>
       )}
     </div>
   );
