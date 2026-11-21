@@ -274,6 +274,7 @@
 }
 
 .rightThumbnail {
+  display: block;
   position: relative;
   width: clamp(140px, 14.6dvw, 380px);
   height: clamp(140px, 14.6dvw, 380px);
